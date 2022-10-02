@@ -141,6 +141,12 @@ files:
         await new ConverterTest().runTests()
     }, 30000)
   learner_created: false
-feedback_link: https://hyperskill.org/projects/193/stages/963/implement#comment
-status: Unchecked
+- name: src/index.js
+  visible: true
+  learner_created: true
+feedback_link: https://hyperskill.org/learn/step/14000#comment
+status: Solved
+feedback:
+  message: Congratulations!
+  time: Sun, 02 Oct 2022 12:36:59 UTC
 record: -1

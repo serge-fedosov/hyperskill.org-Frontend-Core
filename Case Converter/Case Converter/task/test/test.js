@@ -30,34 +30,82 @@ class ConverterTest extends StageTest {
                 return wrong("There should be one 'textarea' element, found " + nodes.length + "!")
             }
 
-            const textArea = nodes[0];
+            this.textArea = nodes[0];
 
-            if (textArea.textContent.trim() !== '') {
+            if (this.textArea.textContent.trim() !== '') {
                 return wrong("TextArea should be empty by default!")
             }
 
             return correct()
         }),
         this.page.execute(() => {
-            const upperCaseButton = document.querySelector("button#upper-case")
-            const lowerCaseButton = document.querySelector("button#lower-case")
-            const properCaseButton = document.querySelector("button#proper-case")
-            const sentenceCaseButton = document.querySelector("button#sentence-case")
+            this.upperCaseButton = document.querySelector("button#upper-case")
+            this.lowerCaseButton = document.querySelector("button#lower-case")
+            this.properCaseButton = document.querySelector("button#proper-case")
+            this.sentenceCaseButton = document.querySelector("button#sentence-case")
 
-            if (upperCaseButton === null) {
+            if (this.upperCaseButton === null) {
                 return wrong("Can't find a button with '#upper-case' id!")
             }
 
-            if (lowerCaseButton === null) {
+            if (this.lowerCaseButton === null) {
                 return wrong("Can't find a button with '#lower-case' id!")
             }
 
-            if (properCaseButton === null) {
+            if (this.properCaseButton === null) {
                 return wrong("Can't find a button with '#proper-case' id!")
             }
 
-            if (sentenceCaseButton === null) {
+            if (this.sentenceCaseButton === null) {
                 return wrong("Can't find a button with '#sentence-case' id!")
+            }
+
+            return correct()
+        }),
+        this.page.execute(() => {
+
+            this.textArea.value = 'Lorem Ipsum is simply dummy text of the printing and typesetting industry.' +
+                ' Lorem Ipsum has been the industry\'s standard dummy text ever since the 1500s,' +
+                ' when an unknown printer took a galley of type and scrambled it to make a type specimen book.'
+
+            const upperCaseText = 'LOREM IPSUM IS SIMPLY DUMMY TEXT OF THE PRINTING AND TYPESETTING INDUSTRY.' +
+                ' LOREM IPSUM HAS BEEN THE INDUSTRY\'S STANDARD DUMMY TEXT EVER SINCE THE 1500S,' +
+                ' WHEN AN UNKNOWN PRINTER TOOK A GALLEY OF TYPE AND SCRAMBLED IT TO MAKE A TYPE SPECIMEN BOOK.'
+
+            this.upperCaseButton.click()
+
+            if (this.textArea.value !== upperCaseText) {
+                return wrong("After clicking on 'Upper Case' button your text is wrong!")
+            }
+
+            const lowerCaseText = 'lorem ipsum is simply dummy text of the printing and typesetting industry.' +
+                ' lorem ipsum has been the industry\'s standard dummy text ever since the 1500s,' +
+                ' when an unknown printer took a galley of type and scrambled it to make a type specimen book.'
+
+            this.lowerCaseButton.click()
+
+            if (this.textArea.value !== lowerCaseText) {
+                return wrong("After clicking on 'Lower Case' button your text is wrong!")
+            }
+
+            const properCase = 'Lorem Ipsum Is Simply Dummy Text Of The Printing And Typesetting Industry.' +
+                ' Lorem Ipsum Has Been The Industry\'s Standard Dummy Text Ever Since The 1500s,' +
+                ' When An Unknown Printer Took A Galley Of Type And Scrambled It To Make A Type Specimen Book.'
+
+            this.properCaseButton.click()
+
+            if (this.textArea.value !== properCase) {
+                return wrong("After clicking on 'Proper Case' button your text is wrong!")
+            }
+
+            const sentenceCase = 'Lorem ipsum is simply dummy text of the printing and typesetting industry.' +
+                ' Lorem ipsum has been the industry\'s standard dummy text ever since the 1500s,' +
+                ' when an unknown printer took a galley of type and scrambled it to make a type specimen book.'
+
+            this.sentenceCaseButton.click()
+
+            if (this.textArea.value !== sentenceCase) {
+                return wrong("After clicking on 'Sentence Case' button your text is wrong!")
             }
 
             return correct()
