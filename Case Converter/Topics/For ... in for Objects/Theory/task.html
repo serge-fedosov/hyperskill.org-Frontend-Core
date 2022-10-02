@@ -1,0 +1,44 @@
+<h2>For ... in for Objects</h2>
+<html><body><p>You already know the basic syntax of the <code class="language-javascript">for</code> loop. However, the classic use of the <code class="language-javascript">for</code> loop can be inconvenient in some situations. For example, when we want to iterate over the keys or values of an array or object. To do this, in JavaScript we use a more convenient construction. Let's take a closer look at using a <code class="language-javascript">for</code> loop with objects.</p>
+<h5 id="for-in-syntax">For ... in syntax</h5>
+<p>First, let's create an object. For example, this object will contain fields with the characteristics of a book.</p>
+<pre><code class="language-javascript">let book = {
+    name: 'Crime and Punishment',
+    author: 'Fedor Mikhailovich Dostoevsky',
+    publicationDate: 1866
+}</code></pre>
+<p>Suppose we want to print all the keys of an object to the console. If we were talking about arrays, using the classic <code class="language-javascript">for</code> loop would be our first choice. But here we cannot use this construction, because the keys are not numbered. A wonderful construction <code class="language-javascript">for ... in</code> comes to our aid, which iterates over the keys of the object (similarly to arrays).</p>
+<pre><code class="language-javascript">for (let key in book) {
+    console.log(key);
+}</code></pre>
+<p> We get the following as the output:</p>
+<pre><code class="language-javascript">name
+author
+publicationDate
+</code></pre>
+<p>What do you think will happen if we do the same with the <code class="language-javascript">book</code> array?</p>
+<pre><code class="language-javascript">let book = ['Crime and Punishment', 'Fedor Mikhailovich Dostoevsky', 1866];</code></pre>
+<p>You probably guessed it, but there will be the following output:</p>
+<pre><code class="language-javascript">0
+1
+2</code></pre>
+<p>You probably saw the connection between an object and an array. They have common values, but there are different keys.</p>
+<h5 id="non-obvious-behavior">Non-obvious behavior</h5>
+<p>We noticed in the previous example that the keys in the object were printed in the console in order. Let's experiment, since we know that there are a lot of weird things in JavaScript. Let's use <code class="language-javascript">for ...in</code> for the following object:</p>
+<pre><code class="language-javascript">let secondBook = {
+    "3": 'Doomed city',
+    "1": 'Brothers Strugatsky',
+    "0": 1972
+}</code></pre>
+<p>It's important to understand that the word <code class="language-javascript">key</code> in the construction under consideration is not special, we can safely use any other notation for our variable. In the example below, the name <code class="language-javascript">i</code> is used.</p>
+<pre><code class="language-javascript">for (let i in secondBook) {
+    console.log(secondBook[i]);
+}</code></pre>
+<p></p><div class="alert alert-primary">Note that for a variety of examples, we printed the values of the object this time.</div>
+<p>We will see the following in the console:</p>
+<pre><code class="language-javascript">1972
+Brothers Strugatsky
+Doomed city</code></pre>
+<p>As you can see, the values were displayed in a strange order, because the date was the last in the object, but it was printed first. This is due to converting keys into numerical values and sorting them implicitly. Therefore, it is worth paying attention to such things that might cause bugs in your code.</p>
+<h5 id="conclusion">Conclusion</h5>
+<p>In this topic, you've learned the use of the <code class="language-javascript">for ... in</code> construct for objects and partly for arrays. Also, we've covered what hidden effects can cause bugs in our programs. Hopefully, you've also diversified your arsenal and learned a more compact way to display the keys of different objects.</p></body></html>

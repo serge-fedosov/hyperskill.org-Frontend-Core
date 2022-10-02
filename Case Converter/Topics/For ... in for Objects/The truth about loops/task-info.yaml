@@ -1,0 +1,22 @@
+type: choice
+is_multiple_choice: false
+options:
+- text: In this type of construction, we can use only the name <code>key</code> as
+    the name of the variable for key traversal.
+- text: Using the <code>for ... in</code> construct, you can display not only the
+    keys of an object, but also its values.
+- text: In this format, the <code>for</code> loop always outputs the keys in the order
+    they appear in the object.
+- text: In the <code>for ... in</code> loop, we explicitly write the stop condition
+    in parentheses.
+files:
+- name: main.js
+  visible: true
+  text: |+
+    // You can experiment here, it won’t be checked
+
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/22784#comment
+status: Solved
+record: -1
+local_check: false
