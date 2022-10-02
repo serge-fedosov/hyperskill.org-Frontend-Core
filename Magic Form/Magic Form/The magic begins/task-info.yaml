@@ -194,6 +194,12 @@ files:
         }
     ).timeout(30000);
   learner_created: false
+- name: src/index.js
+  visible: true
+  learner_created: true
 feedback_link: https://hyperskill.org/projects/239/stages/1199/implement#comment
-status: Unchecked
+status: Solved
+feedback:
+  message: Congratulations!
+  time: Sun, 02 Oct 2022 18:47:20 UTC
 record: -1
