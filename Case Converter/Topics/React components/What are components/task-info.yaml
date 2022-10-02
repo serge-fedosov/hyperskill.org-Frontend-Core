@@ -1,0 +1,20 @@
+type: choice
+is_multiple_choice: false
+options:
+- text: Components are simple, independent, dynamic, and reusable pieces of code.
+- text: Components are ready-to-use code that we can import from the React library.
+- text: Components are UI elements that are ready-to-use, so we don't need to create
+    them.
+- text: Components are libraries that we can use in addition to the React library.
+files:
+- name: main.js
+  visible: true
+  text: |+
+    // You can experiment here, it won’t be checked
+
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/16917#comment
+status: Solved
+record: -1
+custom_name: What are components?
+local_check: false
