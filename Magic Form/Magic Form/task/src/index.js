@@ -8,6 +8,11 @@ function getValues() {
             localStorage.setItem(elements[key], element.value);
         };
     }
+
+    window.addEventListener('storage', (event) => {
+        let element = document.getElementById(event.key);
+        element.value = localStorage.getItem(event.key);
+    });
 }
 
 function submitForm() {
@@ -15,7 +20,6 @@ function submitForm() {
 
     for (const key in elements) {
         arr[key] = document.getElementById(elements[key]).value;
-
 
         localStorage.setItem(elements[key], "");
         let element = document.getElementById(elements[key]);
@@ -32,9 +36,7 @@ function submitForm() {
     history[history.length] = arr;
 
     let json = JSON.stringify(history);
-    // let json = JSON.stringify([["1","2","3","4","5","6"],["1","2","3","4","5","6"]]);
     localStorage.setItem("history", json);
-//    localStorage.clear();
 }
 
 function getHistory() {
@@ -48,7 +50,11 @@ function getHistory() {
     let result = "";
     for (let i = 0; i < history.length; i++) {
         let val = history[i];
-        let el = `<div class="submit-history-card">
+        if (val === undefined || val === null) {
+            continue;
+        }
+
+        let el = `<div class="submit-history-card" id="history-id-${i}">
     <p><b>First Name</b></p>
     <p class="card-first-name">${val[0]}</p>
     <br>
@@ -67,16 +73,30 @@ function getHistory() {
     <p><b>Address</b></p>
     <p class="card-address">${val[5]}</p>
     <br>
-    <button type="submit" class="delete-button">Delete</button>
+    <button type="button" class="delete-button" onclick="deleteDiv(${i})">Delete</button>
 </div>
 `;
         result = result + "\n" + el;
     }
 
     let element = document.getElementById("history");
-    if (result.length === 0) {
-        result = "test";
-    }
     element.innerHTML = result;
     // localStorage.setItem("history", "");
+}
+
+function deleteDiv(i) {
+    let element = document.getElementById("history-id-" + i);
+    element.remove();
+
+    let history = localStorage.getItem("history");
+    if (history == null) {
+        history = [];
+    } else {
+        history = JSON.parse(history);
+    }
+
+    delete history[i];
+
+    let json = JSON.stringify(history);
+    localStorage.setItem("history", json);
 }

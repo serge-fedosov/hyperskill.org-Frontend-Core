@@ -6,6 +6,7 @@ import {StageTest, correct, wrong, WrongAnswer} from 'hs-test-web';
 class Test extends StageTest {
 
     page = this.getPage(pagePath)
+    secondPage = this.getPage(pagePath)
 
     tests = [
         this.node.execute(async () => {
@@ -317,6 +318,67 @@ class Test extends StageTest {
             }
 
             return correct();
+        }),
+        this.node.execute(async () => {
+            let history = await this.page.findAllByClassName("submit-history-card")
+
+            const firstCard = history[0]
+
+            const deleteButton = await firstCard.findBySelector('button.delete-button');
+
+            if (deleteButton == null) {
+                return wrong("Each submit history card should contain a button with 'delete-button' class")
+            }
+
+            await deleteButton.clickForNavigation({timeout: 500}).catch(() => {})
+
+            history = await this.page.findAllByClassName("submit-history-card")
+            if (history.length !== 1) {
+                return wrong("After clicking on delete button the card element should be removed from the DOM!")
+            }
+
+            await this.submitFormLinkButton.clickForNavigation({timeout: 1500}).catch(err => {
+                throw new WrongAnswer("After clicking on the Form link button with 'form-link' id " +
+                    "you should navigate to another page!")
+            })
+
+            return correct()
+        }),
+        this.node.execute(async () => {
+            await this.secondPage.open();
+
+            const sleep = (ms) => new Promise(resolve => setTimeout(resolve, ms))
+
+            const firstPageFirstNameField = await this.page.findBySelector("input[name='first-name']");
+            const firstPagePhoneField = await this.page.findBySelector("input[name='phone']");
+            const firstPageAddressField = await this.page.findBySelector("input[name='address']");
+
+            const secondPageFirstNameField = await this.secondPage.findBySelector("input[name='first-name']");
+            const secondPagePhoneField = await this.secondPage.findBySelector("input[name='phone']");
+            const secondPageAddressField = await this.secondPage.findBySelector("input[name='address']");
+
+            await firstPageFirstNameField.inputText('Test first name');
+            await sleep(300)
+            const secondPageFirstNameValue = await secondPageFirstNameField.getProperty('value');
+            if (secondPageFirstNameValue !== 'Test first name') {
+                return wrong("Looks like input fields values doesn't sync within different tabs!")
+            }
+
+            await secondPageAddressField.inputText('Test address');
+            await sleep(300)
+            const firstPageAddressValue = await firstPageAddressField.getProperty('value');
+            if (firstPageAddressValue !== 'Test address') {
+                return wrong("Looks like input fields values doesn't sync within different tabs!")
+            }
+
+            await firstPagePhoneField.inputText('Test phone');
+            await sleep(300)
+            const secondPagePhoneValue = await secondPagePhoneField.getProperty('value');
+            if (secondPagePhoneValue !== 'Test phone') {
+                return wrong("Looks like input fields values doesn't sync within different tabs!")
+            }
+
+            return correct()
         })
     ]
 }
