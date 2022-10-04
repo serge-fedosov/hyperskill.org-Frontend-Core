@@ -39,11 +39,6 @@ class Test extends StageTest {
                 return wrong("Can't find input tag with name 'address'!")
             }
 
-            const submitButton = await this.page.findById("submit-button");
-            if (submitButton == null) {
-                return wrong("Can't find a button with 'submit-button' id!")
-            }
-
             return correct()
         }),
         this.node.execute(async () => {
@@ -65,6 +60,7 @@ class Test extends StageTest {
             return correct();
         }),
         this.node.execute(async () => {
+
             const values = [
                 await this.firstNameInput.getProperty('value'),
                 await this.lastNameInput.getProperty('value'),
@@ -162,6 +158,162 @@ class Test extends StageTest {
                 return wrong("After reloading the page, input field with name 'phone' has wrong value!\n" +
                     "Expected: " + testPhone + "'\n" +
                     "Found: '" + phoneValue + "'")
+            }
+
+            return correct();
+        }),
+        this.node.execute(async () => {
+            const submitButton = await this.page.findById("submit-button");
+            if (submitButton == null) {
+                return wrong("Can't find a button with 'submit-button' id!")
+            }
+
+            await submitButton.clickForNavigation({timeout: 1500}).catch(ignored => {
+            })
+
+            const values = [
+                await this.firstNameInput.getProperty('value'),
+                await this.lastNameInput.getProperty('value'),
+                await this.email.getProperty('value'),
+                await this.phone.getProperty('value'),
+                await this.company.getProperty('value'),
+                await this.address.getProperty('value'),
+            ]
+
+            values.forEach(value => {
+                if (value !== '') {
+                    throw new WrongAnswer("All input fields should be empty after submitting the form " +
+                        "by clicking on button with 'submit-button' id!")
+                }
+            })
+
+            return correct()
+        }),
+        this.node.execute(async () => {
+            this.historyLinkButton = await this.page.findById('history-link')
+            this.submitFormLinkButton = await this.page.findById('form-link')
+
+            await this.historyLinkButton.clickForNavigation({timeout: 1500}).catch(err => {
+                throw new WrongAnswer("After clicking on history link with 'history link' id " +
+                    "the app should navigate to another page!")
+            })
+
+            return correct()
+        }),
+        this.node.execute(async () => {
+            const history = await this.page.findAllByClassName("submit-history-card")
+            if (history.length !== 1) {
+                return wrong("On the history page expected 1 div block with 'submit-history-card' class" +
+                    " after submitting the form!")
+            }
+
+            const card = history[0];
+
+            const firstNameField = await card.findByClassName('card-first-name');
+            if (firstNameField == null) {
+                return wrong("Can't find element with 'card-first-name' inside of the history " +
+                    "card with 'submit-history-card' class!")
+            }
+            const firstNameTextContent = await firstNameField.textContent();
+            if (firstNameTextContent !== 'Monica') {
+                return wrong("Element with 'card-first-name' class has wrong text content!\n" +
+                    "Expected: Monica\n" +
+                    "Found: " + firstNameTextContent)
+            }
+
+            const lastNameField = await card.findByClassName('card-last-name');
+            if (lastNameField == null) {
+                return wrong("Can't find element with 'card-last-name' inside of the history " +
+                    "card with 'submit-history-card' class!")
+            }
+            const lastNameTextContent = await lastNameField.textContent();
+            if (lastNameTextContent !== 'Meyers') {
+                return wrong("Element with 'card-last-name' class has wrong text content!\n" +
+                    "Expected: Meyers\n" +
+                    "Found: " + lastNameTextContent)
+            }
+
+            const emailField = await card.findByClassName('card-email');
+            if (emailField == null) {
+                return wrong("Can't find element with 'card-email' inside of the history " +
+                    "card with 'submit-history-card' class!")
+            }
+            const emailTextContent = await emailField.textContent();
+            if (emailTextContent !== 'test@gmail.com') {
+                return wrong("Element with 'card-email' class has wrong text content!\n" +
+                    "Expected: test@gmail.com\n" +
+                    "Found: " + emailTextContent)
+            }
+
+            const phoneField = await card.findByClassName('card-phone');
+            if (phoneField == null) {
+                return wrong("Can't find element with 'card-phone' inside of the history " +
+                    "card with 'submit-history-card' class!")
+            }
+            const phoneTextContent = await phoneField.textContent();
+            if (phoneTextContent !== '12345678') {
+                return wrong("Element with 'card-phone' class has wrong text content!\n" +
+                    "Expected: 12345678\n" +
+                    "Found: " + phoneTextContent)
+            }
+
+            const companyField = await card.findByClassName('card-company');
+            if (companyField == null) {
+                return wrong("Can't find element with 'card-company' inside of the history " +
+                    "card with 'submit-history-card' class!")
+            }
+            const companyTextContent = await companyField.textContent();
+            if (companyTextContent !== 'Hyperskill') {
+                return wrong("Element with 'card-company' class has wrong text content!\n" +
+                    "Expected: Hyperskill\n" +
+                    "Found: " + companyTextContent)
+            }
+
+            const addressField = await card.findByClassName('card-address');
+            if (addressField == null) {
+                return wrong("Can't find element with 'card-address' inside of the history " +
+                    "card with 'submit-history-card' class!")
+            }
+            const addressTextContent = await addressField.textContent();
+            if (addressTextContent !== '4733 Reppert Coal Road, Southfield, Michigan') {
+                return wrong("Element with 'card-address' class has wrong text content!\n" +
+                    "Expected: 4733 Reppert Coal Road, Southfield, Michigan\n" +
+                    "Found: " + addressTextContent)
+            }
+
+            return correct()
+        }),
+        this.node.execute(async () => {
+
+            await this.submitFormLinkButton.clickForNavigation({timeout: 1500}).catch(err => {
+                throw new WrongAnswer("After clicking on the Form link button with 'form-link' id " +
+                    "you should navigate to another page!")
+            })
+
+            await this.firstNameInput.inputText('First name');
+            await this.lastNameInput.inputText('Last name');
+            await this.email.inputText('Email');
+            await this.phone.inputText('Phone');
+            await this.company.inputText('Company');
+            await this.address.inputText('Address');
+
+            const submitButton = await this.page.findById("submit-button");
+            await submitButton.clickForNavigation({timeout: 1500}).catch(ignored => {
+            })
+
+            return correct()
+        }),
+        this.node.execute(async () => {
+
+            await this.historyLinkButton.clickForNavigation({timeout: 1500}).catch(err => {
+                throw new WrongAnswer("After clicking on history link with 'history link' id" +
+                    "the app should navigate to another page!")
+            })
+
+            const history = await this.page.findAllByClassName("submit-history-card")
+            if (history.length !== 2) {
+                return wrong("On the history page expected 2 div block with 'submit-history-card' class" +
+                    " after submitting the form!")
             }
 
             return correct();

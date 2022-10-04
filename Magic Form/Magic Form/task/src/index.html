@@ -2,15 +2,15 @@
 <html lang="en">
 <head>
     <meta charset="UTF-8">
-    <title>Document</title>
+    <title>Form</title>
 </head>
-<body>
+<body onload="getValues()">
   <nav>
-      <a href="" id="form-link">Form</a>
-      <a href="" id="history-link">History</a>
+      <a href="index.html" id="form-link">Form</a>
+      <a href="history.html" id="history-link">History</a>
   </nav>
   <br />
-  <form>
+  <form action="index.html" method="get">
       <label for="first-name">First name</label>
       <br />
       <input name="first-name" id="first-name" placeholder="Enter your first name" />
@@ -42,7 +42,7 @@
       <br />
       <br />
 
-      <button type="submit" id="submit-button">Submit form</button>
+      <button type="button" id="submit-button" onclick="submitForm()">Submit form</button>
   </form>
   <script src="index.js"></script>
 </body>

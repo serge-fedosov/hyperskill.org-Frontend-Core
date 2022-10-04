@@ -1,0 +1,18 @@
+type: choice
+is_multiple_choice: true
+options:
+- text: Components are static, all components will have the same properties.
+- text: Components are dynamic, so we can have the same component with different properties.
+- text: We can use a single component as many times as we want.
+- text: Components make the code more readable and easier to understand.
+files:
+- name: main.js
+  visible: true
+  text: |+
+    // You can experiment here, it won’t be checked
+
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/16918#comment
+status: Solved
+record: -1
+local_check: false

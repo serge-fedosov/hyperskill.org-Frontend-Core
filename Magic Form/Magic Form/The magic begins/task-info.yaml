@@ -197,9 +197,9 @@ files:
 - name: src/index.js
   visible: true
   learner_created: true
-feedback_link: https://hyperskill.org/projects/239/stages/1199/implement#comment
+feedback_link: https://hyperskill.org/learn/step/18641#comment
 status: Solved
 feedback:
   message: Congratulations!
   time: Sun, 02 Oct 2022 18:47:20 UTC
-record: -1
+record: 2

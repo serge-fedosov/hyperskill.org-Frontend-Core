@@ -1,0 +1,16 @@
+type: code
+custom_name: Convert to string
+files:
+- name: main.js
+  visible: true
+  text: |-
+    function convertToString(numbers) {
+
+    }
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/16915#comment
+status: Solved
+feedback:
+  message: <html>Correct solution</html>
+  time: Mon, 03 Oct 2022 16:38:09 UTC
+record: -1

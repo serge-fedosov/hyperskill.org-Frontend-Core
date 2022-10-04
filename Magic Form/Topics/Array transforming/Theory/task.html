@@ -1,0 +1,70 @@
+<h2>Array transforming</h2>
+<html><body><p>Now that you have learned how to create and iterate with arrays, it is time for you to take a step further. Sometimes you will get data inside arrays that is not the way you need it to be, so you will need to transform it. In this topic, you will learn how to use the <code class="language-javascript">map()</code>, <code class="language-javascript">join()</code>, and <code class="language-javascript">toString()</code> methods to help you in this situation.</p>
+<p>We will start with the <code class="language-javascript">map()</code> method and discuss the others in sequence. This method is very useful and popular when it comes to transforming data, so let's begin.</p>
+<h5 id="map-method" style="text-align: center;">Map method</h5>
+<p>Let's start with something simple and create an array of numbers.</p>
+<pre><code class="language-javascript">const numbers = [5, 10, 15, 20, 25];</code></pre>
+<p>Now let's say you want to multiply all the values inside this array by 3, but you want to keep the original values of the <code class="language-javascript">numbers</code> array unchanged. How would you do it?</p>
+<p>You could create a new array with the same size as the <code class="language-javascript">numbers</code> array and then assign each value individually corresponding to the position of the <code class="language-javascript">numbers</code> array. Let's see an example of that:</p>
+<pre><code class="language-javascript">let numbersByThree = new Array(numbers.length)
+
+numbersByThree [0] = numbers[0] * 3;
+numbersByThree [1] = numbers[1] * 3;</code></pre>
+<p>However, this would be tedious and inefficient. Imagine that you have to do this same operation 100 times! It would take a lot of your time.</p>
+<p>That's where the <code class="language-javascript">map()</code> method comes in to save your time. It creates a new array on top of the original array by performing the desired operation on each element. The syntax of this method is the following:</p>
+<pre><code class="language-javascript">array.map(function(currentValue, index, arr));</code></pre>
+<ul>
+<li><code class="language-javascript">function</code>: Required. The function that will be executed for each element of the array.</li>
+<li><code class="language-javascript">currentValue</code>: Required. Concerns each of the matrix elements, so if you want to multiply by 3 the method will perform this operation on each of the values.</li>
+<li><code class="language-javascript">index</code>: Optional. It's the index of each element, starting at 0.</li>
+<li><code class="language-javascript">arr</code>: Optional. It's the array itself.</li>
+</ul>
+<p>So to perform the multiplication on the <code class="language-javascript">numbers</code> array we don't need to explicitly create a new array. The map method will return a new one. To perform the multiplication we will need a function, so let's make one:</p>
+<pre><code class="language-javascript">function multiplyByThree(element) {
+  return element * 3;
+}</code></pre>
+<p>Now you can pass this function as an argument to the <code class="language-javascript">map()</code> method. Each of the elements will be multiplied by 3 and these values will be stored in a new array. Let's see it in the code:</p>
+<pre><code class="language-javascript">let numbersByThree = numbers.map(multiplyByThree);
+
+console.log(numbersByThree); // [ 15, 30, 45, 60, 75 ]</code></pre>
+<p>Much more convenient and simple than the way we used it before, right? You don't have to worry about creating a new array of the same size and then having to change each value individually, the <code class="language-javascript">map()</code> method does it for you.</p>
+<h5 id="using-anonymous-function" style="text-align: center;">Using anonymous function</h5>
+<p>You don't need to explicitly create a function to use with the <code class="language-javascript">map()</code> method. Instead, you can use an anonymous function inside the method itself, the code will be executed in the same way as before. It is advisable to use anonymous functions to make your code more readable.</p>
+<pre><code class="language-javascript">let numbersByThree = numbers.map(function (element) {
+  return element * 3;
+});</code></pre>
+<p>It can be even more convenient, take a look at the arrow function syntax:</p>
+<pre><code class="language-javascript">let numbersByThree = numbers.map((element) =&gt; {
+  return element * 3;
+});</code></pre>
+<p>You can also use built-in functions with <code class="language-javascript">map()</code>, for example, the <code class="language-javascript">sqrt</code> function of the <code class="language-javascript">Math</code> object, which returns the square root of a given number. Depending on the number the result can be a float with several decimal places. We will reduce it to only 2 decimal places for better visualization. You can try <code class="language-javascript">floor</code> and <code class="language-javascript">ceil</code> functions of the same <code class="language-javascript">Math</code> object to see different results.</p>
+<pre><code class="language-javascript">const numbers = [5, 10, 15, 20, 25];
+
+console.log(numbers.map(Math.sqrt)); // [2.23, 3.16, 3.87, 4.47, 5]</code></pre>
+<p>You don't need to explicitly pass each element to the <code class="language-javascript">sqrt</code> function, JavaScript understands this syntax perfectly and will perform the operation on each element.</p>
+<h5 id="join-method" style="text-align: center;">Join method</h5>
+<p>Imagine you have a set of words and you need to form a sentence with these words separated by a common character. You can achieve it with the <code class="language-javascript">join()</code> method: it takes a string separator as an argument, a space <code class="language-javascript">array.join(" ")</code>, or a comma <code class="language-javascript">array.join(",")</code> for example. Let's look at an example to make it clearer.</p>
+<p>First, you will need an array with some data, let's create one.</p>
+<pre><code class="language-javascript">const words = ['Hyperskill', 'is', 'an', 'excelent', 'place', 'to', 'study'];</code></pre>
+<p>Now one thing that you should keep in mind is that the <code class="language-javascript">join()</code> method does not modify the original array, it takes the original array and <strong>returns a string</strong>. Therefore, if you run the code below, the <code class="language-javascript">words</code> array will remain unchanged.</p>
+<pre><code class="language-javascript">words.join(" ");
+console.log(words); // [ 'Hyperskill', 'is', 'an', 'excelent', 'place', 'to', 'study' ]</code></pre>
+<p>To see the result of the join you need to store it in another variable, so let's create a so-called <code class="language-javascript">phrase</code> and store the result in it.</p>
+<pre><code class="language-javascript">const phrase = words.join(" ");
+console.log(phrase); // Hyperskill is an excelent place to study</code></pre>
+<p>The data in the arrays can also be of other types, such as numbers. The join method will convert it to a single string and if you don't want to save it in another variable, you can print it directly on the console.</p>
+<pre><code class="language-javascript">const numbers = [1, 2, 3, 4, 5];
+console.log(numbers.join("-")); // 1-2-3-4-5</code></pre>
+<p></p><div class="alert alert-primary">The <code class="language-javascript">join()</code> method only works for the array data structure. If you try to use it on another data structure such as string, a <code class="language-javascript">TypeError</code> exception will be raised.</div><p></p>
+<h5 id="tostring-method" style="text-align: center;">toString method</h5>
+<p>This method as its name suggests converts the elements of an array into a string. This method requires no argument. Let's take our array of numbers as an example.</p>
+<pre><code class="language-javascript">const numbers = [1, 2, 3, 4, 5];
+console.log(numbers.toString()); // 1,2,3,4,5</code></pre>
+<p>The result will be a comma-separated string. You can see that the result is similar if you use the <code class="language-javascript">join()</code> method but in this case we can't specify the separator. Another difference is that you can use this method on other types of objects such as <em>Number</em>, <em>Function</em>, <em>Object</em>, etc.</p>
+<h5 id="conclusion" style="text-align: center;">Conclusion</h5>
+<p>In this topic, you have learned three methods for working with arrays, each of them with its specific purpose.</p>
+<ul>
+<li>The <code class="language-javascript">map()</code> method is very useful when you want to transform the data of an array while keeping the original intact.</li>
+<li>The <code class="language-javascript">join()</code> method is very useful when you have an array of separate characters and want to join them together by a common separator. Remember that this method returns a string.</li>
+<li>The <code class="language-javascript">toString()</code> method transforms the elements of a given array into a single string. The difference between it and the <code class="language-javascript">join()</code> method is that you cannot specify a separator.</li>
+</ul></body></html>

@@ -1,0 +1,18 @@
+type: choice
+is_multiple_choice: true
+options:
+- text: With <code>toString()</code> you can specify the separator.
+- text: With <code>join()</code> you can specify the separator.
+- text: You can use <code>join()</code> on other types of objects.
+- text: You can use <code>toString()</code> on other types of objects.
+files:
+- name: main.js
+  visible: true
+  text: |+
+    // You can experiment here, it won’t be checked
+
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/16908#comment
+status: Solved
+record: -1
+local_check: false
