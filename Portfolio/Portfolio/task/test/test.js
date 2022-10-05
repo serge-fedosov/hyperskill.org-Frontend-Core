@@ -177,6 +177,27 @@ class PortfolioTest extends StageTest {
             }
 
             return correct()
+        }),
+        this.page.execute(() => {
+            let buttons = document.getElementsByClassName('hamburger');
+
+            if (buttons === null || buttons.length === 0) {
+                return wrong('Not find the hamburger menu on your page. Create it and set the "hamburger" class to the tag that wraps the menu elements.');
+            }
+
+            return correct()
+        }),
+        this.page.execute(() => {
+            let burger = document.getElementsByClassName('hamburger')[0];
+
+            let display = window.getComputedStyle(burger).display;
+            let visibility = window.getComputedStyle(burger).visibility;
+
+            if (window.innerWidth >= 900 && (display === 'none' || visibility === 'hidden')) {
+                return correct()
+            }
+
+            return wrong('The menu must not be hamburger when the screen width >= 900 px');
         })
     ]
 }
