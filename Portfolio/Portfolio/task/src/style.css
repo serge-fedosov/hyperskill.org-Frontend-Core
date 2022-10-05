@@ -93,3 +93,16 @@ a:visited {
 #contacts {
     background-color: lightgray;
 }
+
+.window, .window1{
+    position:absolute;
+    padding:20px;
+    border:solid black 1px;
+    border-radius:5px;
+    margin-left:550px;
+    margin-bottom:50px;
+    display: none;
+    background:white;
+    text-align:center;
+    z-index:2;
+}
