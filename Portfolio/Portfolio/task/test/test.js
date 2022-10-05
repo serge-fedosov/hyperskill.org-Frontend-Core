@@ -2,73 +2,91 @@ const path = require('path');
 const pagePath = 'file://' + path.resolve(__dirname, '../src/index.html');
 const {StageTest, correct, wrong} = require('hs-test-web');
 
+
 class PortfolioTest extends StageTest {
 
     page = this.getPage(pagePath)
 
     tests = [
         this.page.execute(() => {
+            let headers = document.getElementsByTagName('header');
+
+            if (headers === null || headers.length === 0) {
+                return wrong('Cannot find the header in the document.');
+            } else if (headers.length > 1) {
+                return wrong('Found more than one header in the document.');
+            }
+
+            return correct();
+        }),
+        this.page.execute(() => {
+            let nav = document.getElementsByTagName('nav');
+
+            if (nav === null || nav.length === 0) {
+                return wrong('Cannot find the nav element on your web page.');
+            }
+
+            return correct();
+        }),
+        this.page.execute(() => {
             let headings1 = document.getElementsByTagName('h1');
 
             if (headings1 === null || headings1.length === 0) {
-                return wrong('Can\'t find the h1 element. Check that you created it.');
+                return wrong('Cannot find h1 element on your web page.');
             }
 
             let header = headings1[0]
             let title = header.textContent || header.innerText;
 
-            if (!title || title.length === 0) {
-                return wrong('Can\'t find the text inside the h1 element.');
+            if (!title || title === null || title.length === 0) {
+                return wrong('Cannot find a text within h1 element.');
             }
 
             return correct();
         }),
         this.page.execute(() => {
-            let headings2 = document.getElementsByTagName('h2');
+            let footers = document.getElementsByTagName('footer');
 
-            if (headings2 === null || headings2.length < 2) {
-                return wrong(`Can't find two h2 elements. Your web page should have at least two h2 elements at this stage. There are only ${headings2.length}.`);
-            }
-
-            let found_about_me = false;
-            let found_portfolio = false;
-
-            for (let header of headings2) {
-                let title = (header.textContent || header.innerText).trim();
-
-                if (title && title.toLowerCase() === 'portfolio') {
-                    found_portfolio = true;
-                }
-
-                if (title && title.toLowerCase() === 'about me') {
-                    found_about_me = true;
-                }
-            }
-
-            if (!found_about_me) {
-                return wrong('Can\'t find "About me" text in one of the h2 elements.');
-            }
-
-            if (!found_portfolio) {
-                return wrong('Can\'t find "Portfolio" text in one of the h2 elements.');
+            if (footers === null || footers.length === 0) {
+                return wrong('Cannot find the footer in the document.');
+            } else if (footers.length > 1) {
+                return wrong('Found more than one footer in the document.');
             }
 
             return correct();
         }),
         this.page.execute(() => {
-            let images = document.getElementsByTagName('img');
+            let sections = document.getElementsByTagName('section');
 
-            if (images === null || images.length < 2) {
-                return wrong('Cannot find at least two img elements on your web page. Add one image that will represent you and at least one that will represent your work.');
+            if (sections === null || sections.length < 3) {
+                return wrong(`Cannot find tree sections elements. There are only ${sections.length}.`);
             }
 
             return correct();
         }),
         this.page.execute(() => {
-            let paragraphs = document.getElementsByTagName('p');
+            let sections = document.getElementById('about');
 
-            if (paragraphs === null || paragraphs.length < 1) {
-                return wrong('Cannot find at least one <p> element on your web page.');
+            if (sections === null || sections.length < 1) {
+                return wrong('Cannot find a section with the "about" id.');
+            }
+
+            return correct();
+        }),
+        this.page.execute(() => {
+            let sections = document.getElementById('portfolio');
+
+            if (sections === null || sections.length < 1) {
+                return wrong('Cannot find a section with the "portfolio" id.');
+            }
+
+            return correct();
+        }),
+        this.page.execute(() => {
+            let sections = document.getElementById('contacts');
+
+            if (sections === null || sections.length < 1) {
+                return wrong('Cannot find a section with the "contacts" id.');
             }
 
             return correct();

@@ -121,6 +121,21 @@ files:
         await new PortfolioTest().runTests()
     }, 30000)
   learner_created: false
+- name: src/images/github.svg
+  visible: true
+  learner_created: true
+- name: src/images/instagram.svg
+  visible: true
+  learner_created: true
+- name: src/images/facebook.svg
+  visible: true
+  learner_created: true
+- name: src/images/twitter.svg
+  visible: true
+  learner_created: true
 feedback_link: https://hyperskill.org/projects/137/stages/731/implement#comment
-status: Unchecked
+status: Solved
+feedback:
+  message: Congratulations!
+  time: Wed, 05 Oct 2022 10:12:21 UTC
 record: -1
