@@ -330,6 +330,36 @@ files:
         await new Test().runTests()
     }, 30000)
   learner_created: false
+- name: src/style.css
+  visible: true
+  text: |
+    body {
+        background-color: lightgray;
+        margin: 0;
+    }
+
+    kbd {
+        text-align: center;
+        display: inline-block;
+        background-color: white;
+        border: 1px solid darkgray;
+        width: 60px;
+        height: 180px;
+        line-height: 250px;
+        margin: -3px;
+    }
+
+    .container {
+        width: max-content;
+        margin: 10% auto;
+    }
+  learner_created: true
+- name: src/main.js
+  visible: true
+  learner_created: true
 feedback_link: https://hyperskill.org/learn/step/9024#comment
-status: Unchecked
+status: Solved
+feedback:
+  message: Congratulations!
+  time: Wed, 05 Oct 2022 07:30:35 UTC
 record: -1
