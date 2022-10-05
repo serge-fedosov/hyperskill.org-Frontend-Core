@@ -326,6 +326,45 @@ files:
         await new Test().runTests()
     }, 30000)
   learner_created: false
+- name: src/main.js
+  visible: true
+  text: |
+    function onLoad() {
+        document.addEventListener("keydown", function(event) {
+            if (event.code === "KeyA" || event.code === "KeyS" || event.code === "KeyD" || event.code === "KeyF" ||
+                    event.code === "KeyG" || event.code === "KeyH" || event.code === "KeyJ") {
+                console.log("The \'" + event.key + "\' key is pressed.");
+            }
+        });
+    }
+  learner_created: true
+- name: src/style.css
+  visible: true
+  text: |
+    body {
+        background-color: lightgray;
+        margin: 0;
+    }
+
+    kbd {
+        text-align: center;
+        display: inline-block;
+        background-color: white;
+        border: 1px solid darkgray;
+        width: 60px;
+        height: 180px;
+        line-height: 250px;
+        margin: -3px;
+    }
+
+    .container {
+        width: max-content;
+        margin: 10% auto;
+    }
+  learner_created: true
 feedback_link: https://hyperskill.org/learn/step/9025#comment
-status: Unchecked
+status: Solved
+feedback:
+  message: Congratulations!
+  time: Wed, 05 Oct 2022 08:24:54 UTC
 record: -1
