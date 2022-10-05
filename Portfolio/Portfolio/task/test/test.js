@@ -38,8 +38,23 @@ class PortfolioTest extends StageTest {
             let header = headings1[0]
             let title = header.textContent || header.innerText;
 
-            if (!title || title === null || title.length === 0) {
+            if (!title || title.length === 0) {
                 return wrong('Cannot find a text within h1 element.');
+            }
+
+            return correct();
+        }),
+        this.page.execute(() => {
+            let html = document.getElementsByTagName('html')[0];
+
+            let margin = window.getComputedStyle(html).margin;
+            if (margin !== '0px') {
+                return wrong('It seems that you have not reset the default margin property');
+            }
+
+            let padding = window.getComputedStyle(html).padding;
+            if (padding !== '0px') {
+                return wrong('It seems that you have not reset the default padding property');
             }
 
             return correct();
@@ -90,6 +105,64 @@ class PortfolioTest extends StageTest {
             }
 
             return correct();
+        }),
+        this.page.execute(() => {
+            function getRealColor(elem) {
+                try {
+                    while (elem) {
+                        let color = window.getComputedStyle(elem).backgroundColor;
+                        if (color !== "rgba(0, 0, 0, 0)") {
+                            let match = color.match(/^rgba?\((\d+), (\d+), (\d+)(, [\d.]+)?\)$/i);
+                            return {
+                                red: Number(match[1]),
+                                green: Number(match[2]),
+                                blue: Number(match[3]),
+                                hex: Number(match[1]) * 65536 + Number(match[2]) * 256 + Number(match[3])
+                            };
+                        }
+                        elem = elem.parentElement;
+                    }
+                } catch (e) {
+                    return null;
+                }
+                return null;
+            }
+
+            let headers = document.getElementsByTagName('header');
+
+            if (headers === null || headers.length === 0) {
+                return wrong('Cannot find the header in the document.');
+            } else if (headers.length > 1) {
+                return wrong('Found more than one header in the document.');
+            }
+
+            let hasBackgroundImage = getComputedStyle(headers[0]).background.includes('url');
+
+            let headerBack = getRealColor(headers[0]);
+            let noCustomHeaderColor = headerBack === null || headerBack.hex === 0xFFFFFF;
+            if (noCustomHeaderColor && !hasBackgroundImage) {
+                return wrong("Looks like header's background color is not set. " +
+                    "It should be an image or some non-white color.")
+            }
+
+            let footers = document.getElementsByTagName('footer');
+
+            if (footers === null || footers.length === 0) {
+                return wrong('Cannot find the footer in the document.');
+            } else if (headers.length > 1) {
+                return wrong('Found more than one footer in the document.');
+            }
+
+            hasBackgroundImage = getComputedStyle(footers[0]).background.includes('url');
+
+            let footerBack = getRealColor(footers[0]);
+            let noCustomFooterColor = footerBack === null || footerBack.hex === 0xFFFFFF;
+            if (noCustomFooterColor && !hasBackgroundImage) {
+                return wrong("Looks like footer's background color is not set. " +
+                    "It should be an image or some non-white color.")
+            }
+
+            return correct()
         })
     ]
 }
