@@ -326,6 +326,6 @@ files:
         await new Test().runTests()
     }, 30000)
   learner_created: false
-feedback_link: https://hyperskill.org/projects/101/stages/559/implement#comment
+feedback_link: https://hyperskill.org/learn/step/9025#comment
 status: Unchecked
 record: -1

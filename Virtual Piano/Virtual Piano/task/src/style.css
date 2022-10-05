@@ -1,0 +1,20 @@
+body {
+    background-color: lightgray;
+    margin: 0;
+}
+
+kbd {
+    text-align: center;
+    display: inline-block;
+    background-color: white;
+    border: 1px solid darkgray;
+    width: 60px;
+    height: 180px;
+    line-height: 250px;
+    margin: -3px;
+}
+
+.container {
+    width: max-content;
+    margin: 10% auto;
+}
