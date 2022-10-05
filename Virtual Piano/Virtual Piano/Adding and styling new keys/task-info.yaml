@@ -508,6 +508,62 @@ files:
         await new Test().runTests()
     }, 30000)
   learner_created: false
+- name: src/main.js
+  visible: true
+  text: |
+    function onLoad() {
+        document.addEventListener("keydown", function(event) {
+            if (event.code === "KeyA" || event.code === "KeyS" || event.code === "KeyD" || event.code === "KeyF" ||
+                    event.code === "KeyG" || event.code === "KeyH" || event.code === "KeyJ") {
+                let audio = new Audio(`mp3/${event.key}.mp3`);
+                audio.play();
+            }
+        });
+    }
+  learner_created: true
+- name: src/style.css
+  visible: true
+  text: |
+    body {
+        background-color: lightgray;
+        margin: 0;
+    }
+
+    kbd {
+        text-align: center;
+        display: inline-block;
+        background-color: white;
+        border: 1px solid darkgray;
+        width: 60px;
+        height: 180px;
+        line-height: 250px;
+        margin: -3px;
+    }
+
+    .container {
+        width: max-content;
+        margin: 10% auto;
+    }
+  learner_created: true
+- name: src/mp3/T.mp3
+  visible: true
+  learner_created: true
+- name: src/mp3/U.mp3
+  visible: true
+  learner_created: true
+- name: src/mp3/E.mp3
+  visible: true
+  learner_created: true
+- name: src/mp3/Y.mp3
+  visible: true
+  learner_created: true
+- name: src/mp3/W.mp3
+  visible: true
+  learner_created: true
 feedback_link: https://hyperskill.org/learn/step/9026#comment
-status: Unchecked
+status: Solved
+feedback:
+  message: Well done! You've finished the project. Select a new project on <a href="https://hyperskill.org/projects">JetBrains
+    Academy</a> to continue learning.
+  time: Wed, 05 Oct 2022 08:46:34 UTC
 record: -1

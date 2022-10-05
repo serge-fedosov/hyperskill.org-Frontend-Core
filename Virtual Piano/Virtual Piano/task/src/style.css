@@ -3,7 +3,7 @@ body {
     margin: 0;
 }
 
-kbd {
+.white-keys kbd {
     text-align: center;
     display: inline-block;
     background-color: white;
@@ -12,6 +12,21 @@ kbd {
     height: 180px;
     line-height: 250px;
     margin: -3px;
+}
+
+.black-keys kbd {
+    /*     position: absolute; */
+    position: relative;
+    top: -200px;
+    color: white;
+    text-align: center;
+    display: inline-block;
+    background-color: black;
+    border: 1px solid darkgray;
+    width: 40px;
+    height: 80px;
+    line-height: 120px;
+    margin: 21px;
 }
 
 .container {
