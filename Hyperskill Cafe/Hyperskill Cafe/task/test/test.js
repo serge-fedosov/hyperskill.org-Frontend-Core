@@ -15,7 +15,7 @@ class CafeTest extends StageTest {
                 e => e.nodeType === Node.ELEMENT_NODE);
 
             let len = this.innerBodyElements.length;
-            const totalElements = 2;
+            const totalElements = 3;
             const errorMsg = `There should be ${totalElements} elements in the body of the HTML document, found: ${len}`;
             return len === totalElements ?
                 correct() :
@@ -33,17 +33,16 @@ class CafeTest extends StageTest {
             const linkBootstrap = "https://cdn.jsdelivr.net/npm/bootstrap@"
             const isBootstrapLinked = links.find(e => e.attributes
                 .getNamedItem("href").value.includes(linkBootstrap));
-            errorMsg = `Link the Bootstrap css with the HTML document in the head.`;
+            errorMsg = `Link the bootstrap css with the HTML document in the head.`;
             if (!isBootstrapLinked) return wrong(errorMsg);
 
             // check if body contains the bootstrap script tag
             const bootstrapScript = document.body.querySelector("script")
             const bootstrapSrc = bootstrapScript && bootstrapScript.getAttribute("src");
-            errorMsg = `Link the Bootstrap script with the HTML document in the body.`;
+            errorMsg = `Link the bootstrap script with the HTML document in the body.`;
             if (!bootstrapScript || !bootstrapSrc ||  !bootstrapSrc.includes(linkBootstrap)) return wrong(errorMsg);
 
             return correct();
-
         }),
         this.page.execute(() => {
             // test #3
@@ -291,6 +290,156 @@ class CafeTest extends StageTest {
             const aContactText = aContact.innerText;
             errorMsg = `The anchor tags for contact should have the right inner text: ${contactText}.`;
             if (!aContactText.includes(contactText)) return wrong(errorMsg);
+
+            return correct();
+        }),
+        this.page.execute(() => {
+            // test 4
+            // MAIN
+            // check if main exist
+            const main = document.body.querySelector("main");
+            let errorMsg = "main tag is missing in the body of the HTML document.";
+            if (!main) return wrong(errorMsg);
+
+            // CONTAINER DIV
+            // check if container div exist
+            const container = main.querySelector("div");
+            errorMsg = "Container div that should wrap the page components is missing in the main tag.";
+            if (!container) return wrong(errorMsg);
+
+            // check if the container div has the right bootstrap classes
+            const containerClasses = "container-fluid p-0".split(" ");
+            const missingContainerClasses = containerClasses.filter(e => !container.className.includes(e));
+            errorMsg = `Container div is missing the correct Bootstrap classes: '${missingContainerClasses}'`;
+            if (missingContainerClasses.length > 0) return wrong(errorMsg);
+
+            // HOME DIV
+            // check if home div exist with the right id
+            const home = document.getElementById("home");
+            errorMsg = `Container div is missing the inner div with the id: home.`;
+            if (!home) return wrong(errorMsg);
+
+            // check if home div has the right classes
+            const homeClasses = "d-flex flex-column-reverse flex-md-row p-0 bg-light".split(" ");
+            const missingHomeClasses = homeClasses.filter(e => !home.className.includes(e));
+            errorMsg = `Home div is missing the these Bootstrap classes: '${missingHomeClasses}'.`;
+            if (missingHomeClasses.length > 0) return wrong(errorMsg);
+
+            // INNER CONTENT DIV
+            // check if text content inner div exist
+            const contentDiv = home.querySelector("div");
+            errorMsg = `Home div is missing the inner-wrapper div for the text content and button.`;
+            if (!contentDiv) return wrong(errorMsg);
+
+            // check if text content div has the right classes
+            const contentDivClasses = "container-fluid m-auto p-5".split(" ");
+            const missingContentDivClasses = contentDivClasses.filter(e => !contentDiv.className.includes(e));
+            errorMsg = `The content div in the home div is missing these Bootstrap classes: '${missingContentDivClasses}'`;
+            if (missingContentDivClasses.length > 0) return wrong(errorMsg);
+
+            // H1
+            // check if h1 exist inside content div
+            const h1 = contentDiv.querySelector("h1");
+            errorMsg = `Home content div is missing the h1 tag.`;
+            if (!h1) return wrong(errorMsg);
+
+            // check if h1 has the right classes
+            const h1Classes = "display-1 fw-bold".split(" ");
+            const missingH1Classes = h1Classes.filter(e => !h1.className.includes(e));
+            errorMsg = `The h1 tag in the home div is missing these Bootstrap classes: '${missingH1Classes}'`;
+            if (missingH1Classes.length > 0) return wrong(errorMsg);
+
+            // check if h1 has the right text content
+            const h1Content = "Hyperskill Cafe";
+            errorMsg = `The h1 tag in the home div is missing the right inner text: ${h1Content}`;
+            if (!h1.innerText.includes(h1Content)) return wrong(errorMsg);
+
+            // P
+            // check if p exist inside content div
+            const p = contentDiv.querySelector("p");
+            errorMsg = `Home content div is missing the p tag.`;
+            if (!p) return wrong(errorMsg);
+
+            // check if p has the right classes
+            const pClasses = "col-md-8 py-3 lead fs-4".split(" ");
+            const missingPClasses = pClasses.filter(e => !p.className.includes(e));
+            errorMsg = `The p tag inside home content is missing these Bootstrap classes: '${missingPClasses}' .`;
+            if (missingPClasses.length > 0) return wrong(errorMsg);
+
+            // check if p contains the lorem ipsum inner text
+            const loremIpsum = "Lorem ipsum";
+            errorMsg = `The p tag inside home content is missing this inner text: ${loremIpsum} .`;
+            if (!p.innerText.includes(loremIpsum)) return wrong(errorMsg);
+
+            // ANCHOR TO PRODUCTS
+            // check if anchor exist in home content
+            const a = contentDiv.querySelector("a");
+            errorMsg = `Home content div is missing the a tag for the link to products.`;
+            if (!a) return wrong(errorMsg);
+
+            // check if anchor has the right href
+            const hrefValue = "#products";
+            const aHref = a.getAttribute("href");
+            errorMsg = `The a tag for the link to products is missing the right href: ${hrefValue} .`;
+            if (!aHref || !aHref.includes(hrefValue)) return wrong(errorMsg);
+
+            // BUTTON
+            // check if button exist in home content
+            const button = a.querySelector("button");
+            errorMsg = `The a tag for the link to products is missing the inner button in the home content.`;
+            if (!button) return wrong(errorMsg);
+
+            // check if button has the right classes
+            const buttonClasses = "btn btn-primary btn-lg".split(" ");
+            const missingButtonClasses = buttonClasses.filter(e => !button.className.includes(e));
+            errorMsg = `The inner button inside a tag in the home content is missing these Bootstrap classes: '${missingButtonClasses}' .`;
+            if (missingButtonClasses.length > 0) return wrong(errorMsg);
+
+            // check if button has the right type
+            const typeValue = "button";
+            const buttonType = button.getAttribute("type");
+            errorMsg = `The inner button tag inside a tag in the home content is missing the right type attribute: ${typeValue} .`;
+            if (!buttonType || !buttonType.includes(typeValue)) return wrong(errorMsg);
+
+            // check if button has the right inner text
+            const buttonText = "Discover our products";
+            errorMsg = `The inner button tag inside a tag in the home content is missing the right inner text: ${buttonText} .`;
+            if (!button.innerText.includes(buttonText)) return wrong(errorMsg);
+
+            // IMG CONTAINER DIV
+            // check if img container div exist
+            const imgDiv = home.querySelectorAll("div")[1];
+            errorMsg = `The wrapper div for the image inside home div is missing.`;
+            if (!imgDiv) return wrong(errorMsg);
+
+            // check if img container div has the right class
+            const imgDivClasses = "container-fluid p-0".split(" ");
+            const missingImgDivClasses = imgDivClasses.filter(e => !imgDiv.className.includes(e));
+            errorMsg = `The wrapper div for the image inside home div is missing these Bootstrap classes: '${missingImgDivClasses}'.`;
+            if (missingImgDivClasses.length > 0) return wrong(errorMsg);
+
+            // IMG
+            // check if img exist in home
+            const img = imgDiv.querySelector("img");
+            errorMsg = `The wrapper div for the image inside home div is missing the img tag.`;
+            if (!img) return wrong(errorMsg);
+
+            // check if img has the right class
+            const imgClasses = "img-fluid w-100".split(" ");
+            const missingImgClasses = imgClasses.filter(e => !img.className.includes(e));
+            errorMsg = `The img tag inside home div is missing these Bootstrap class: '${missingImgClasses}' .`;
+            if (missingImgClasses.length > 0) return wrong(errorMsg);
+
+            // check if img has the src attribute
+            const src = img.getAttribute("src");
+            //const alt = img.getAttribute("alt");
+            errorMsg = `The img tag inside home div is missing src attribute.`;
+            if (!src || src.trim().length <= 1) return wrong(errorMsg);
+
+            // check if img has the alt attribute
+            const alt = img.getAttribute("alt");
+            errorMsg = `The img tag inside home div is missing alt attribute.`;
+            if (!alt || alt.trim().length <= 1) return wrong(errorMsg);
 
             return correct();
         })

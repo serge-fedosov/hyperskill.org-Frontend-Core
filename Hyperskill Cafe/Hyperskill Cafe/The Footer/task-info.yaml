@@ -1873,6 +1873,6 @@ files:
         await new CafeTest().runTests()
     }, 30000)
   learner_created: false
-feedback_link: https://hyperskill.org/projects/210/stages/1056/implement#comment
+feedback_link: https://hyperskill.org/learn/step/15934#comment
 status: Unchecked
 record: -1
