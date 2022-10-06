@@ -442,6 +442,140 @@ class CafeTest extends StageTest {
             if (!alt || alt.trim().length <= 1) return wrong(errorMsg);
 
             return correct();
+
+        }),
+        this.page.execute(() => {
+            // test 5
+            // check the link amount
+            const links = Array.from(document.head.querySelectorAll("link"));
+            let errorMsg = `There should be at least 5 links in the head of the HTML document, found: ${links.length}`;
+            if (links.length < 5) return wrong(errorMsg);
+
+            // GOOGLE FONT
+            // check if link exist for google font
+            const linkGoogleFont1 = "https://fonts.googleapis.com/css2?family";
+            const linkGoogleFont2 = "https://fonts.gstatic.com";
+            const isGoogleFontLinked = links.find(e =>  e.attributes
+                .getNamedItem("href") &&  e.attributes
+                .getNamedItem("href").value.includes(linkGoogleFont1 || linkGoogleFont2));
+            errorMsg = `Link the Google Font with the HTML document correctly in the head.`;
+
+            if (!isGoogleFontLinked) return wrong(errorMsg);
+
+            // CSS LINK
+            // check if css link has the right href
+            const linkCss = "style.css"
+            const isCssLinked = links.find(e => e.attributes
+                .getNamedItem("href") && e.attributes
+                .getNamedItem("href").value.includes(linkCss));
+            errorMsg = `Link the style.css file with the HTML document in the head.`;
+            if (!isCssLinked) return wrong(errorMsg);
+
+            // CSS FONT FAMILY
+            // check if css has the prop for font family
+            const body = document.body;
+            const bodyStyle = window.getComputedStyle(body).fontFamily;
+            const regular = 'system-ui, -apple-system, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", "Liberation Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji"';
+            errorMsg = "The font-family property contains the default fonts for the body inside your CSS file.";
+            if (!bodyStyle || bodyStyle.includes(regular) || bodyStyle.trim().length < 1) return wrong(errorMsg);
+
+            return correct();
+        }),
+        this.page.execute(() => {
+            // test 6
+            // ABOUT DIV
+            // check if about div exist
+            const about = document.getElementById("about");
+            let errorMsg = "About div with the correct id doesn't exist inside the body.";
+            if (!about) return wrong(errorMsg);
+
+            // check if about div has the right classes
+            const aboutClasses = "container-fluid bg-light p-0".split(" ");
+            const missingAboutClasses = aboutClasses.filter(e => !about.className.includes(e));
+            errorMsg = `About div is missing these Bootstrap classes: '${missingAboutClasses}'`;
+            if (missingAboutClasses.length > 0) return wrong(errorMsg);
+
+            // IMG WRAPPER DIV
+            // check if wrapper exist
+            const imgWrapper = about.querySelector("div");
+            errorMsg = "About div doesn't contain a wrapper div for the image.";
+            if (!imgWrapper) return wrong(errorMsg);
+
+            // check if wrapper has the right classes
+            const imgWrapperClasses = "container-fluid p-0".split(" ");
+            const missingImgWrapperClasses = imgWrapperClasses.filter(e => !imgWrapper.className.includes(e));
+            errorMsg = `Wrapper div for the image inside About div is missing these Bootstrap classes: '${missingImgWrapperClasses}'`;
+            if (missingImgWrapperClasses.length > 0) return wrong(errorMsg);
+
+            // IMG
+            // check if img exist
+            const img = imgWrapper.querySelector("img");
+            errorMsg = `The wrapper div for the image inside about div is missing the img tag.`;
+            if (!img) return wrong(errorMsg);
+
+            // check if img has the right class
+            const imgClasses = "img-fluid";
+            const missingImgClass = !img.className.includes(imgClasses);
+            errorMsg = `The img tag inside about div is missing this Bootstrap class: '${imgClasses}' .`;
+            if (missingImgClass) return wrong(errorMsg);
+
+            // check if img has the src attribute
+            const src = img.getAttribute("src");
+            errorMsg = `The img tag inside about div is missing the src attribute.`;
+            if (!src || src.trim().length <= 1) return wrong(errorMsg);
+
+            // check if img has the alt attribute
+            const alt = img.getAttribute("alt");
+            errorMsg = `The img tag inside about div is missing the alt attribute.`;
+            if (!alt || alt.trim().length <= 1) return wrong(errorMsg);
+
+            // TEXT WRAPPER DIV
+            // check if wrapper exist
+            const textWrapperDiv = about.querySelectorAll("div")[1];
+            errorMsg = `About div is missing the inner-wrapper div for the text content.`;
+            if (!textWrapperDiv) return wrong(errorMsg);
+
+            // check if text wrapper div has the right classes
+            const textWrapperDivClasses = "container-fluid p-5".split(" ");
+            const missingTextWrapperDivClasses = textWrapperDivClasses.filter(e => !textWrapperDiv.className.includes(e));
+            errorMsg = `The wrapper div for the text content in the about div is missing these Bootstrap classes: '${missingTextWrapperDivClasses}'`;
+            if (missingTextWrapperDivClasses.length > 0) return wrong(errorMsg);
+
+            // H2
+            // check if h2 exist inside content div
+            const h2 = textWrapperDiv.querySelector("h2");
+            errorMsg = `Wrapper div inside about div is missing the h2 tag.`;
+            if (!h2) return wrong(errorMsg);
+
+            // check if h2 has the right classes
+            const h2Classes = "display-5 fw-bold".split(" ");
+            const missingH2Classes = h2Classes.filter(e => !h2.className.includes(e));
+            errorMsg = `The h2 tag in the about div is missing these Bootstrap classes: '${missingH2Classes}'`;
+            if (missingH2Classes.length > 0) return wrong(errorMsg);
+
+            // check if h2 has the right text content
+            const h2Content = "About Us";
+            errorMsg = `The h2 tag in the about div is missing the right inner text: ${h2Content}`;
+            if (!h2.innerText.includes(h2Content)) return wrong(errorMsg);
+
+            // P
+            // check if p exist inside content div
+            const p = textWrapperDiv.querySelector("p");
+            errorMsg = `Wrapper div inside about div is missing the p tag.`;
+            if (!p) return wrong(errorMsg);
+
+            // check if p has the right classes
+            const pClasses = "py-3 fs-5".split(" ");
+            const missingPClasses = pClasses.filter(e => !p.className.includes(e));
+            errorMsg = `The p tag inside about div is missing these Bootstrap classes: '${missingPClasses}' .`;
+            if (missingPClasses.length > 0) return wrong(errorMsg);
+
+            // check if p contains the lorem ipsum inner text
+            const loremIpsum = "Lorem ipsum";
+            errorMsg = `The p tag inside about content is missing this inner text: ${loremIpsum} .`;
+            if (!p.innerText.includes(loremIpsum)) return wrong(errorMsg);
+
+            return correct();
         })
     ]
 }
