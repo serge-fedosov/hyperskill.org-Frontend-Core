@@ -576,6 +576,234 @@ class CafeTest extends StageTest {
             if (!p.innerText.includes(loremIpsum)) return wrong(errorMsg);
 
             return correct();
+        }),
+        this.page.execute(() => {
+            // test 7
+            // PRODUCTS DIV
+            // check if products div exist
+            const products = document.getElementById("products");
+            let errorMsg = "Products div with the correct id doesn't exist inside the body.";
+            if (!products) return wrong(errorMsg);
+
+            // check if products div has the right classes
+            const productsClasses = "container-fluid bg-light p-0".split(" ");
+            const missingProductsClasses = productsClasses.filter(e => !products.className.includes(e));
+            errorMsg = `Products div is missing these Bootstrap classes: '${missingProductsClasses}' .`;
+            if (missingProductsClasses.length > 0) return wrong(errorMsg);
+
+            // H2
+            // check if h2 exist inside products div
+            const h2 = products.querySelector("h2");
+            errorMsg = `Products div is missing the h2 tag.`;
+            if (!h2) return wrong(errorMsg);
+
+            // check if h2 has the right classes
+            const h2Classes = "display-5 pt-5 px-5 fw-bold".split(" ");
+            const missingH2Classes = h2Classes.filter(e => !h2.className.includes(e));
+            errorMsg = `The h2 tag in the products div is missing these Bootstrap classes: '${missingH2Classes}' .`;
+            if (missingH2Classes.length > 0) return wrong(errorMsg);
+
+            // check if h2 has the right text content
+            const h2Content = "Our Products";
+            errorMsg = `The h2 tag in the products div is missing the right inner text: ${h2Content} .`;
+            if (!h2.innerText.includes(h2Content)) return wrong(errorMsg);
+
+            // WRAPPER DIV
+            // check if wrapper div exist
+            const wrapperDiv = products.querySelector("div");
+            errorMsg = "Wrapper div inside products div doesn't exist.";
+            if (!wrapperDiv) return wrong(errorMsg);
+
+            // check if wrapper div has the right class
+            const wrapperClass = "px-5";
+            errorMsg = `Wrapper div inside products div doesn't have this Bootstrap class: '${wrapperClass}' .`;
+            if (!wrapperDiv.className.includes(wrapperClass)) return wrong(errorMsg);
+
+            // ROW DIV
+            // check if row div exist
+            const row = wrapperDiv.querySelector("div");
+            errorMsg = "Row div inside wrapper div in products div doesn't exist.";
+            if (!row) return wrong(errorMsg);
+
+            // check if row div has the right class
+            const rowClass = "row";
+            errorMsg = `Row div inside products div doesn't have this Bootstrap class: '${rowClass}' .`;
+            if (!row.className.includes(rowClass)) return wrong(errorMsg);
+
+            // COL DIVS
+            // check if there are 6 divs inside row div
+            const colDivs = Array.from(row.children);
+            const totalAmount = 6;
+            errorMsg = `The amount of col divs inside products row div should be ${totalAmount}, instead it's: ${colDivs.length} `;
+            if (colDivs.length !== totalAmount) return wrong(errorMsg);
+
+            // check if all cols are div tags
+            errorMsg = "Some of the cols aren't div tags."
+            for (let i = 0; i < colDivs.length; i++) {
+                const div = colDivs[i].nodeName;
+                const divNodeName = "DIV";
+                if (div !== divNodeName) return wrong(errorMsg);
+            }
+
+            // check if col divs have the right classes
+            const colDivsClasses = "col-lg-4 col-md-6 py-3".split(" ");
+            const temp = [];
+            colDivs.forEach(div => {
+                temp.push(colDivsClasses.find(divClass => !div.className.includes(divClass)));
+            });
+            const missingColClasses = [];
+            temp.forEach(e => e && missingColClasses.push(e));
+            errorMsg = `Some of the col divs inside products row div are missing these Bootstrap classes: '${missingColClasses}' .`;
+            if (missingColClasses.length > 0) return wrong(errorMsg);
+
+            // CARD DIVS
+            // check if 6 card divs exist with card class
+            const cardDivs = Array.from(row.getElementsByClassName("card"));
+            errorMsg = `The amount of card divs, with the right Bootstrap class, inside col divs should be ${totalAmount}, instead it's: ${cardDivs.length} `;
+            if (cardDivs.length !== totalAmount) return wrong(errorMsg);
+
+            // check if all cards are div tags
+            errorMsg = "Some of the cards aren't div tags."
+            for (let i = 0; i < cardDivs.length; i++) {
+                const div = cardDivs[i].nodeName;
+                const divNodeName = "DIV";
+                if (div !== divNodeName) return wrong(errorMsg);
+            }
+
+            // check if card inside col
+            errorMsg = "Some of the cards aren't inside of the col divs.";
+            for (let i = 0; i < cardDivs.length; i++) {
+                const parent = cardDivs[i].parentElement.className;
+                const parentClass = "col";
+                if (!parent.includes(parentClass)) return wrong(errorMsg);
+            }
+
+            // check if card divs have the right class
+            const cardClass = "h-100";
+            const missingCardClass = cardDivs.filter(e => !e.className.includes(cardClass));
+            errorMsg = `${missingCardClass.length} of the card divs are missing this Bootstrap class: '${cardClass}'`;
+            if (missingCardClass.length > 0) return wrong(errorMsg);
+
+            // CARD IMG
+            // check if there are 6 card img with right class
+            const cardImgClasses = "card-img-top img-fluid h-100";
+            const cardImgs = Array.from(row.getElementsByClassName(cardImgClasses));
+            errorMsg = `The amount of card images, with the right Bootstrap classes: '${cardImgClasses}', inside card divs should be ${totalAmount}, instead it's: ${cardImgs.length} `;
+            if (cardImgs.length !== totalAmount) return wrong(errorMsg);
+
+            // check if all card-img are img tags
+            errorMsg = "Some of the card-images aren't img tags."
+            for (let i = 0; i < cardImgs.length; i++) {
+                const img = cardImgs[i].nodeName;
+                const imgNodeName = "IMG";
+                if (img !== imgNodeName) return wrong(errorMsg);
+            }
+
+            // check if card-body inside card
+            errorMsg = "Some of the card-images aren't inside of the card divs.";
+            for (let i = 0; i < cardImgs.length; i++) {
+                const parent = cardImgs[i].parentElement.className;
+                const parentClass = "card";
+                if (!parent.includes(parentClass)) return wrong(errorMsg);
+            }
+
+
+            // check if card imgs have the src attribute
+            errorMsg = `Some of the card images inside card div are missing the src attribute.`;
+            for (let i = 0; i < cardImgs.length; i++) {
+                const src = cardImgs[i].getAttribute("src");
+                if (!src || src.trim().length <= 1) return wrong(errorMsg);
+            }
+
+            // check if card imgs have  the alt attribute
+            errorMsg = `Some of the card images inside card div are missing the alt attribute.`;
+            for (let i = 0; i < cardImgs.length; i++) {
+                const alt = cardImgs[i].getAttribute("alt");
+                if (!alt || alt.trim().length <= 1) return wrong(errorMsg);
+            }
+
+            // CARD BODY DIVS
+            // check if there are 6 card body div with right class
+            const cardBodyDivs = Array.from(row.getElementsByClassName("card-body"));
+            errorMsg = `The amount of card-body divs, with the right Bootstrap class, inside card divs should be ${totalAmount}, instead it's: ${cardBodyDivs.length} `;
+            if (cardBodyDivs.length !== totalAmount) return wrong(errorMsg);
+
+            // check if all card-bodies are div tags
+            errorMsg = "Some of the card-bodies aren't div tags."
+            for (let i = 0; i < cardBodyDivs.length; i++) {
+                const div = cardBodyDivs[i].nodeName;
+                const divNodeName = "DIV";
+                if (div !== divNodeName) return wrong(errorMsg);
+            }
+
+            // check if card-body inside card
+            errorMsg = "Some of the card-bodies aren't inside of the card divs.";
+            for (let i = 0; i < cardBodyDivs.length; i++) {
+                const parent = cardBodyDivs[i].parentElement.className;
+                const parentClass = "card";
+                if (!parent.includes(parentClass)) return wrong(errorMsg);
+            }
+
+            // CARD-TITLES H5
+            // check if there are 6 card-titles with the right class
+            const cardTitles = Array.from(row.getElementsByClassName("card-title"));
+            errorMsg = `The amount of card-title h5 tags, with the right Bootstrap class, inside card-body divs should be ${totalAmount}, instead it's: ${cardTitles.length} `;
+            if (cardTitles.length !== totalAmount) return wrong(errorMsg);
+
+            // check if all card-titles are h5 tags
+            errorMsg = "Some of the card-titles aren't h5 tags."
+            for (let i = 0; i < cardTitles.length; i++) {
+                const h5 = cardTitles[i].nodeName;
+                const h5NodeName = "H5";
+                if (h5 !== h5NodeName) return wrong(errorMsg);
+            }
+
+            // check if card-title inside card-body
+            errorMsg = "Some of the card-titles aren't inside of the card-body divs.";
+            for (let i = 0; i < cardTitles.length; i++) {
+                const parent = cardTitles[i].parentElement.className;
+                const parentClass = "card-body";
+                if (parent !== parentClass) return wrong(errorMsg);
+            }
+
+            // check if card-titles have inner text.
+            errorMsg = "Some of the card-titles are missing an inner text.";
+            for (let i = 0; i < cardTitles.length; i++) {
+                const innerText = cardTitles[i].innerHTML;
+                if (innerText.trim().length <= 1) return wrong(errorMsg);
+            }
+
+            // CARD-TEXT P
+            // check if there are 6 card-texts with the right class
+            const cardTexts = Array.from(row.getElementsByClassName("card-text"));
+            errorMsg = `The amount of card-text p tags, with the right Bootstrap class, inside card-body divs should be ${totalAmount}, instead it's: ${cardTexts.length} `;
+            if (cardTexts.length !== totalAmount) return wrong(errorMsg);
+
+            // check if all card-texts are p tags
+            errorMsg = "Some of the card-texts aren't p tags."
+            for (let i = 0; i < cardTexts.length; i++) {
+                const p = cardTexts[i].nodeName;
+                const pNodeName = "P";
+                if (p !== pNodeName) return wrong(errorMsg);
+            }
+
+            // check if card-text inside card-body
+            errorMsg = "Some of the card-texts aren't inside of the card-body divs.";
+            for (let i = 0; i < cardTexts.length; i++) {
+                const parent = cardTexts[i].parentElement.className;
+                const parentClass = "card-body";
+                if (parent !== parentClass) return wrong(errorMsg);
+            }
+
+            // check if card-texts have inner text.
+            errorMsg = "Some of the card-texts are missing an inner text.";
+            for (let i = 0; i < cardTexts.length; i++) {
+                const innerText = cardTexts[i].innerHTML;
+                if (innerText.trim().length <= 1) return wrong(errorMsg);
+            }
+
+            return correct();
+
         })
     ]
 }
@@ -587,3 +815,4 @@ it('Test stage', async function () {
     }
     await new CafeTest().runTests()
 }, 30000)
+
