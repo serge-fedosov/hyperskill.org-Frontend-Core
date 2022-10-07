@@ -124,8 +124,76 @@
                 </div>
             </div>
         </div>
+        <div id=reviews class="container-fluid,bg-light,p-0">
+            <h2 class="display-5,pt-5,px-5,fw-bold">Reviews From Our Customers</h2>
+            <div class="px-5,my-3">
+                <button type="button" class="btn,btn-primary" data-bs-toggle="collapse" data-bs-target="#collapseReview"
+                        aria-expanded="false" aria-controls="collapseReview">Add Review</button>
+            </div>
+            <div class="collapse" id=collapseReview>
+                <div class="px-5">
+                    <div class="card,card-body">
+                        <form class="row,g-3" id="reviewForm">
+                            <div class="col-md-4">
+                                <label class="form-label" for="reviewTitle">Title</label>
+                                <input type="text" id="reviewTitle" class="form-control" required/>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label" for="reviewText">Comment</label>
+                                <input type="text" id="reviewText" class="form-control" required/>
+                            </div>
+                            <div class="col-md-4">
+                                <label class="form-label" for="reviewName">Name</label>
+                                <input type="text" id="reviewName" class="form-control"/>
+                            </div>
+                            <div class="col-12">
+                                <button type="submit" id="reviewButton" class="btn,btn-primary">Submit</button>
+                            </div>
+                        </form>
+                    </div>
+                </div>
+            </div>
+            <div class="px-5">
+                <div id="reviewsRow" class="row">
+                    <div class="col-lg-4 col-md-6 py-3">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h4 class="card-title">Great Restaurant!</h4>
+                                <blockquote class="blockquote,mb-0">
+                                    <p>The coffee is great, here!</p>
+                                    <footer class="text-end,blockquote-footer"><i>Lorem Ipsum 1</i></footer>
+                                </blockquote>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 py-3">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h4 class="card-title">I love this place!</h4>
+                                <blockquote class="blockquote,mb-0">
+                                    <p>You have to try the cheesecake here!</p>
+                                    <footer class="text-end,blockquote-footer"><i>Lorem Ipsum 2</i></footer>
+                                </blockquote>
+                            </div>
+                        </div>
+                    </div>
+                    <div class="col-lg-4 col-md-6 py-3">
+                        <div class="card h-100">
+                            <div class="card-body">
+                                <h4 class="card-title">First time visit!</h4>
+                                <blockquote class="blockquote,mb-0">
+                                    <p>You should try this place.</p>
+                                    <footer class="text-end,blockquote-footer"><i>Lorem Ipsum 3</i></footer>
+                                </blockquote>
+                            </div>
+                        </div>
+                    </div>
+                </div>
+            </div>
+        </div>
     </div>
 </main>
 <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.2/dist/js/bootstrap.bundle.min.js" integrity="sha384-MrcW6ZMFYlzcLA8Nl+NtUVF0sA7MsXsP1UyJoMp4YLEuNSfAP+JcXn/tWtIaxVXM" crossorigin="anonymous"></script>
+<script src="script.js"></script>
 </body>
 </html>

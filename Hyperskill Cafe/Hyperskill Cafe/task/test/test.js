@@ -15,7 +15,7 @@ class CafeTest extends StageTest {
                 e => e.nodeType === Node.ELEMENT_NODE);
 
             let len = this.innerBodyElements.length;
-            const totalElements = 3;
+            const totalElements = 4; // increased to 4 with the addition of script tag
             const errorMsg = `There should be ${totalElements} elements in the body of the HTML document, found: ${len}`;
             return len === totalElements ?
                 correct() :
@@ -804,7 +804,672 @@ class CafeTest extends StageTest {
 
             return correct();
 
-        })
+        }),
+        this.page.execute(() => {
+            // test 8
+            // SCRIPT
+            // check if body contains the custom script tag
+            const scripts = Array.from(document.body.querySelectorAll("script"));
+            const linkScript = "script.js";
+            const isScriptLinked = scripts.find(e => e.attributes
+                .getNamedItem("src") &&  e.attributes
+                .getNamedItem("src").value.includes(linkScript));
+            let errorMsg = `Link your javascript file as a script tag with the HTML document in the body. The file name should be: 'script.js' .`;
+            if (!isScriptLinked) return wrong(errorMsg);
+
+            return correct();
+        }),
+        this.page.execute(() => {
+            // test 9
+            // REVIEWS DIV
+            // check if reviews div exist,
+            const reviews = document.getElementById("reviews");
+            let errorMsg = "Reviews div with the correct id doesn't exist inside the body.";
+            if (!reviews) return wrong(errorMsg);
+
+            // check if reviews div has the right classes
+            const reviewsClasses = "container-fluid bg-light p-0".split(" ");
+            const missingReviewsClasses = reviewsClasses.filter(e => !reviews.className.includes(e));
+            errorMsg = `Reviews div is missing these Bootstrap classes: '${missingReviewsClasses}' .`;
+            if (missingReviewsClasses.length > 0) return wrong(errorMsg);
+
+            // H2
+            // check if h2 exist inside reviews div
+            const h2 = reviews.querySelector("h2");
+            errorMsg = `Reviews div is missing the h2 tag.`;
+            if (!h2) return wrong(errorMsg);
+
+            // check if h2 has the right classes
+            const h2Classes = "display-5 pt-5 px-5 fw-bold".split(" ");
+            const missingH2Classes = h2Classes.filter(e => !h2.className.includes(e));
+            errorMsg = `The h2 tag in the reviews div is missing these Bootstrap classes: '${missingH2Classes}' .`;
+            if (missingH2Classes.length > 0) return wrong(errorMsg);
+
+            // check if h2 has the right text content
+            const h2Content = "Reviews From Our Customers";
+            errorMsg = `The h2 tag in the reviews div is missing the right inner text: ${h2Content} .`;
+            if (!h2.innerText.includes(h2Content)) return wrong(errorMsg);
+
+            // TOGGLE BUTTON CONTAINER DIV
+            // check if toggle button wrapper div exist inside reviews div
+            const toggleContainerDiv = reviews.querySelector("div");
+            errorMsg = "Wrapper div for toggle-button inside reviews div doesn't exist.";
+            if (!toggleContainerDiv) return wrong(errorMsg);
+
+            // check if wrapper div has the right class
+            const toggleContainerClasses = "px-5 my-3".split(" ");
+            const missingToggleContainerClasses = toggleContainerClasses.filter(e => !toggleContainerDiv.className.includes(e));
+            errorMsg = `Wrapper div for toggle-button inside reviews div doesn't have these Bootstrap class: '${missingToggleContainerClasses}' .`;
+            if (missingToggleContainerClasses.length > 0) return wrong(errorMsg);
+
+            // TOGGLE BUTTON
+            // check if toggle-button exist
+            const toggleButton = toggleContainerDiv.querySelector("button");
+            errorMsg = "Toggle button in the container div inside reviews div doesn't exist.";
+            if (!toggleButton) return wrong(errorMsg);
+
+            // check if toggle-button has the right classes
+            const toggleClasses = "btn btn-primary".split(" ");
+            const missingToggleClasses = toggleClasses.filter(e => !toggleButton.className.includes(e));
+            errorMsg = `Toggle button in the container div inside reviews div doesn't have these Bootstrap class: '${missingToggleClasses}' .`;
+            if (missingToggleClasses.length > 0) return wrong(errorMsg);
+
+            // check if toggle-button has the right type
+            const typeValue = "button";
+            const toggleButtonType = toggleButton.getAttribute("type");
+            errorMsg = `Toggle button in the container div inside reviews div is missing the right type attribute: ${typeValue} .`;
+            if (!toggleButtonType || !toggleButtonType.includes(typeValue)) return wrong(errorMsg);
+
+            // check if toggle-button has the right inner text
+            const toggleButtonText = "Add Review";
+            errorMsg = `Toggle button in the container div inside reviews div is missing the right inner text: ${toggleButtonText} .`;
+            if (!toggleButton.innerText.includes(toggleButtonText)) return wrong(errorMsg);
+
+            // check if toggle-button has the right data-bs-toggle attribute
+            const dataBsToggleValue = "collapse";
+            const dataBsToggle = toggleButton.getAttribute("data-bs-toggle");
+            errorMsg = `Toggle button in the container div inside reviews div is missing the right data-bs-toggle attribute: ${dataBsToggleValue} .`;
+            if (!dataBsToggle || !dataBsToggle.includes(dataBsToggleValue)) return wrong(errorMsg);
+
+            // check if toggle-button has the right data-bs-target attribute
+            const dataBsTargetValue = "#collapseReview";
+            const dataBsTarget = toggleButton.getAttribute("data-bs-target");
+            errorMsg = `Toggle button in the container div inside reviews div is missing the right data-bs-target attribute: ${dataBsTargetValue} .`;
+            if (!dataBsTarget || !dataBsTarget.includes(dataBsTargetValue)) return wrong(errorMsg);
+
+            // check if toggle-button has the right aria-expanded attribute
+            const ariaExpandedValue = "false";
+            const ariaExpanded = toggleButton.getAttribute("aria-expanded");
+            errorMsg = `Toggle button in the container div inside reviews div is missing the right aria-expanded attribute: ${ariaExpandedValue} .`;
+            if (!ariaExpanded || !ariaExpanded.includes(ariaExpandedValue)) return wrong(errorMsg);
+
+            // check if toggle-button has the right aria-controls attribute
+            const ariaControlsValue = "collapseReview";
+            const ariaControls = toggleButton.getAttribute("aria-controls");
+            errorMsg = `Toggle button in the container div inside reviews div is missing the right aria-controls attribute: ${ariaControlsValue} .`;
+            if (!ariaControls || !ariaControls.includes(ariaControlsValue)) return wrong(errorMsg);
+
+            // COLLAPSE DIV
+            // check if collapse div exist
+            const collapseId = "#collapseReview"
+            const collapse = reviews.querySelector(collapseId);
+            errorMsg = `Collapse div inside reviews div with the right id doesn't exist. The id should be: ${collapseId}`;
+            if (!collapse) return wrong(errorMsg);
+
+            // check if collapse is a div tag.
+            const divNodeName = "DIV";
+            const collapseDiv = collapse.nodeName;
+            errorMsg = "Collapse component inside reviews div should be a div tag."
+            if (collapseDiv !== divNodeName) return wrong(errorMsg);
+
+            // check if collapse div has the right class
+            const collapseClass = "collapse";
+            errorMsg = `Collapse div inside reviews div is missing the right Bootstrap class: '${collapseClass}'.`;
+            if (!collapse.className.includes(collapseClass)) return wrong(errorMsg);
+
+            // FORM-CARD WRAPPER DIV
+            // check if card wrapper div exist
+            const cardContainer = collapse.querySelector("div");
+            errorMsg = "Card wrapper div inside reviews-collapse div doesn't exist."
+            if (!cardContainer) return wrong(errorMsg);
+
+            // check if card wrapper has the right class
+            const cardContainerClass = "px-5";
+            errorMsg = `Card wrapper div inside reviews-collapse div is missing the right Bootstrap class: '${cardContainerClass}'.`;
+            if (!cardContainer.className.includes(cardContainerClass)) return wrong(errorMsg);
+
+            // FORM CARD DIV
+            // check if form card exist
+            const formCardDiv = cardContainer.querySelector("div");
+            errorMsg = "Form card div in card-container, inside reviews-collapse, doesn't exist.";
+            if (!formCardDiv) return wrong(errorMsg);
+
+            // check if form card has the right classes
+            const cardClasses = "card card-body".split(" ");
+            const missingFormCardClasses = cardClasses.filter(e => !formCardDiv.className.includes(e));
+            errorMsg = `Form card div in card-container, inside reviews-collapse, is missing these Bootstrap classes: '${missingFormCardClasses}'.`;
+            if (missingFormCardClasses.length > 0) return wrong(errorMsg);
+
+            // FORM ROW
+            // check if form exist
+            const form = formCardDiv.querySelector("form");
+            errorMsg = "Form tag inside reviews-collapse doesn't exist.";
+            if (!form) return wrong(errorMsg);
+
+            // check if form has the right classes
+            const formClasses = "row g-3".split(" ");
+            const missingFormClasses = formClasses.filter(e => !form.className.includes(e));
+            errorMsg = `Form tag inside reviews-collapse, is missing these Bootstrap classes: '${missingFormClasses}'.`;
+            if (missingFormClasses.length > 0) return wrong(errorMsg);
+
+            // COL DIVS
+            // check if there are 4 col divs inside row div
+            const colDivs = Array.from(form.children);
+            const totalAmount = 4;
+            errorMsg = `The amount of col divs inside form row div should be ${totalAmount}, instead it's: ${colDivs.length} `;
+            if (colDivs.length !== totalAmount) return wrong(errorMsg);
+
+            // check if all cols are div tags
+            errorMsg = "Some of the cols aren't div tags."
+            for (let i = 0; i < colDivs.length; i++) {
+                const div = colDivs[i].nodeName;
+                const divNodeName = "DIV";
+                if (div !== divNodeName) return wrong(errorMsg);
+            }
+
+            // check if the first 3 col divs have the right class
+            const colDivsClass = "col-md-4";
+            errorMsg = `Some of the first three col divs inside form row div are missing this Bootstrap class: '${colDivsClass}' .`;
+            for (let i = 0; i < colDivs.length - 1; i++) {
+                const colClass = colDivs[i].className;
+                if (!colClass.includes(colDivsClass)) return wrong(errorMsg);
+            }
+
+            // check if last col div has the right margin class
+            const lastCol = form.lastElementChild;
+            const col12 = "col-12";
+            errorMsg = `Last col div inside form row is missing this Bootstrap class: '${col12}'`;
+            if (!lastCol.className.includes(col12)) return wrong(errorMsg);
+
+            // FORM LABELS
+            // check if there are 3 form labels
+            const labelClass = "form-label";
+            const labels = Array.from(form.getElementsByClassName(labelClass));
+            const labelAmount = 3;
+            errorMsg = `The amount of labels for form inputs with the Bootstrap class of '${labelClass}' should be ${labelAmount}, instead it's: ${labels.length} `;
+            if (labels.length !== labelAmount) return wrong(errorMsg);
+
+            // check if labels have inner text.
+            errorMsg = "Some of the labels are missing an inner text.";
+            for (let i = 0; i < labels.length; i++) {
+                const innerText = labels[i].innerText;
+                if (innerText.trim().length <= 1) return wrong(errorMsg);
+            }
+
+            // check if labels have a for attribute
+            const labelsForAttrs = ["reviewTitle", "reviewText", "reviewName"]; // this list is used to check for inputs id's are matching
+            for (let i = 0; i < labels.length; i++) {
+                const forAttr = labels[i].getAttribute("for");
+                let missingFor = "";
+                if (forAttr !== labelsForAttrs[i]) missingFor = labelsForAttrs[i];
+                errorMsg = `Some of the labels are missing their correct for attributes: ${missingFor}.`;
+                if (!forAttr ||  missingFor) return wrong(errorMsg);
+            }
+
+            // check if labels inside cols
+            errorMsg = "Some of the labels aren't inside of the col divs.";
+            for (let i = 0; i < labels.length; i++) {
+                const parent = labels[i].parentElement.className;
+                const parentClass = "col-md-4";
+                if (!parent.includes(parentClass)) return wrong(errorMsg);
+            }
+
+            // FORM INPUTS
+            // check if there are 3 form inputs
+            const inputClass = "form-control";
+            const inputs = Array.from(form.getElementsByClassName(inputClass));
+            const inputAmount = 3;
+            errorMsg = `The amount of form inputs with the Bootstrap class of '${inputClass}' should be ${inputAmount}, instead it's: ${inputs.length} `;
+            if (inputs.length !== inputAmount) return wrong(errorMsg);
+
+            // check if inputs have a type attribute
+            const inputType = "text";
+            errorMsg = `Some of the inputs are missing the correct type attribute: ${inputType}`;
+            for (let i = 0; i < inputs.length; i++) {
+                const typeAttr = inputs[i].getAttribute("type");
+                if (!typeAttr || !typeAttr.includes(inputType)) return wrong(errorMsg);
+            }
+
+            // check if inputs have the correct ids
+            errorMsg = "Some of the inputs' ids are not matching their labels' for attribute value.";
+            for (let i = 0; i < inputs.length; i++) {
+                const id = inputs[i].getAttribute("id");
+                if (id !== labelsForAttrs[i]) return wrong(errorMsg);
+            }
+
+            // check if inputs inside cols
+            errorMsg = "Some of the inputs aren't inside of the col divs.";
+            for (let i = 0; i < inputs.length; i++) {
+                const parent = inputs[i].parentElement.className;
+                const parentClass = "col-md-4";
+                if (!parent.includes(parentClass)) return wrong(errorMsg);
+            }
+
+            // SUBMIT BUTTON
+            // check if submit button exist
+            const submitButton = form.querySelector("button");
+            errorMsg = "Submit button inside reviews-form doesn't exist.";
+            if (!submitButton) return wrong(errorMsg);
+
+            // check if submit button has the right id
+            const submitButtonId = submitButton.getAttribute("id");
+            const correctSubmitId = "reviewButton";
+            errorMsg = `Submit button inside reviews-form doesn't have the correct id: ${correctSubmitId}.`;
+            if (!submitButtonId || !submitButtonId.includes(correctSubmitId)) return wrong(errorMsg);
+
+            // check if submit button has the right type
+            const submitType = "submit";
+            const submitButtonType = submitButton.getAttribute("type");
+            errorMsg = `Submit button inside reviews-form is missing the correct type attribute: ${submitType}`;
+            if (!submitButtonType || !submitButtonType.includes(submitType)) return wrong(errorMsg);
+
+            // check if submit button has the right classes
+            const submitClasses = "btn btn-primary".split(" ");
+            const missingSubmitClasses = submitClasses.filter(e => !submitButton.className.includes(e));
+            errorMsg = `Submit button inside reviews-form is missing these Bootstrap classes: '${missingSubmitClasses}'`;
+            if (missingSubmitClasses.length > 0) return wrong(errorMsg);
+
+            // check if submit has an inner text
+            const submitButtonText = submitButton.innerText;
+            errorMsg = "Submit button inside reviews-form is missing an inner text.";
+            if (submitButtonText.trim().length <= 1) return wrong(errorMsg);
+
+            // check if submit button inside col
+            errorMsg = "Submit button inside reviews-form isn't inside of a col div.";
+            const submitParent = submitButton.parentElement.className;
+            const submitParentClass = "col-12";
+            if (!submitParent.includes(submitParentClass)) return wrong(errorMsg);
+
+            return correct();
+        }),
+        this.page.execute(() => {
+            // test 10
+            // REVIEWS-ROW CONTAINER DIV
+            // check if container div exist with the right class
+            const reviews = document.getElementById("reviews");
+
+            const reviewsContainer = reviews.lastElementChild;
+            const reviewsContainerDiv = reviewsContainer.nodeName;
+            const containerDiv = "DIV";
+            const containerClass = "px-5";
+            let errorMsg = `The last element inside reviews div should be a wrapper div with this Bootstrap class: '${containerClass}'  for the list of reviews.`;
+            if (reviewsContainerDiv !== containerDiv || !reviewsContainer.className.includes(containerClass))
+                return wrong(errorMsg);
+
+            // REVIEWS ROW
+            // check if row div exist
+            const row = reviewsContainer.querySelector("div");
+            errorMsg = "The row div inside wrapper div in reviews container doesn't exist.";
+            if (!row) return wrong(errorMsg);
+
+            // check if row div has an id
+            const rowId = row.getAttribute("id");
+            const correctRowId = "reviewsRow";
+            errorMsg = `The row div inside wrapper div in reviews container is missing the correct id attribute: ${correctRowId}.`;
+            if (!rowId || !rowId.includes(correctRowId)) return wrong(errorMsg);
+
+            // check if row div has the right class
+            const rowClass = "row";
+            errorMsg = `The row div inside reviews container is missing this Bootstrap class: '${rowClass}'`;
+            if (!row.className.includes(rowClass)) return wrong(errorMsg);
+
+            // COL DIVS
+            // check if there are 3 divs inside row div
+            const colDivs = Array.from(row.children);
+            const totalAmount = 3;
+            errorMsg = `The amount of col divs inside reviews row div should be ${totalAmount}, instead it's: ${colDivs.length} `;
+            if (colDivs.length !== totalAmount) return wrong(errorMsg);
+
+            // check if all cols are div tags
+            errorMsg = "Some of the reviews-cols aren't div tags."
+            for (let i = 0; i < colDivs.length; i++) {
+                const div = colDivs[i].nodeName;
+                const divNodeName = "DIV";
+                if (div !== divNodeName) return wrong(errorMsg);
+            }
+
+            // check if col divs have the right classes
+            const colDivsClasses = "col-lg-4 col-md-6 py-3".split(" ");
+            const temp = [];
+            colDivs.forEach(div => {
+                temp.push(colDivsClasses.find(divClass => !div.className.includes(divClass)));
+            });
+            const missingColClasses = [];
+            temp.forEach(e => e && missingColClasses.push(e));
+            errorMsg = `Some of the col divs inside reviews row div are missing these Bootstrap classes: '${missingColClasses}' .`;
+            if (missingColClasses.length > 0) return wrong(errorMsg);
+
+            // CARD DIVS
+            // check if 3 card divs exist with card class
+            const cardClassNames = "card h-100"
+            const cardDivs = Array.from(row.getElementsByClassName(cardClassNames));
+            errorMsg = `The amount of card divs, with the right Bootstrap classes: '${cardClassNames}', inside reviews-col divs should be ${totalAmount}, instead it's: ${cardDivs.length} `;
+            if (cardDivs.length !== totalAmount) return wrong(errorMsg);
+
+            // check if all cards are div tags
+            errorMsg = "Some of the reviews-cards aren't div tags."
+            for (let i = 0; i < cardDivs.length; i++) {
+                const div = cardDivs[i].nodeName;
+                const divNodeName = "DIV";
+                if (div !== divNodeName) return wrong(errorMsg);
+            }
+
+            // check if card inside col
+            errorMsg = "Some of the reviews-cards aren't inside of the col divs.";
+            for (let i = 0; i < cardDivs.length; i++) {
+                const parent = cardDivs[i].parentElement.className;
+                const parentClass = "col";
+                if (!parent.includes(parentClass)) return wrong(errorMsg);
+            }
+
+            // CARD BODY DIVS
+            // check if there are 3 card body div with right class
+            const cardBodyDivs = Array.from(row.getElementsByClassName("card-body"));
+            errorMsg = `The amount of card-body divs, with the right Bootstrap class, inside reviews-card divs should be ${totalAmount}, instead it's: ${cardBodyDivs.length} `;
+            if (cardBodyDivs.length !== totalAmount) return wrong(errorMsg);
+
+            // check if all card-bodies are div tags
+            errorMsg = "Some of the reviews-card-bodies aren't div tags."
+            for (let i = 0; i < cardBodyDivs.length; i++) {
+                const div = cardBodyDivs[i].nodeName;
+                const divNodeName = "DIV";
+                if (div !== divNodeName) return wrong(errorMsg);
+            }
+
+            // check if card-body inside card
+            errorMsg = "Some of the reviews-card-bodies aren't inside of the card divs.";
+            for (let i = 0; i < cardBodyDivs.length; i++) {
+                const parent = cardBodyDivs[i].parentElement.className;
+                const parentClass = "card";
+                if (!parent.includes(parentClass)) return wrong(errorMsg);
+            }
+
+            // CARD-TITLES H4
+            // check if there are 3 card-titles with the right class
+            const cardTitles = Array.from(row.getElementsByClassName("card-title"));
+            errorMsg = `The amount of card-title h4 tags, with the right Bootstrap class, inside reviews-card-body divs should be ${totalAmount}, instead it's: ${cardTitles.length} `;
+            if (cardTitles.length !== totalAmount) return wrong(errorMsg);
+
+            // check if all card-titles are h4 tags
+            errorMsg = "Some of the reviews-card-titles aren't h4 tags."
+            for (let i = 0; i < cardTitles.length; i++) {
+                const h4 = cardTitles[i].nodeName;
+                const h4NodeName = "H4";
+                if (h4 !== h4NodeName) return wrong(errorMsg);
+            }
+
+            // check if card-title inside card-body
+            errorMsg = "Some of the reviews-card-titles aren't inside of the card-body divs.";
+            for (let i = 0; i < cardTitles.length; i++) {
+                const parent = cardTitles[i].parentElement.className;
+                const parentClass = "card-body";
+                if (parent !== parentClass) return wrong(errorMsg);
+            }
+
+            // check if card-titles have inner text.
+            errorMsg = "Some of the reviews-card-titles are missing an inner text.";
+            for (let i = 0; i < cardTitles.length; i++) {
+                const innerText = cardTitles[i].innerHTML;
+                if (innerText.trim().length <= 1) return wrong(errorMsg);
+            }
+
+            // BLOCKQUOTE
+            // check if there are 3 blockquotes
+            const blockquotes = Array.from(row.querySelectorAll("blockquote"));
+            errorMsg = `The amount of blockquote tags, with the right Bootstrap class, inside reviews-card-body divs should be ${totalAmount}, instead it's: ${blockquotes.length} `;
+            if (blockquotes.length !== totalAmount) return wrong(errorMsg);
+
+            // check if blockquotes inside card-body
+            errorMsg = "Some of the reviews-blockquotes aren't inside of the card-body divs.";
+            for (let i = 0; i < blockquotes.length; i++) {
+                const parent = blockquotes[i].parentElement.className;
+                const parentClass = "card-body";
+                if (parent !== parentClass) return wrong(errorMsg);
+            }
+
+            // check if blockquotes have the right classes
+            const blockquotesClasses = "blockquote mb-0".split(" ");
+            const temp2 = [];
+            blockquotes.forEach(div => {
+                temp2.push(blockquotesClasses.find(blockquoteClass => !div.className.includes(blockquoteClass)));
+            });
+            const missingBlockquoteClasses = [];
+            temp2.forEach(e => e && missingBlockquoteClasses.push(e));
+            errorMsg = `Some of the blockquotes inside reviews card-body div are missing these Bootstrap classes: '${missingBlockquoteClasses}' .`;
+            if (missingBlockquoteClasses.length > 0) return wrong(errorMsg);
+
+            // BLOCKQUOTE P
+            // check if there are 3 texts with the right class
+            const blockquoteTexts = Array.from(row.querySelectorAll("p"));
+            errorMsg = `The amount of p tags inside blockquotes should be ${totalAmount}, instead it's: ${blockquoteTexts .length} `;
+            if (blockquoteTexts.length !== totalAmount) return wrong(errorMsg);
+
+            // check if texts are inside blockquotes
+            errorMsg = "Some of the blockquote-texts aren't inside of the blockquotes.";
+            for (let i = 0; i < blockquoteTexts.length; i++) {
+                const parent = blockquoteTexts[i].parentElement.className;
+                const parentClass = "blockquote";
+                if (!parent.includes(parentClass)) return wrong(errorMsg);
+            }
+
+            // check if blockquote-texts have inner text.
+            errorMsg = "Some of the blockquote-texts are missing an inner text.";
+            for (let i = 0; i < blockquoteTexts.length; i++) {
+                const innerText = blockquoteTexts[i].innerText;
+                if (innerText.trim().length <= 1) return wrong(errorMsg);
+            }
+
+            // BLOCKQUOTE FOOTER
+            // check if there are 3 blockquote-footers exist
+            const blockquoteFooters = Array.from(row.querySelectorAll("footer"));
+            errorMsg = `The amount of footer tags inside blockquotes should be ${totalAmount}, instead it's: ${blockquoteFooters.length} `;
+            if (blockquoteFooters.length !== totalAmount) return wrong(errorMsg);
+
+            // check if blockquote-footers have the right classes
+            const blockquoteFooterClasses = "text-end blockquote-footer".split(" ");
+            const temp3 = [];
+            blockquoteFooters.forEach(div => {
+                temp3.push(blockquoteFooterClasses.find(footerClass => !div.className.includes(footerClass)));
+            });
+            const missingBlockquoteFooterClasses = [];
+            temp3.forEach(e => e && missingBlockquoteFooterClasses.push(e));
+            errorMsg = `Some of the footers inside reviews blockquotes are missing these Bootstrap classes: '${missingBlockquoteFooterClasses}' .`;
+            if (missingBlockquoteFooterClasses.length > 0) return wrong(errorMsg);
+
+            // check if blockquote-footers have inner text.
+            errorMsg = "Some of the blockquote-footers are missing an inner text.";
+            for (let i = 0; i < blockquoteFooters.length; i++) {
+                const innerText = blockquoteFooters[i].innerText;
+                if (innerText.trim().length <= 1) return wrong(errorMsg);
+            }
+
+            // check if footers are inside blockquotes
+            errorMsg = "Some of the blockquote-footers aren't inside of the blockquotes.";
+            for (let i = 0; i < blockquoteFooters.length; i++) {
+                const parent = blockquoteFooters[i].parentElement.className;
+                const parentClass = "blockquote";
+                if (!parent.includes(parentClass)) return wrong(errorMsg);
+            }
+
+            // check if blockquote-footers' inner text is italic.
+            errorMsg = "Some of the blockquote-footers' inner text aren't italic.";
+            for (let i = 0; i < blockquoteFooters.length; i++) {
+                const innerTag = blockquoteFooters[i].firstElementChild;
+                if (!innerTag) return wrong(errorMsg);
+
+                const italicNode = innerTag.nodeName;
+                const italic = "I";
+                if (italicNode !== italic) return wrong(errorMsg);
+            }
+
+            return correct();
+        }),
+        this.page.execute(() => {
+            // test 11
+            // DYNAMIC REVIEWS
+            // check if after entering inputs and submitting the values, renders a new content
+            const reviewTitle = document.getElementById("reviewTitle");
+            const reviewText = document.getElementById("reviewText");
+            const reviewName = document.getElementById("reviewName");
+            const submit = document.getElementById("reviewButton");
+            const reviews = document.getElementById("reviewsRow");
+
+            reviewTitle.value = "Yeah, you did it!";
+            reviewText.value = "Good job!";
+            reviewName.value = "bertcha";
+            submit.click();
+            /*            const correctNewReviewHTML =  `<div class="card h-100"><div class="card-body"><h4 class="card-title">${reviewTitle.value}</h4><blockquote class="blockquote mb-0"><p>${reviewText.value}</p><footer class="text-end blockquote-footer"><i>${reviewName.value}</i></footer></blockquote></div></div>`;
+                        const newReviewHTML = reviews.lastElementChild.innerHTML.replace(/(\s *)[^<\w>]/g, "");
+                        let errorMsg = "Reviews component is missing the dynamically added content with the correct html.";
+                        if (!newReviewHTML.includes(correctNewReviewHTML)) return wrong(errorMsg);*/
+            const newReviewHTML = reviews.lastElementChild;
+
+            // NEW COL DIV
+            // check if new review is inside col
+            const newReviewCol = newReviewHTML.parentElement.querySelector("div");
+            let errorMsg = `The new dynamic review should be wrapped with a div tag.`;
+            if (!newReviewCol) return wrong(newReviewHTML.outerHTML);
+
+            // check if col wrapper div has the right classes
+            const newReviewColClasses = "col-lg-4 col-md-6 py-3".split(" ");
+            const missingNewReviewColClasses = newReviewColClasses.filter(e => !newReviewCol.className.includes(e));
+            errorMsg = `The wrapper div for the new review in the reviews row div is missing these Bootstrap classes: '${missingNewReviewColClasses}'`;
+            if (missingNewReviewColClasses.length > 0) return wrong(errorMsg);
+
+            // NEW CARD DIV
+            // check if new review is a card
+            const newReviewCard = newReviewHTML.querySelector("div");
+            errorMsg = `The new dynamic review should have a wrapper div inside col div.`;
+            if (!newReviewCard) return wrong(errorMsg);
+
+            // check if card  div has the right classes
+            const newCardClasses = "card h-100".split(" ");
+            const missingNewCardClasses = newCardClasses.filter(e => !newReviewCard.className.includes(e));
+            errorMsg = `The new dynamic review  wrapper div inside col div should have these Bootstrap classes: ${missingNewCardClasses} `;
+            if (missingNewCardClasses.length > 0) return wrong(errorMsg);
+
+            // NEW CARD BODY DIV
+            // check if there is card body div
+            const newReviewCardBody = newReviewCard.querySelector("div");
+            errorMsg = `The new dynamic review should have a wrapper div inside card div.`;
+            if (!newReviewCardBody) return wrong(errorMsg);
+
+            // check if there is card body div with right class
+            const newCardBodyClass = "card-body";
+            errorMsg = `The new dynamic review  wrapper div inside card div should have this Bootstrap class: ${newCardBodyClass} `;
+            if (!newReviewCardBody.className.includes(newCardBodyClass)) return wrong(errorMsg);
+
+            // NEW CARD-TITLE H4
+            // check if there is card-title
+            const newReviewCardTitle = newReviewCardBody.querySelector("h4");
+            errorMsg = `The new dynamic review should have a h4 tag inside card-body div in reviews div.`;
+            if (!newReviewCardTitle) return wrong(errorMsg);
+
+            // check if card title with the right class
+            const newCardTitleClass = "card-title";
+            errorMsg = `The new dynamic review h4 tag inside card-body div  should have this Bootstrap class: ${newCardTitleClass} `;
+            if (!newReviewCardTitle.className.includes(newCardTitleClass)) return wrong(errorMsg);
+
+            // check if card-title has correct inner text.
+            const newReviewCardTitleText = newReviewCardTitle.innerText;
+            errorMsg = "The inner text for the h4 card title of the new dynamic review is incorrect.";
+            if (newReviewCardTitleText.trim() !== reviewTitle.value) return wrong(errorMsg);
+
+            // NEW BLOCKQUOTE
+            // check if there is blockquote
+            const newReviewBlockquote = newReviewCardBody.querySelector("blockquote");
+            errorMsg = `The new dynamic review should have a blockquote tag inside card-body div.`;
+            if (!newReviewBlockquote) return wrong(errorMsg);
+
+            // check if blockquote has the right classes
+            const newBlockquoteClasses = "blockquote mb-0".split(" ");
+            const missingNewBlockquoteClasses = newBlockquoteClasses.filter(e => !newReviewBlockquote.className.includes(e));
+            errorMsg = `The new dynamic review blockquote div inside card-body div should have these Bootstrap classes: ${missingNewBlockquoteClasses} `;
+            if (missingNewBlockquoteClasses.length > 0) return wrong(errorMsg);
+
+            // BLOCKQUOTE P
+            // check if there is text
+            const newReviewBlockquoteText = newReviewBlockquote.querySelector("p");
+            errorMsg = `The new dynamic review should have a p tag inside blockquote tag in reviews div.`;
+            if (!newReviewBlockquoteText) return wrong(errorMsg);
+
+            // check if card-title has correct inner text.
+            const newReviewBlockquoteTextInnerText = newReviewBlockquoteText.innerText;
+            errorMsg = "The inner text for the p tag inside blockquote tag of the new dynamic review is incorrect.";
+            if (newReviewBlockquoteTextInnerText.trim() !== reviewText.value) return wrong(errorMsg);
+
+            // BLOCKQUOTE FOOTER
+            // check if there is footer
+            const newReviewBlockquoteFooter = newReviewBlockquote.querySelector("footer");
+            errorMsg = `The new dynamic review should have a footer tag inside blockquote tag in reviews div.`;
+            if (!newReviewBlockquoteFooter) return wrong(errorMsg);
+
+            // check if card  div has the right classes
+            const newBlockquoteFooterClasses = "text-end blockquote-footer".split(" ");
+            const missingNewBlockquoteFooterClasses = newBlockquoteFooterClasses.filter(e => !newReviewBlockquoteFooter.className.includes(e));
+            errorMsg = `The new dynamic review  footer tag inside blockquote tag should have these Bootstrap classes: ${missingNewBlockquoteFooterClasses} `;
+            if (missingNewBlockquoteFooterClasses.length > 0) return wrong(errorMsg);
+
+            // check if card-title has correct inner text.
+            const newReviewBlockquoteFooterInnerText = newReviewBlockquoteFooter.innerText;
+            errorMsg = "The inner text for the footer tag inside blockquote tag of the new dynamic review is incorrect.";
+            if (newReviewBlockquoteFooterInnerText.trim() !== reviewName.value) return wrong(errorMsg);
+
+            // check if blockquote-footer's inner text is italic.
+            const innerTag = newReviewBlockquoteFooter.firstElementChild;
+            const italic = "I";
+            errorMsg = "The inner text for the footer tag inside blockquote tag of the new dynamic review is not italic.";
+            if (!innerTag || innerTag.nodeName !== italic) return wrong(errorMsg);
+
+            return correct();
+        }),
+        this.page.execute(() => {
+            // test 12
+            // DYNAMIC REVIEW
+            // check if the name of the reviewer is anonymous when input is value is empty
+            const reviewTitle = document.getElementById("reviewTitle");
+            const reviewText = document.getElementById("reviewText");
+            const reviewName = document.getElementById("reviewName");
+            const submit = document.getElementById("reviewButton");
+            const reviews = document.getElementById("reviewsRow");
+
+            reviewTitle.value = "Yeah, you did it!";
+            reviewText.value = "Good job!";
+            reviewName.value = "";
+            submit.click();
+
+            const newReviewFooter = reviews.lastElementChild.querySelector("footer").innerText;
+            const anon = "Anonymous";
+            let errorMsg = `When the user doesn't enter any value for the name input, the blockquote-footer's inner text should be: ${anon}.`;
+            if (!newReviewFooter.includes(anon)) return wrong(errorMsg);
+
+            return correct();
+        }),
+        this.page.execute(() => {
+            // test 13
+            // check if the review title input have required attr
+            let errorMsg = `Input tag with the id of 'reviewTitle' is missing a 'required' attribute. `;
+            const titleReq = document.getElementById("reviewTitle").attributes.getNamedItem("required");
+            if (!titleReq) return wrong(errorMsg);
+
+            // check if the review text input have required attr
+            errorMsg = `Input tag with the id of 'reviewText' is missing a 'required' attribute. `;
+            const textReq = document.getElementById("reviewText").attributes.getNamedItem("required");
+            if (!textReq) return wrong(errorMsg);
+
+            return correct();
+
+        }),
     ]
 }
 
@@ -815,4 +1480,3 @@ it('Test stage', async function () {
     }
     await new CafeTest().runTests()
 }, 30000)
-
