@@ -15,7 +15,7 @@ class CafeTest extends StageTest {
                 e => e.nodeType === Node.ELEMENT_NODE);
 
             let len = this.innerBodyElements.length;
-            const totalElements = 4; // increased to 4 with the addition of script tag
+            const totalElements = 5; // increased to 5 with the addition of footer tag
             const errorMsg = `There should be ${totalElements} elements in the body of the HTML document, found: ${len}`;
             return len === totalElements ?
                 correct() :
@@ -1666,6 +1666,182 @@ class CafeTest extends StageTest {
             if (!alt || alt.trim().length <= 1) return wrong(errorMsg);
 
             return correct()
+        }),
+        this.page.execute(() => {
+            // test 15
+            // FOOTER
+            // check if footer exist in body
+            const footer = document.getElementById("footer");
+            const footerId = "footer";
+            const footerNodeName = "FOOTER";
+            let errorMsg = `The footer tag with the id of '${footerId}' is missing inside the body of the HTML document.`;
+            if (!footer || footer.nodeName !== footerNodeName) return wrong(errorMsg);
+
+            // check if footer has the right classes
+            const footerClasses = "footer bg-dark".split(" ");
+            const missingFooterClasses = footerClasses.filter(e => !footer.className.includes(e));
+            errorMsg = `The footer on the bottom of the page is missing these Bootstrap classes: '${missingFooterClasses}'`;
+            if (missingFooterClasses.length > 0) return wrong(errorMsg);
+
+            // NAV CONTAINER DIV
+            // check if container exist
+            const navContainer = footer.querySelector("div");
+            errorMsg = "The container div for nav list is missing inside the footer."
+            if (!navContainer) return wrong(errorMsg);
+
+            // check if container has the right classes
+            const navContainerClasses = "container-fluid pt-5 pb-3".split(" ");
+            const missingNavContainerClasses = navContainerClasses.filter(e => !navContainer.className.includes(e));
+            errorMsg = `The container div for nav list inside the footer is missing these Bootstrap classes: '${missingNavContainerClasses}'`;
+            if (missingNavContainerClasses.length > 0) return wrong(errorMsg);
+
+            // UL
+            // check if ul exist
+            const ul = navContainer.querySelector("ul");
+            errorMsg = "The ul tag in nav container div for the nav list is missing inside the footer.";
+            if (!ul) return wrong(errorMsg);
+
+            // check if ul has the right class
+            const ulClass = "nav";
+            errorMsg = `The ul tag in container div inside the footer is missing this Bootstrap class: '${ulClass}'`;
+            if (!ul.className.includes(ulClass)) return wrong(errorMsg);
+
+            // LIS
+            // check if 5 li exist
+            const liArr = Array.from(ul.querySelectorAll("li"));
+            errorMsg = `There should be 5 li tags for each nav links inside the footer nav list, found: ${liArr.length}`;
+            const liTotal = 5;
+            if (liArr.length !== liTotal) return wrong(errorMsg);
+
+            // check if all li has the right class
+            const liClass = "nav-item";
+            const liArrClass = liArr.filter(e => !e.className.includes(liClass))
+            errorMsg = `All li tags  for each nav links inside the footer nav list should have the right Bootstrap class: '${liClass}'`;
+            if (liArrClass.length > 0) return wrong(errorMsg);
+
+            // ALL ANCHORS IN LI
+            // check if there are 5  anchors
+            const links = liArr.filter(e => e.querySelector("a"));
+            errorMsg = `There should be a tags inside each li tags in the footer nav, found: ${links.length}.`;
+            if (links.length !== liTotal) return wrong(errorMsg);
+
+            // check if the  anchors have the right classes
+            const aClasses = "nav-link link-secondary".split(" ");
+            const temp = [];
+            links.forEach(link => {
+                temp.push(aClasses.find(e => !link.firstElementChild.className.includes(e)));
+            });
+            const missingLinkClasses = [];
+            temp.forEach(e => e && missingLinkClasses.push(e));
+            errorMsg = `Some of the anchor tags inside footer nav list are missing these Bootstrap classes: '${missingLinkClasses}' .`;
+            if (missingLinkClasses.length > 0) return wrong(errorMsg);
+
+            // HOME ANCHOR
+            // check if the home anchor has the right href attr
+            const aHome =  liArr[0].querySelector("a")
+            const homeHref = "#home";
+            const aHomeHref = aHome.getAttribute("href");
+            errorMsg = `Inside footer nav list the first anchor tag for home is missing the right href attribute: ${homeHref}.`;
+            if (!aHomeHref || !aHomeHref.includes(homeHref)) return wrong(errorMsg);
+
+            // check if the home anchor has the right inner text
+            const homeText = "Home";
+            const aHomeText = aHome.innerText;
+            errorMsg = `Inside footer nav list the first anchor tag for home is missing the right inner text: ${homeText}.`;
+            if (!aHomeText.includes(homeText)) return wrong(errorMsg);
+
+            // ABOUT ANCHOR
+            // check if about anchor has the right href
+            const aAbout = liArr[1].querySelector("a")
+            const aAboutHref = aAbout.getAttribute("href");
+            const aboutHref = "#about";
+            errorMsg = `Inside footer nav list the anchor tag for about should have the right href attribute: ${aboutHref}.`;
+            if (!aAboutHref || !aAboutHref.includes(aboutHref)) return wrong(errorMsg);
+
+            // check if about anchor has the right inner text
+            const aboutText = "About";
+            const aAboutText = aAbout.innerText;
+            errorMsg = `Inside footer nav list the anchor tag for about should have the right inner text: ${aboutText}.`;
+            if (!aAboutText.includes(aboutText)) return wrong(errorMsg);
+
+            // PRODUCTS ANCHOR
+            // check if products anchor the right href
+            const aProducts = liArr[2].querySelector("a");
+            const aProductsHref = aProducts.getAttribute("href");
+            const productsHref = "#products";
+            errorMsg = `Inside footer nav list the anchor tag for products should have the right href attribute: ${productsHref}.`;
+            if (!aProductsHref || !aProductsHref.includes(productsHref)) return wrong(errorMsg);
+
+            // check if products anchor has the right inner text
+            const productsText = "Products";
+            const aProductsText = aProducts.innerText;
+            errorMsg = `Inside footer nav list the anchor tag for products should have the right inner text: ${productsText}.`;
+            if (!aProductsText.includes(productsText)) return wrong(errorMsg);
+
+            // REVIEWS ANCHOR
+            // check if reviews anchor the right href
+            const aReviews = liArr[3].querySelector("a");
+            const aReviewsHref = aReviews.getAttribute("href");
+            const reviewsHref = "#reviews";
+            errorMsg = `Inside footer nav list the anchor tag for reviews should have the right href attribute: ${reviewsHref}.`;
+            if (!aReviewsHref || !aReviewsHref.includes(reviewsHref)) return wrong(errorMsg);
+
+            // check if reviews anchor has the right inner text
+            const reviewsText = "Reviews";
+            const aReviewsText = aReviews.innerText;
+            errorMsg = `Inside footer nav list the anchor tag for reviews should have the right inner text: ${reviewsText}.`;
+            if (!aReviewsText.includes(reviewsText)) return wrong(errorMsg);
+
+            // CONTACT ANCHOR
+            // check if contact anchor the right href
+            const aContact = liArr[4].querySelector("a");
+            const aContactHref = aContact.getAttribute("href");
+            const contactHref = "#contact";
+            errorMsg = `Inside footer nav list the anchor tag for contact should have the right href attribute: ${contactHref}.`;
+            if (!aContactHref || !aContactHref.includes(contactHref)) return wrong(errorMsg);
+
+            // check if contact anchor has the right inner text
+            const contactText = "Contact";
+            const aContactText = aContact.innerText;
+            errorMsg = `Inside footer nav list the anchor tag for contact should have the right inner text: ${contactText}.`;
+            if (!aContactText.includes(contactText)) return wrong(errorMsg);
+
+            // check if the contact anchor has the aria-current attr
+            const ariaCurr = "page";
+            const aContactAria = aContact.getAttribute("aria-current");
+            errorMsg = `Inside footer nav list the anchor tag for contact is missing the right aria-current attribute: ${ariaCurr}.`;
+            if (!aContactAria || !aContactAria.includes(ariaCurr)) return wrong(errorMsg);
+
+            // SPAN CONTAINER
+            // check if container exist
+            const spanContainer = Array.from(footer.querySelectorAll("div"))[1];
+            errorMsg = "The container div for the copyright text span is missing in the footer.";
+            if (!spanContainer) return wrong(errorMsg);
+
+            // check if container has the right classes
+            const spanContainerClasses = "container-fluid pb-5 px-4".split(" ");
+            const missingSpanContainerClasses = spanContainerClasses.filter(e => !spanContainer.className.includes(e));
+            errorMsg = `The container div for the copyright text span inside the footer is missing these Bootstrap classes: '${missingSpanContainerClasses}'`;
+            if (missingSpanContainerClasses.length > 0) return wrong(errorMsg);
+
+            // SPAN
+            // check if span exist
+            const span = spanContainer.querySelector("span");
+            errorMsg = "The span tag for the copyright text inside a container is missing in the footer.";
+            if (!span) return wrong(errorMsg);
+
+            // check if span has the right class
+            const spanClasses = "text-muted px-1".split(" ");
+            const missingSpanClasses = spanClasses.filter(e => !span.className.includes(e));
+            errorMsg = `The span tag for the copyright text inside a container inside the footer is missing these Bootstrap classes: '${spanClasses}'`;
+            if (missingSpanClasses.length > 0) return wrong(errorMsg);
+
+            // check if span has the right inner text
+            const innerText = "2021 Hyperskill Cafe";
+            errorMsg = `The span tag for the copyright text inside a container inside the footer is missing the right inner text: ${innerText}`;
+            if (!span.innerText.trim().includes(innerText)) return wrong(errorMsg);
+
+            return correct();
         }),
     ]
 }
