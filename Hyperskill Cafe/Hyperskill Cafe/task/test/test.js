@@ -1328,10 +1328,6 @@ class CafeTest extends StageTest {
             reviewText.value = "Good job!";
             reviewName.value = "bertcha";
             submit.click();
-            /*            const correctNewReviewHTML =  `<div class="card h-100"><div class="card-body"><h4 class="card-title">${reviewTitle.value}</h4><blockquote class="blockquote mb-0"><p>${reviewText.value}</p><footer class="text-end blockquote-footer"><i>${reviewName.value}</i></footer></blockquote></div></div>`;
-                        const newReviewHTML = reviews.lastElementChild.innerHTML.replace(/(\s *)[^<\w>]/g, "");
-                        let errorMsg = "Reviews component is missing the dynamically added content with the correct html.";
-                        if (!newReviewHTML.includes(correctNewReviewHTML)) return wrong(errorMsg);*/
             const newReviewHTML = reviews.lastElementChild;
 
             // NEW COL DIV
@@ -1469,6 +1465,207 @@ class CafeTest extends StageTest {
 
             return correct();
 
+        }),
+        this.page.execute(() => {
+            // test 14
+            // CONTACT DIV
+            // check if contact div exist
+            const contact = document.getElementById("contact");
+            let errorMsg = "Contact div with the correct id doesn't exist inside the body.";
+            if (!contact) return wrong(errorMsg);
+
+            // check if contact div has the right classes
+            const contactClasses = "container-fluid bg-light p-0".split(" ");
+            const missingContactClasses = contactClasses.filter(e => !contact.className.includes(e));
+            errorMsg = `Contact div is missing these Bootstrap classes: '${missingContactClasses}'`;
+            if (missingContactClasses.length > 0) return wrong(errorMsg);
+
+            // TEXT CONTAINER DIV
+            // check if text container div exist
+            const textContainer = contact.querySelector("div");
+            errorMsg = "Contact div is missing a container div for all the text items.";
+            if (!textContainer) return wrong(errorMsg);
+
+            // check if text container div has the right classes
+            const textContainerClasses = "container-fluid d-md-flex justify-content-between p-5".split(" ");
+            const missingTextContainerClasses = textContainerClasses.filter(e => !textContainer.className.includes(e));
+            errorMsg = `Text container div inside contact div is missing these Bootstrap classes: '${missingTextContainerClasses}'`;
+            if (missingTextContainerClasses.length > 0) return wrong(errorMsg);
+
+            // H2
+            // check if h2 exist inside contact div
+            const h2 = textContainer.querySelector("h2");
+            errorMsg = `Text container div inside contact div is missing the h2 tag.`;
+            if (!h2) return wrong(errorMsg);
+
+            // check if h2 has the right classes
+            const h2Classes = "display-5 w-100 mb-3 fw-bold".split(" ");
+            const missingH2Classes = h2Classes.filter(e => !h2.className.includes(e));
+            errorMsg = `The h2 tag in the contact div is missing these Bootstrap classes: '${missingH2Classes}'`;
+            if (missingH2Classes.length > 0) return wrong(errorMsg);
+
+            // check if h2 has the right text content
+            const h2Content = "Contact Us";
+            errorMsg = `The h2 tag in the contact div is missing the right inner text: ${h2Content}`;
+            if (!h2.innerText.includes(h2Content)) return wrong(errorMsg);
+
+            // INFO TEXT CONTAINER DIV
+            // check if info container exist
+            const infoContainer = textContainer.querySelector("div");
+            errorMsg = "Text container div inside contact div is missing the container div for the information texts."
+            if (!infoContainer) return wrong(errorMsg);
+
+            // check if info container has the right class
+            const infoContainerClasses = "container ps-0".split(" ");
+            const missingInfoContainerClasses = infoContainerClasses.filter(e => !infoContainer.className.includes(e));
+            errorMsg = `The info container div after h2 tag in the contact div is missing these Bootstrap classes: '${missingInfoContainerClasses}'`;
+            if (missingInfoContainerClasses.length > 0) return wrong(errorMsg);
+
+            // P TAGS
+            // check if there are 3 p tags inside info container
+            const pTags = Array.from(infoContainer.querySelectorAll("p"));
+            const pTotal = 3;
+            errorMsg = `There should be ${pTotal} p tags inside contact-info container div, instead there are ${pTags.length}.`
+            if (pTags.length !== pTotal) return wrong(errorMsg);
+
+            // check if p tags has the right class
+            const fs5 = "fs-5"
+            errorMsg = `Some of the p tags inside contact-info container div are missing the right Bootstrap class: '${fs5}'.`
+            for (let i = 0; i < pTags.length; i++) {
+                const pClass = pTags[i].className;
+                if (!pClass.includes(fs5)) return wrong(errorMsg);
+            }
+
+            // check if p tags has the an inner-text
+            errorMsg = `Some of the p tags inside contact-info container div are missing an inner text.`
+            for (let i = 0; i < pTags.length; i++) {
+                const pClass = pTags[i].innerText;
+                if (pClass.trim().length <= 1) return wrong(errorMsg);
+            }
+
+            // ADRESS B TAG
+            // check if b tag exist inside address p tag with right text
+            const addressB = pTags[0].querySelector("b");
+            const addressText = "Address:";
+            errorMsg = `Address text in the contact-info container is missing the bold tag wrapping the word '${addressText}'.`;
+            if (!addressB || addressB.innerText !== addressText) return wrong(errorMsg);
+
+            // PHONE B TAG
+            // check if b tag exist inside phone p tag with right text
+            const phoneB = pTags[1].querySelector("b");
+            const phoneText = "Phone Number:";
+            errorMsg = `Phone text in the contact-info container is missing the bold tag wrapping the word '${phoneText}'.`;
+            if (!phoneB || phoneB.innerText !== phoneText) return wrong(errorMsg);
+
+            // EMAIL B TAG
+            // check if b tag exist inside email p tag with right text
+            const emailB = pTags[2].querySelector("b");
+            const emailText = "Email:";
+            errorMsg = `Email text in the contact-info container is missing the bold tag wrapping the word '${emailText}'.`;
+            if (!emailB || emailB.innerText !== emailText) return wrong(errorMsg);
+
+            // PHONE A TAG
+            // check if b tag exist inside phone p tag with text
+            const phoneA = pTags[1].querySelector("a");
+            errorMsg = `Phone text in the contact-info container is missing the anchor tag wrapping the phone number.`;
+            if (!phoneA || phoneA.innerText.trim().length <= 1) return wrong(errorMsg);
+
+            // check if a tag has href attrs
+            const phoneHref = pTags[1].querySelector("a").getAttribute("href");
+            errorMsg = `Phone anchor tag in the contact-info container is missing the href attribute with the value of 'tel:'.`;
+            if (!phoneHref || !phoneHref.includes("tel:")) return wrong(errorMsg);
+
+            // EMAIL A TAG
+            // check if b tag exist inside email p tag with text
+            const emailA = pTags[2].querySelector("a");
+            errorMsg = `Email text in the contact-info container is missing the anchor tag wrapping the email address.`;
+            if (!emailA || emailA.innerText.trim().length <= 1) return wrong(errorMsg);
+
+            // check if a tag has href attrs
+            const emailHref = pTags[2].querySelector("a").getAttribute("href");
+            errorMsg = `Email anchor tag in the contact-info container is missing the href attribute with the value of 'mailto:'.`;
+            if (!emailHref || !emailHref.includes("mailto")) return wrong(errorMsg);
+
+            // VISUALS CONTAINER DIV
+            // check if container for visual items exist
+            const visualsContainer = contact.lastElementChild;
+            const nodeName = visualsContainer.nodeName;
+            const div = "DIV";
+            errorMsg = "Container div for the iframe and img tags is missing inside contact div.";
+            if (!visualsContainer || nodeName !== div) return wrong(errorMsg);
+
+            // check if container has the right classes
+            const visualsContainerClasses = "container-fluid d-md-flex p-0".split(" ");
+            const missingVisualsContainerClasses = visualsContainerClasses.filter(e => !visualsContainer.className.includes(e));
+            errorMsg = `Container div for the iframe and img tags inside contact div is missing these Bootstrap classes: '${missingVisualsContainerClasses}'`;
+            if (missingVisualsContainerClasses.length > 0) return wrong(errorMsg);
+
+            // RATIO WRAPPER DIV
+            // check if wrapper div for iframe exist
+            const ratioDiv = visualsContainer.querySelector("div");
+            errorMsg = "Wrapper div for the iframe tag is missing inside visuals container div in contact div.";
+            if (!ratioDiv) return wrong(errorMsg);
+
+            // check if wrapper div has the right classes
+            const ratioDivClasses = "ratio ratio-16x9".split(" ");
+            const missingRatioDivClasses = ratioDivClasses.filter(e => !ratioDiv.className.includes(e));
+            errorMsg = `Wrapper div for the iframe tag inside visuals container div in contact div is missing these Bootstrap classes: '${missingRatioDivClasses}'`;
+            if (missingRatioDivClasses.length > 0) return wrong(errorMsg);
+
+            // IFRAME
+            // check if iframe exist
+            const iframe = ratioDiv.querySelector("iframe");
+            errorMsg = "The iframe tag for the location is missing inside contact div.";
+            if (!iframe) return wrong(errorMsg);
+
+            // check if iframe src attrs exist
+            const src = "https://www.google.com/maps/embed";
+            const iframeSrc = iframe.getAttribute("src");
+            errorMsg = `Iframe tag inside contact div is missing the src attribute, it should start like this: '${src}'`;
+            if (!iframeSrc || !iframeSrc.includes(src)) return wrong(errorMsg);
+
+            // check if iframe loading attrs exist
+            const loading = "lazy";
+            const iframeLoading = iframe.getAttribute("loading");
+            errorMsg = `Iframe tag inside contact div is missing the loading attribute: '${loading}'`;
+            if (!iframeLoading || !iframeLoading.includes(loading)) return wrong(errorMsg);
+
+            // WRAPPER IMG
+            // check if wrapper img exist
+            const imgWrapper = visualsContainer.lastElementChild;
+            const wrapperNodeName = imgWrapper.nodeName;
+            errorMsg = "Wrapper div for the img tag is missing inside visuals wrapper div in contact div.";
+            if (!imgWrapper || wrapperNodeName !== div) return wrong(errorMsg);
+
+            // check if wrapper has the right classes
+            const imgWrapperClasses = "container-fluid p-0".split(" ");
+            const missingImgWrapperClasses = imgWrapperClasses.filter(e => !imgWrapper.className.includes(e));
+            errorMsg = `Wrapper div for the img tag inside visuals wrapper div in  contact div is missing these Bootstrap classes: '${missingImgWrapperClasses}'`;
+            if (missingImgWrapperClasses.length > 0) return wrong(errorMsg);
+
+            // IMG
+            // check if img exist inside contact
+            const img = imgWrapper.querySelector("img");
+            errorMsg = `The image tag inside contact div is missing.`;
+            if (!img) return wrong(errorMsg);
+
+            // check if img has the right class
+            const imgClasses = "img-fluid";
+            const missingImgClass = !img.className.includes(imgClasses);
+            errorMsg = `The img tag inside contact div is missing this Bootstrap class: '${imgClasses}' .`;
+            if (missingImgClass) return wrong(errorMsg);
+
+            // check if img has the src attribute
+            const imgSrc = img.getAttribute("src");
+            errorMsg = `The img tag inside contact div is missing the src attribute.`;
+            if (!imgSrc || imgSrc.trim().length <= 1) return wrong(errorMsg);
+
+            // check if img has the alt attribute
+            const alt = img.getAttribute("alt");
+            errorMsg = `The img tag inside contact div is missing the alt attribute.`;
+            if (!alt || alt.trim().length <= 1) return wrong(errorMsg);
+
+            return correct()
         }),
     ]
 }
