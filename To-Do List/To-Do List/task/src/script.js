@@ -4,16 +4,14 @@ document.getElementById("send-form").addEventListener("submit", function(event){
     let inputTask = document.getElementById("input-task");
     let taskList =  document.getElementById("task-list");
 
-    let max = 0;
-    let elements = document.querySelectorAll(".element");
-    for (let i = 0; i < elements.length; i++) {
-        let m = Number (elements[i].id.substring(8));
-        if (max < m) {
-            max = m;
-        }
-    }
+    let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+    let n = tasks.length;
+    tasks[n] = {
+        checked: false,
+        task: inputTask.value
+    };
+    localStorage.setItem("tasks", JSON.stringify(tasks));
 
-    let n = max + 1;
     let text = `        <li id="element-${n}" class="element">
             <input type="checkbox">
             <span class="task">${inputTask.value}</span>
@@ -25,7 +23,30 @@ document.getElementById("send-form").addEventListener("submit", function(event){
     inputTask.value = "";
 });
 
+let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+for (let i = 0; i < tasks.length; i++) {
+
+    let taskList =  document.getElementById("task-list");
+
+    let n = i;
+    let checked = tasks[i].checked ? " checked" : "";
+    let task = tasks[i].task;
+
+    let text = `        <li id="element-${n}" class="element">
+            <input type="checkbox"${checked}>
+            <span class="task">${task}</span>
+            <button class="delete-btn" onclick="deleteItem(${n})"><img src="images/button.png" alt="Button image" width="36"></button>
+        </li>
+`;
+
+    taskList.innerHTML = taskList.innerHTML + text;
+}
+
 function deleteItem(i) {
     let element = document.getElementById("element-" + i);
     element.remove();
+
+    let tasks = JSON.parse(localStorage.getItem("tasks")) || [];
+    delete tasks[i];
+    localStorage.setItem("tasks", JSON.stringify(tasks))
 }
