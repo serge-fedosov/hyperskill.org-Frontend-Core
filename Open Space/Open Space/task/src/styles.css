@@ -35,14 +35,30 @@ body {
 
 .control-panel {
     position: absolute;
-    background-color: #252424;
-    width: 560px;
-    height: 300px;
+    width: 410px;
+    min-height: 280px;
     margin: 0 auto;
     text-align: center;
 
     bottom: 10%;
     left: 40vw;
+
+    background-color: black;
+    background-image: repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,0,.9) 35px, rgba(255,255,0,.9) 70px);
+}
+
+.control-panel__inner {
+    background-color: #252424;
+    position: absolute;
+    right: 0;
+    bottom: 0;
+    padding: 20px 10px;
+    margin: 15px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    width: 380px;
+    min-height: 200px;
 }
 
 .check-buttons {
@@ -57,12 +73,18 @@ body {
     padding: 2%;
 }
 
-input[type=button][value=Launch] {
+input[type=submit][value=launch] {
     color: #000;
     font-size: 1.1em;
     cursor: pointer;
     bottom: 0;
     margin-top: 10px;
+    border-radius: 40px;
+}
+
+input[type=password] {
+    color: yellow;
+    border-color: yellow;
 }
 
 @media screen and (-webkit-min-device-pixel-ratio:0) {

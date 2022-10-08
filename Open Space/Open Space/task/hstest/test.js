@@ -36,7 +36,7 @@ class SpaceTest extends StageTest {
             if (controlPanel.length === 0) {
                 return wrong("Can't find element with class=\"control-panel\"");
             }
-            let controlPanelInner = controlPanel[0]
+            let controlPanelInner = Array.from(controlPanel[0].children)[0]
             if (!(controlPanelInner.children.length === 5 &&
                 controlPanelInner.getElementsByTagName('input').length === 14 &&
                 controlPanelInner.getElementsByTagName('div').length === 2
@@ -83,26 +83,12 @@ class SpaceTest extends StageTest {
             return correct();
         }),
         this.page.execute(() => {
-            const controlDeck = document.body.getElementsByClassName("control-panel");
-            const space = document.body.getElementsByClassName("space");
-
-            if (controlDeck.length === 0) return wrong("There no element with class='control-panel'");
-            if (space.length === 0) return wrong("There no element with class='space'");
-
-            const controlDeckTop = parseInt(window.getComputedStyle(controlDeck[0]).top);
-            const spaceHeight = space[0].scrollHeight
-
-            if (controlDeckTop < spaceHeight / 3) return wrong("The control panel element is placed too low");
-
-            return correct();
-        }),
-        this.page.execute(() => {
-            let controlDeck = document.getElementsByClassName("control-panel");
+            let controlDeck = document.getElementsByClassName("control-panel")
             if (controlDeck.length === 0) {
                 return wrong("Can't find element with class=\"control-panel\"");
             }
-            let controlDeckBgClr = window.getComputedStyle(controlDeck[0]).backgroundColor;
-            if (!controlDeckBgClr) return wrong("The element with class='control-panel' should have background-color.");
+            let controlDeckBgImg = window.getComputedStyle(controlDeck[0]).backgroundImage;
+            if (!controlDeckBgImg.toLowerCase().includes('linear-gradient')) return wrong("The element with class='control-panel' should have gradient background.");
 
             return correct();
         }),
@@ -132,6 +118,54 @@ class SpaceTest extends StageTest {
             })
 
             return correct();
+        }),
+        this.page.execute(() => {
+            let controlPanelInner = document.getElementsByClassName('control-panel__inner');
+            if (controlPanelInner.length === 0) {
+                return wrong("Can't find element with class=\"control-panel__inner\"");
+            }
+            for (let el of Array.from(controlPanelInner[0].children)) {
+                if (el.tagName.toLowerCase() === 'input' && el.type.toLowerCase() === 'password') {
+                    let styles = window.getComputedStyle(el);
+                    if (styles.color && styles.color !== 'rgb(0, 0, 0)' &&
+                        styles.border && styles.border !== '2px inset rgb(0, 0, 0)')
+                        return correct()
+                    else return wrong("Password field's border and text color should be changed");
+                }
+            }
+
+            return wrong("Can't find password field");
+        }),
+        this.page.execute(() => {
+            let controlPanelInner = document.getElementsByClassName('control-panel__inner')[0];
+            let counter = 0;
+            for (let el of Array.from(controlPanelInner.children)) {
+                if (el.tagName.toLowerCase() === 'input' && (el.type.toLowerCase() === 'submit' || el.type.toLowerCase() === 'button')) {
+                    let styles = window.getComputedStyle(el);
+                    if (styles.backgroundColor && styles.backgroundColor !== 'rgb(255, 255, 255)') {
+                        counter++;
+                    }
+
+                }
+            }
+
+            return counter === 2
+                ? correct()
+                : wrong("Can't find 2 input fields with type=button or submit with changed background");
+        }),
+        this.page.execute(() => {
+            let controlPanelInner = document.getElementsByClassName('control-panel__inner')[0];
+            for (let el of Array.from(controlPanelInner.children)) {
+                if (el.tagName.toLowerCase() === 'input' && (el.type.toLowerCase() === 'submit' || el.type.toLowerCase() === 'button')) {
+                    let styles = window.getComputedStyle(el);
+                    if (styles.backgroundColor && styles.backgroundColor !== 'rgb(0, 0, 0)' &&
+                        styles.borderRadius && styles.borderRadius !== '0px') {
+                        return correct();
+                    }
+                }
+            }
+
+            return wrong("Can't find the input with type=button or submit with specified border-radius");
         })
     ]
 
@@ -144,4 +178,3 @@ it('Test stage', async function () {
     }
     await new SpaceTest().runTests()
 }, 30000)
-
