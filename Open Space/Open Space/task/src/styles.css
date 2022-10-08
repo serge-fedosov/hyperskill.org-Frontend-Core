@@ -30,7 +30,7 @@ body {
     max-width: 10vw;
     bottom: 15vh;
     left: 28vw;
-    rotate: 30deg;
+    rotate: -15deg;
 }
 
 .control-panel {
@@ -93,8 +93,4 @@ input[type=password] {
         padding: 10%;
         transform: rotate(-90deg);
     }
-}
-
-div.disabled {
-  display: none;
 }

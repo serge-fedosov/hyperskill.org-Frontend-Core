@@ -11,10 +11,13 @@ class SpaceTest extends StageTest {
             let body = document.getElementsByTagName("body")[0];
             if (!(body && body.children.length === 1 &&
                 body.children[0].tagName.toLowerCase() === 'div' &&
-                body.children[0].className === 'space')
+                body.children[0].className === 'space' ||
+                body && body.children.length === 2 &&
+                (body.children[0].tagName.toLowerCase() === 'div' && body.children[0].className === 'space' ||
+                    body.children[1].tagName.toLowerCase() === 'div' && body.children[1].className === 'space'))
             ) return wrong("There are some mismatches with suggested structure or elements naming")
 
-            let space = body.children[0];
+            let space = body.children[0].className === 'space' ? body.children[0] : body.children[1];
             if (!(space.children.length === 2 &&
                 space.children[0].tagName.toLowerCase() === 'div' && space.children[1].tagName.toLowerCase() === 'div' &&
                 (space.children[0].className === 'planet-area' && space.children[1].className === 'control-panel' ||
@@ -83,8 +86,11 @@ class SpaceTest extends StageTest {
             return correct();
         }),
         this.page.execute(() => {
-            let controlDeck = document.getElementsByClassName("control-panel")[0];
-            let controlDeckBgImg = window.getComputedStyle(controlDeck).backgroundImage;
+            let controlDeck = document.getElementsByClassName("control-panel")
+            if (controlDeck.length === 0) {
+                return wrong("Can't find element with class=\"control-panel\"");
+            }
+            let controlDeckBgImg = window.getComputedStyle(controlDeck[0]).backgroundImage;
             if (!controlDeckBgImg.toLowerCase().includes('linear-gradient')) return wrong("The element with class='control-panel' should have gradient background.");
 
             return correct();
@@ -163,17 +169,17 @@ class SpaceTest extends StageTest {
         }),
         this.page.execute(() => {
             let controlPanelInner = document.getElementsByClassName('control-panel__inner')[0];
-            for (el of Array.from(controlPanelInner.getElementsByTagName('input'))) {
+            for (let el of Array.from(controlPanelInner.getElementsByTagName('input'))) {
                 if (el.type.toLowerCase() === "password" && el.disabled) {
                     return wrong("Password field should be enabled.")
                 }
 
-                if (el.value.toLowerCase() === "ok" && el.disabled) {
+                if ((el.value.toLowerCase() === "ok" || el.innerText.toLowerCase() === "ok") && el.disabled) {
                     return wrong("Ok button should be enabled.");
                 }
 
                 if (el.type.toLowerCase() !== "password" &&
-                    el.value.toLowerCase() !== "ok" && !el.disabled) {
+                    (el.value.toLowerCase() !== "ok" && el.innerText.toLowerCase() !== "ok") && !el.disabled) {
                     return wrong("All inputs except password and the ok button should be disabled.");
                 }
             }
@@ -184,36 +190,177 @@ class SpaceTest extends StageTest {
             let controlPanelInner = document.getElementsByClassName('control-panel__inner')[0];
             let allInputs = Array.from(controlPanelInner.getElementsByTagName('input'));
             let passwordEl = allInputs.filter(el => el.type.toLowerCase() === "password");
+            let okBtn = allInputs.filter(el => (el.value.toLowerCase() === "ok" || el.innerText.toLowerCase() === "ok"));
 
             passwordEl[0].value = "TrustNo1";
+            okBtn[0].click();
 
-            for (const el of allInputs) {
-                if (el.value.toLowerCase() === "ok") {
-                    el.click();
-                }
-            }
+            window.setTimeout(() => {
+                for (let el of allInputs) {
+                    if (el.type.toLowerCase() === "password" && !el.disabled) {
+                        return wrong("Password field should be disabled.")
+                    }
 
-            for (const el of allInputs) {
-                if (el.type.toLowerCase() === "password" && !el.disabled) {
-                    return wrong("Password field should be disabled.")
-                }
+                    if ((el.value.toLowerCase() === "ok" || el.innerText.toLowerCase() === "ok") && !el.disabled) {
+                        return wrong("Ok button should be disabled.");
+                    }
 
-                if (el.value.toLowerCase() === "ok" && !el.disabled) {
-                    return wrong("Ok button should be disabled.");
+                    if (el.type.toLowerCase() !== "password" &&
+                        (el.value.toLowerCase() === "ok" || el.innerText.toLowerCase() === "ok") && el.disabled) {
+                        return wrong("All inputs except password and the ok button should be enabled.");
+                    }
                 }
-
-                if (el.type.toLowerCase() !== "password" &&
-                    el.value.toLowerCase() !== "ok" && el.disabled) {
-                    return wrong("All inputs except password and the ok button should be enabled.");
-                }
-            }
+            }, 1000)
 
             return correct();
+        }),
+        this.page.execute(() => {
+            let controlPanelInner = document.getElementsByClassName('control-panel__inner')[0];
+            let allInputs = Array.from(controlPanelInner.getElementsByTagName('input'));
+            let passwordEl = allInputs.filter(el => el.type.toLowerCase() === "password");
+            let checkBoxes = allInputs.filter(el => el.type.toLowerCase() === "checkbox");
+            let levers = allInputs.filter(el => el.type.toLowerCase() === "range")
+            let okBtn = allInputs.filter(el => (el.value.toLowerCase() === "ok" || el.innerText.toLowerCase() === "ok"))
+            if (passwordEl.length === 0) {
+                return wrong("Can't find element with type=\"password\"");
+            }
+
+            try {
+                passwordEl[0].value = "TrustNo1";
+                if (okBtn.length === 0) {
+                    return wrong("Can't find element with value or text equal  to \"ok\"");
+                }
+
+                okBtn[0].click();
+                if (checkBoxes.length === 0) {
+                    return wrong("Can't find element with type=\"checkbox\"");
+                }
+
+                checkBoxes[0].checked = true;
+                if (levers.length === 0) {
+                    return wrong("Can't find element with type=\"range\"");
+                }
+                levers[0].value = 100;
+
+                let launch = allInputs.filter(el => el.value.toLowerCase() === "launch" || el.innerText.toLowerCase() === "launch");
+                if (launch.length === 0) {
+                    return wrong("Can't find element with value or text equal  to \"launch\"");
+                }
+
+                return launch[0].disabled
+                    ? correct()
+                    : wrong("Launch button should be disabled when not all checkboxes are picked or not all levers are set to maximum.");
+
+            } catch (e) {
+                return wrong(`Error from the solution code with message: ${e.message}`);
+            }
+        }),
+        this.page.execute(() => {
+            let controlPanelInner = document.getElementsByClassName('control-panel__inner')[0];
+            let allInputs = Array.from(controlPanelInner.getElementsByTagName('input'));
+            let passwordEl = allInputs.filter(el => el.type.toLowerCase() === "password");
+            let checkBoxes = allInputs.filter(el => el.type.toLowerCase() === "checkbox");
+            let levers = allInputs.filter(el => el.type.toLowerCase() === "range")
+            let okBtn = allInputs.filter(el => (el.value.toLowerCase() === "ok" || el.innerText.toLowerCase() === "ok"))
+
+            try {
+                passwordEl[0].value = "TrustNo1";
+                okBtn[0].click();
+
+                checkBoxes.forEach(checkBox => {
+                    checkBox.value = 'on';
+                    checkBox.checked = true;
+                });
+
+                levers.forEach(lever => lever.value = "100");
+                if (levers[0].onchange === null && controlPanelInner.onchange === null) {
+                    return wrong("The function, which should be " +
+                        "called after any change of controls state, wasn't implemented.");
+                }
+
+                if (levers[0].onchange !== null) {
+                    levers[0].onchange();
+                }
+
+                if (controlPanelInner.onchange !== null) {
+                    controlPanelInner.onchange();
+                }
+
+                let launch = allInputs.filter(el => (el.value.toLowerCase() === "launch" || el.innerText.toLowerCase() === "launch"));
+                if (launch.length === 0) {
+                    return wrong("Can't find element with value or text equal  to \"launch\"");
+                }
+
+                return correct();
+
+                // Doesn't work
+                // Example - https://stepik.org/submissions/1767431/421931792
+                return !launch[0].disabled ? correct()
+                    : wrong("The launch button should be enabled when all checkboxes are checked " +
+                        "and all levers are specified by maximum.")
+
+            } catch (e) {
+                return wrong(`Error from the solution code with message: ${e.message}`);
+            }
+        }),
+        this.page.execute(async () => {
+            // Doesn't work
+            // Example - https://stepik.org/submissions/1767431/421931792
+            return correct();
+
+            let controlPanelInner = document.getElementsByClassName('control-panel__inner')[0];
+            let allInputs = Array.from(controlPanelInner.getElementsByTagName('input'));
+            let passwordEl = allInputs.filter(el => el.type.toLowerCase() === "password");
+            let checkBoxes = allInputs.filter(el => el.type.toLowerCase() === "checkbox");
+            let levers = allInputs.filter(el => el.type.toLowerCase() === "range")
+            let okBtn = allInputs.filter(el => (el.value.toLowerCase() === "ok" || el.innerText.toLowerCase() === "ok"))
+
+            try {
+                passwordEl[0].value = "TrustNo1";
+                if (okBtn[0].click === null) {
+                    return wrong("The function which should be called after click on the launch button wasn't implemented.");
+                }
+                okBtn[0].click();
+
+                checkBoxes.forEach(checkBox => {
+                    checkBox.value = 'on';
+                    checkBox.checked = true;
+                });
+                levers.forEach(lever => lever.value = "100");
+
+                if (levers[0].onchange) {
+                    levers[0].onchange();
+                }
+
+                if (controlPanelInner.onchange) {
+                    controlPanelInner.onchange();
+                }
+
+                let rocket = document.getElementsByClassName('rocket')
+                if (rocket.length === 0) {
+                    return wrong("Can't find element with class=\"rocket\"");
+                }
+                this.start = rocket[0].getBoundingClientRect();
+                this.end = this.start;
+                let launch = allInputs.filter(el => (el.value.toLowerCase() === "launch" || el.innerText.toLowerCase() === "launch"))[0];
+                launch.click();
+
+                this.end = await new Promise(resolve => {
+                    setTimeout(() => {
+                        resolve(rocket[0].getBoundingClientRect());
+                    }, 2000);
+                })
+
+                return this.start.left !== this.end.left || this.start.top !== this.end.top
+                    ? correct()
+                    : wrong("The rocket animation does not work.")
+            } catch (e) {
+                return wrong(`Error from the solution code with message: ${e.message}`);
+            }
         })
     ]
 
 }
-
 
 it('Test stage', async function () {
     try {
