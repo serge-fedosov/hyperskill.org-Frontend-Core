@@ -179,6 +179,62 @@ files:
         await new TodoTest().runTests()
     }, 30000)
   learner_created: false
+- name: src/style.css
+  visible: true
+  text: |
+    ul {
+      margin-left: 0;
+      padding-left: 0;
+    }
+
+    li {
+      list-style-type: none;
+    }
+
+    .delete-btn {
+        border-width: 0;
+        height: 35px;
+        width: 35px;
+    }
+  learner_created: true
+- name: src/script.js
+  visible: true
+  text: |
+    document.getElementById("send-form").addEventListener("submit", function(event){
+        event.preventDefault();
+
+        let inputTask = document.getElementById("input-task");
+        let taskList =  document.getElementById("task-list");
+
+        let max = 0;
+        let elements = document.querySelectorAll(".element");
+        for (let i = 0; i < elements.length; i++) {
+            let m = Number (elements[i].id.substring(8));
+            if (max < m) {
+                max = m;
+            }
+        }
+
+        let n = max + 1;
+        let text = `        <li id="element-${n}" class="element">
+                <input type="checkbox">
+                <span class="task">${inputTask.value}</span>
+                <button class="delete-btn" onclick="deleteItem(${n})"><img src="images/button.png" alt="Button image" width="36"></button>
+            </li>
+    `;
+
+        taskList.innerHTML = taskList.innerHTML + text;
+        inputTask.value = "";
+    });
+
+    function deleteItem(i) {
+        let element = document.getElementById("element-" + i);
+        element.remove();
+    }
+  learner_created: true
 feedback_link: https://hyperskill.org/learn/step/13196#comment
-status: Unchecked
+status: Solved
+feedback:
+  message: Congratulations!
+  time: Sat, 08 Oct 2022 10:41:03 UTC
 record: -1

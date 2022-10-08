@@ -12,3 +12,10 @@ li {
     height: 35px;
     width: 35px;
 }
+
+input[type=checkbox] + span {
+}
+
+input[type=checkbox]:checked + span {
+    text-decoration: line-through;
+}
