@@ -242,6 +242,112 @@ files:
         await new SpaceTest().runTests()
     }, 30000)
   learner_created: false
+- name: src/styles.css
+  visible: true
+  text: |
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        background-color: black;
+        max-height: 100vh;
+        overflow: hidden;
+
+    }
+
+    .space {
+        background-image: url("images/space.png");
+        height: 100vh;
+        max-width: 70vw;
+        margin: auto;
+    }
+
+    .planet {
+        max-width: 30vw;
+        max-height: 50vh;
+        position: absolute;
+        bottom: -8vh;
+    }
+
+    .rocket {
+        position: absolute;
+        max-width: 10vw;
+        bottom: 15vh;
+        left: 28vw;
+        rotate: 30deg;
+    }
+
+    .control-panel {
+        position: absolute;
+        width: 410px;
+        min-height: 280px;
+        margin: 0 auto;
+        text-align: center;
+
+        bottom: 10%;
+        left: 40vw;
+
+        background-color: black;
+        background-image: repeating-linear-gradient(45deg, transparent, transparent 35px, rgba(255,255,0,.9) 35px, rgba(255,255,0,.9) 70px);
+    }
+
+    .control-panel__inner {
+        background-color: #252424;
+        position: absolute;
+        right: 0;
+        bottom: 0;
+        padding: 20px 10px;
+        margin: 15px;
+        display: flex;
+        flex-direction: column;
+        justify-content: space-between;
+        width: 380px;
+        min-height: 200px;
+    }
+
+    .check-buttons {
+        padding: 4%;
+        display: flex;
+        justify-content: space-around;
+    }
+
+    .levers {
+        display: flex;
+        justify-content: space-around;
+        padding: 2%;
+    }
+
+    input[type=submit][value=launch] {
+        color: #000;
+        font-size: 1.1em;
+        cursor: pointer;
+        bottom: 0;
+        margin-top: 10px;
+        border-radius: 40px;
+    }
+
+    input[type=password] {
+        color: yellow;
+        border-color: yellow;
+    }
+
+    @media screen and (-webkit-min-device-pixel-ratio:0) {
+        input[type='range'] {
+            width: 10%;
+            padding: 10%;
+            transform: rotate(-90deg);
+        }
+    }
+  learner_created: true
+- name: src/main.js
+  visible: true
+  learner_created: true
 feedback_link: https://hyperskill.org/projects/143/stages/774/implement#comment
-status: Unchecked
+status: Solved
+feedback:
+  message: Congratulations!
+  time: Sat, 08 Oct 2022 15:56:18 UTC
 record: -1

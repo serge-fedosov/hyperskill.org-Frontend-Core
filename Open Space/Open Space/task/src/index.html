@@ -4,8 +4,9 @@
     <meta charset="UTF-8">
     <title>Open Space</title>
     <link rel="stylesheet" href="styles.css">
+    <script src="main.js"></script>
 </head>
-<body>
+<body onload="setAccess(false)">
     <div class="space">
         <div class="planet-area">
             <img class="planet" src="images/mars.png" alt="Planet">
@@ -13,8 +14,8 @@
         </div>
         <div class="control-panel">
             <div class="control-panel__inner">
-                <input type="password">
-                <input type="button" value="ok">
+                <input type="password" id="password">
+                <input type="button" value="ok" id="button" onclick="checkAccess()">
                 <div class="check-buttons">
                     <input type="checkbox">
                     <input type="checkbox">
@@ -30,7 +31,7 @@
                     <input type="range">
                     <input type="range">
                 </div>
-                <input type="submit" value="launch">
+                <input type="submit" value="launch" id="launch">
             </div>
         </div>
     </div>

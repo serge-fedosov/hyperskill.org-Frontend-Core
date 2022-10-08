@@ -94,3 +94,7 @@ input[type=password] {
         transform: rotate(-90deg);
     }
 }
+
+div.disabled {
+  display: none;
+}

@@ -83,11 +83,8 @@ class SpaceTest extends StageTest {
             return correct();
         }),
         this.page.execute(() => {
-            let controlDeck = document.getElementsByClassName("control-panel")
-            if (controlDeck.length === 0) {
-                return wrong("Can't find element with class=\"control-panel\"");
-            }
-            let controlDeckBgImg = window.getComputedStyle(controlDeck[0]).backgroundImage;
+            let controlDeck = document.getElementsByClassName("control-panel")[0];
+            let controlDeckBgImg = window.getComputedStyle(controlDeck).backgroundImage;
             if (!controlDeckBgImg.toLowerCase().includes('linear-gradient')) return wrong("The element with class='control-panel' should have gradient background.");
 
             return correct();
@@ -127,9 +124,7 @@ class SpaceTest extends StageTest {
             for (let el of Array.from(controlPanelInner[0].children)) {
                 if (el.tagName.toLowerCase() === 'input' && el.type.toLowerCase() === 'password') {
                     let styles = window.getComputedStyle(el);
-                    if (styles.color && styles.color !== 'rgb(0, 0, 0)' &&
-                        styles.border && styles.border !== '2px inset rgb(0, 0, 0)')
-                        return correct()
+                    if (styles.color && styles.border) return correct()
                     else return wrong("Password field's border and text color should be changed");
                 }
             }
@@ -142,7 +137,7 @@ class SpaceTest extends StageTest {
             for (let el of Array.from(controlPanelInner.children)) {
                 if (el.tagName.toLowerCase() === 'input' && (el.type.toLowerCase() === 'submit' || el.type.toLowerCase() === 'button')) {
                     let styles = window.getComputedStyle(el);
-                    if (styles.backgroundColor && styles.backgroundColor !== 'rgb(255, 255, 255)') {
+                    if (styles.backgroundColor) {
                         counter++;
                     }
 
@@ -158,18 +153,67 @@ class SpaceTest extends StageTest {
             for (let el of Array.from(controlPanelInner.children)) {
                 if (el.tagName.toLowerCase() === 'input' && (el.type.toLowerCase() === 'submit' || el.type.toLowerCase() === 'button')) {
                     let styles = window.getComputedStyle(el);
-                    if (styles.backgroundColor && styles.backgroundColor !== 'rgb(0, 0, 0)' &&
-                        styles.borderRadius && styles.borderRadius !== '0px') {
+                    if (styles.backgroundColor && styles.borderRadius) {
                         return correct();
                     }
                 }
             }
 
             return wrong("Can't find the input with type=button or submit with specified border-radius");
+        }),
+        this.page.execute(() => {
+            let controlPanelInner = document.getElementsByClassName('control-panel__inner')[0];
+            for (el of Array.from(controlPanelInner.getElementsByTagName('input'))) {
+                if (el.type.toLowerCase() === "password" && el.disabled) {
+                    return wrong("Password field should be enabled.")
+                }
+
+                if (el.value.toLowerCase() === "ok" && el.disabled) {
+                    return wrong("Ok button should be enabled.");
+                }
+
+                if (el.type.toLowerCase() !== "password" &&
+                    el.value.toLowerCase() !== "ok" && !el.disabled) {
+                    return wrong("All inputs except password and the ok button should be disabled.");
+                }
+            }
+
+            return correct();
+        }),
+        this.page.execute(() => {
+            let controlPanelInner = document.getElementsByClassName('control-panel__inner')[0];
+            let allInputs = Array.from(controlPanelInner.getElementsByTagName('input'));
+            let passwordEl = allInputs.filter(el => el.type.toLowerCase() === "password");
+
+            passwordEl[0].value = "TrustNo1";
+
+            for (const el of allInputs) {
+                if (el.value.toLowerCase() === "ok") {
+                    el.click();
+                }
+            }
+
+            for (const el of allInputs) {
+                if (el.type.toLowerCase() === "password" && !el.disabled) {
+                    return wrong("Password field should be disabled.")
+                }
+
+                if (el.value.toLowerCase() === "ok" && !el.disabled) {
+                    return wrong("Ok button should be disabled.");
+                }
+
+                if (el.type.toLowerCase() !== "password" &&
+                    el.value.toLowerCase() !== "ok" && el.disabled) {
+                    return wrong("All inputs except password and the ok button should be enabled.");
+                }
+            }
+
+            return correct();
         })
     ]
 
 }
+
 
 it('Test stage', async function () {
     try {
