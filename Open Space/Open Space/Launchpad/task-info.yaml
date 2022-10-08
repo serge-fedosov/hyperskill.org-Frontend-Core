@@ -1,0 +1,65 @@
+type: edu
+files:
+- name: hstest/test.js
+  visible: false
+  text: "const path = require('path');\nconst pagePath = 'file://' + path.resolve(__dirname,\
+    \ '../src/index.html');\nconst {StageTest, correct, wrong} = require('hs-test-web');\n\
+    \nclass SpaceTestT extends StageTest {\n    \n    page = this.getPage(pagePath)\n\
+    \    \n    tests = [\n        this.page.execute(),\n        this.page.execute(),\n\
+    \        this.page.execute()\n    ]\n    \n}\n\nclass SpaceTest extends StageTest\
+    \ {\n\n    page = this.getPage(pagePath)\n\n    tests = [\n        this.page.execute(()\
+    \ => {\n            let body = document.getElementsByTagName(\"body\")[0];\n \
+    \           if (!(body.children.length === 1 &&\n                body.children[0].tagName.toLowerCase()\
+    \ === 'div' &&\n                body.children[0].className === 'space')\n    \
+    \        ) return wrong(\"There are some mismatches with suggested structure or\
+    \ naming\")\n\n            let space = body.children[0];\n            if (!(space.children.length\
+    \ === 1 &&\n                space.children[0].tagName.toLowerCase() === 'div'\
+    \ &&\n                space.children[0].className === 'planet-area')\n       \
+    \     ) return wrong(\"There are some mismatches with suggested structure or naming\"\
+    )\n\n            let planetArea = space.children[0];\n            if (!(planetArea.children.length\
+    \ === 2 &&\n                planetArea.children[0].tagName.toLowerCase() === 'img'\
+    \ &&\n                planetArea.children[1].tagName.toLowerCase() === 'img' &&\
+    \ (\n                    planetArea.children[0].className === 'planet' && planetArea.children[1].className\
+    \ === 'rocket' ||\n                    planetArea.children[1].className === 'planet'\
+    \ && planetArea.children[0].className === 'rocket'))\n            ) return wrong(\"\
+    There are some mismatches with suggested structure or naming\")\n\n          \
+    \  return correct()\n        }),\n        this.page.execute(() => {\n        \
+    \    let space = document.body.getElementsByClassName(\"space\");\n          \
+    \  if (space.length === 0) return wrong(\"There no element with class='space'\"\
+    );\n\n            let spaceBg = window.getComputedStyle(space[0]).backgroundImage;\n\
+    \            if (!spaceBg) return  wrong(\"The element with class='space' should\
+    \ have background-image.\");\n\n            return correct();\n        }),\n \
+    \       this.page.execute(() => {\n            const planet = document.body.getElementsByClassName(\"\
+    planet\");\n            const rocket = document.body.getElementsByClassName(\"\
+    rocket\");\n\n            if (planet.length === 0) return wrong(\"There no element\
+    \ with class='planet'\");\n            if (rocket.length === 0) return wrong(\"\
+    There no element with class='rocket'\");\n\n            const planetTop = parseInt(window.getComputedStyle(planet[0]).top);\n\
+    \            const rocketTop = parseInt(window.getComputedStyle(rocket[0]).top);\n\
+    \n            if (planetTop > rocketTop + 300) return  wrong(\"The rocket element\
+    \ is placed too low\");\n\n            return correct();\n        })\n    ]\n\
+    }\n\nit('Test stage', async function () {\n    try {\n        this.timeout(30000)\n\
+    \    } catch (ignored) {\n    }\n    await new SpaceTest().runTests()\n}, 30000)\n"
+  learner_created: false
+- name: src/index.html
+  visible: true
+  text: |-
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <title>Open Space</title>
+    </head>
+    <body>
+        Hello, World!
+    </body>
+    </html>
+  learner_created: false
+- name: src/styles.css
+  visible: true
+  learner_created: true
+feedback_link: https://hyperskill.org/projects/143/stages/771/implement#comment
+status: Solved
+feedback:
+  message: Congratulations!
+  time: Sat, 08 Oct 2022 12:16:30 UTC
+record: -1
