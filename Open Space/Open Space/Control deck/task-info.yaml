@@ -165,6 +165,47 @@ files:
     }, 30000)
 
   learner_created: false
+- name: src/styles.css
+  visible: true
+  text: |-
+    * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+    }
+
+    body {
+        background-color: black;
+        max-height: 100vh;
+        overflow: hidden;
+
+    }
+
+    .space {
+        background-image: url("images/space.png");
+        height: 100vh;
+        max-width: 70vw;
+        margin: auto;
+    }
+
+    .planet {
+        max-width: 30vw;
+        max-height: 50vh;
+        position: absolute;
+        bottom: -8vh;
+    }
+
+    .rocket {
+        position: absolute;
+        max-width: 10vw;
+        bottom: 15vh;
+        left: 28vw;
+        rotate: 30deg;
+    }
+  learner_created: true
 feedback_link: https://hyperskill.org/projects/143/stages/772/implement#comment
-status: Unchecked
+status: Solved
+feedback:
+  message: Congratulations!
+  time: Sat, 08 Oct 2022 12:37:02 UTC
 record: -1
