@@ -3,26 +3,33 @@
 <head>
     <meta charset="UTF-8">
     <title>To-Do List</title>
+    <link rel="stylesheet" href="style.css">
 </head>
 <body>
-    <input id="input-task" value="To-Do List">
-    <button id="add-task-button"></button>
+    <form id="send-form">
+        <div>
+            <label for="input-task">To-Do List</label>
+        </div>
+        <input id="input-task" value="Finish work proporsal and send to client">
+        <button id="add-task-button" type="submit">ADD TASK</button>
+    </form>
     <ul id="task-list">
-        <li>
+        <li id="element-0" class="element">
             <input type="checkbox">
             <span class="task">Email David</span>
-            <button class="delete-btn"></button>
+            <button class="delete-btn"><img src="images/button.png" alt="Button image" width="36"></button>
         </li>
-        <li>
+        <li id="element-1" class="element">
             <input type="checkbox">
             <span class="task">Create ideal user persona guide</span>
-            <button class="delete-btn"></button>
+            <button class="delete-btn"><img src="images/button.png" alt="Button image" width="36"></button>
         </li>
-        <li>
+        <li id="element-2" class="element">
             <input type="checkbox">
             <span class="task">Set up A/B test</span>
-            <button class="delete-btn"></button>
+            <button class="delete-btn"><img src="images/button.png" alt="Button image" width="36"></button>
         </li>
     </ul>
+    <script src="script.js"></script>
 </body>
 </html>

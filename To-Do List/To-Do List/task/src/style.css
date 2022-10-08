@@ -1,0 +1,14 @@
+ul {
+  margin-left: 0;
+  padding-left: 0;
+}
+
+li {
+  list-style-type: none;
+}
+
+.delete-btn {
+    border-width: 0;
+    height: 35px;
+    width: 35px;
+}

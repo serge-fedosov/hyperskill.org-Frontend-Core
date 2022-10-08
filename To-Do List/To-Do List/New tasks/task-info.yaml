@@ -144,6 +144,15 @@ files:
         await new TodoTest().runTests()
     }, 30000)
   learner_created: false
-feedback_link: https://hyperskill.org/projects/183/stages/928/implement#comment
-status: Unchecked
+- name: src/script.js
+  visible: true
+  learner_created: true
+- name: src/style.css
+  visible: true
+  learner_created: true
+feedback_link: https://hyperskill.org/learn/step/13195#comment
+status: Solved
+feedback:
+  message: Congratulations!
+  time: Sat, 08 Oct 2022 10:29:22 UTC
 record: -1
