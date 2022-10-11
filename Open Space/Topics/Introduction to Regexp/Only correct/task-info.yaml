@@ -1,0 +1,19 @@
+type: choice
+is_multiple_choice: true
+options:
+- text: The literal notation accepts two arguments.
+- text: We don't need to be concerned about escaping when we use literal notation.
+- text: When using strings we need to escape backslash.
+- text: We can't use flags with the constructor.
+- text: We can use literal notation with the constructor.
+files:
+- name: main.js
+  visible: true
+  text: |+
+    // You can experiment here, it won’t be checked
+
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/17764#comment
+status: Solved
+record: -1
+local_check: false

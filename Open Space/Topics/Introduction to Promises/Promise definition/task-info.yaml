@@ -1,0 +1,18 @@
+type: choice
+is_multiple_choice: false
+options:
+- text: An object that allows getting the function value later
+- text: A function that's executed now but gives the result after
+- text: A method to get the function value as soon as it has completed
+- text: A way of organizing the code by declaring a variable later
+files:
+- name: main.js
+  visible: true
+  text: |+
+    // You can experiment here, it won’t be checked
+
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/9981#comment
+status: Solved
+record: -1
+local_check: false

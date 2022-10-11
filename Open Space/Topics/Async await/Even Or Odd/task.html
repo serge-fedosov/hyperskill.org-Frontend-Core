@@ -1,0 +1,16 @@
+<h2>Even Or Odd</h2>
+<html><body><p>Sophia made an asynchronous function that takes a number as a parameter and after 2 seconds prints the result in the console.</p>
+<pre><code class="language-javascript">async function evenOrOdd(number) {
+  let promise = new Promise((resolve, reject) =&gt; {
+    if (number % 2 === 0) {
+      setTimeout(() =&gt; resolve('The number is even'), 2000);
+    } else {
+      setTimeout(() =&gt; reject('The number is odd'), 2000);
+    }
+  });
+
+  ... 
+  console.log(result);
+}</code></pre>
+<p>As you can see, the function is incomplete. Sophia ended up forgetting to store the result in the constant <code class="language-javascript">result</code>.</p>
+<p>Select below the part of the code that she forgot.</p></body></html>

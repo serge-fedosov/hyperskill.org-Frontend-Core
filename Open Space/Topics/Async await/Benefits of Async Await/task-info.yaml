@@ -1,0 +1,19 @@
+type: choice
+is_multiple_choice: true
+options:
+- text: Avoiding Promises chaining we can make our code more readable.
+- text: With await we can make our function always return a Promise.
+- text: We can handle the errors with try..catch statements.
+- text: With async we can make a function be synchronous.
+files:
+- name: main.js
+  visible: true
+  text: |+
+    // You can experiment here, it won’t be checked
+
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/10850#comment
+status: Solved
+record: -1
+custom_name: Benefits of Async/Await
+local_check: false

@@ -1,0 +1,20 @@
+type: choice
+is_multiple_choice: false
+options:
+- text: function country(name, capital) {  this.name = name;  this.capital = capital;
+    }
+- text: function Country(name, capital) {  this.name = name;  this.capital = capital;
+    }
+- text: function Country(name, capital) {  name = name;  capital = capital; }
+- text: function country(name, capital) {  name = name;  capital = capital; }
+files:
+- name: main.js
+  visible: true
+  text: |+
+    // You can experiment here, it won’t be checked
+
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/9974#comment
+status: Solved
+record: -1
+local_check: false

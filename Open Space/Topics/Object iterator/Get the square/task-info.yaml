@@ -1,0 +1,13 @@
+type: code
+files:
+- name: main.js
+  visible: true
+  text: "function getTheSquare(arrayOfObjects) {    \n    return arrayOfObjects;\n\
+    }"
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/16906#comment
+status: Solved
+feedback:
+  message: <html>Correct solution</html>
+  time: Tue, 11 Oct 2022 08:07:45 UTC
+record: -1

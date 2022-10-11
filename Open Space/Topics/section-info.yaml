@@ -1,0 +1,13 @@
+content:
+- Introduction to Promises
+- ' then ,  catch  and  finally  methods'
+- Event Loop
+- Async await
+- Function constructor
+- String Compare
+- String transforming
+- Introduction to Regexp
+- Object iterator
+- Array iterating
+- Array sorting
+- Array reducing

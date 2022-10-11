@@ -1,0 +1,119 @@
+<h2>Object iterator</h2>
+<p>Probably you are already familiar with objects in JavaScript. Accessing a key-value pair is a very simple task, but things get complicated if the object has several key-value pairs or even other types of data structures. That's when the methods <code class="language-javascript">keys()</code>, <code class="language-javascript">values()</code> and <code class="language-javascript">entries()</code> comes in handy. You will learn how to use these methods in this topic, so let's get started.</p>
+
+<h5 id="the-key-method" style="text-align: center;">The key method</h5>
+
+<p>As the name already suggests, this method will take all the keys of an object and return them in an array. For this the following syntax is used: <code class="language-javascript">Object.keys(objectName)</code>.</p>
+
+<p>You may be wondering why we have to use the <code class="language-javascript">Object</code> keyword. That is because objects do not support array's methods like <code class="language-javascript">map()</code>, <code class="language-javascript">filter()</code>, <code class="language-javascript">forEach()</code>, etc. So what the <code class="language-javascript">Object</code> is doing here is transforming these values into an array so that you can iterate over these values using the array's methods.</p>
+
+<p>Let's create a simple object and discuss how you can use the <code class="language-javascript">key()</code> method.</p>
+
+<pre><code class="language-javascript">let employee = {
+  'name': 'Bruce Reese',
+  'email': 'diam.sed@augue.org',
+  'company': 'Velit Pellentesque Institute'
+};</code></pre>
+
+<p>Now let's store the result of the key method in another variable and print it to see what the result would be.</p>
+
+<pre><code class="language-javascript">const employeeKeys = Object.keys(employee);
+
+console.log(employeeKeys) // [ 'name', 'email', 'company' ]</code></pre>
+
+<p>As you can see, an array containing all keys of the <code class="language-javascript">employee</code> object has been generated. Now you can iterate over these values using all the array's methods. Let's use the forEach() method to interact with this array.</p>
+
+<pre><code class="language-javascript">employeeKeys.forEach((key) =&gt; console.log(key));
+// name
+// email
+// company</code></pre>
+
+<p>You can also use each of these keys to access the values of the <code class="language-javascript">employee</code> object.</p>
+
+<pre><code class="language-javascript">employeeKeys.forEach((key) =&gt; console.log(employee[key]));
+// Bruce Reese
+// diam.sed@augue.org
+// Velit Pellentesque Institute</code></pre>
+
+<p>You can even override the value of some key based on a condition. For example, if you want to override the name of this employee's company, you can use an if statement to check if the key equals <code class="language-javascript">company</code>.</p>
+
+<pre><code class="language-javascript">employeeKeys.forEach(key =&gt; {
+  if (key === 'company') {
+    employee[key] = "Stiedemann Group";
+  }
+});</code></pre>
+
+<p>Now, if you print out the object, you will see that the company has changed.</p>
+
+<pre><code class="language-javascript">console.log(employee);
+/*
+{
+  name: 'Bruce Reese',
+  email: 'diam.sed@augue.org',
+  company: 'Stiedemann Group'
+}
+*/</code></pre>
+
+<h5 id="the-values-method" style="text-align: center;">The values method</h5>
+
+<p>This <code class="language-javascript">values()</code> method is similar to the <code class="language-javascript">key()</code> method, but instead of returning all the keys of the specific object, it returns their values.</p>
+
+<p>The syntax is the same, all you have to do is replace the <code class="language-javascript">keys()</code> method with the values method: <code class="language-javascript">Object.values(objectName)</code></p>
+
+<p>Let's take a look at a more specific example:</p>
+
+<pre><code class="language-javascript">const employeeValues = Object.values(employee);
+
+console.log(employeeValues);
+// [ 'Bruce Reese', 'diam.sed@augue.org', 'Velit Pellentesque Institute' ]</code></pre>
+
+<p>You can use <code class="language-javascript">forEach()</code> the same way you used the keys.</p>
+
+<pre><code class="language-javascript">employeeValues.forEach((value) =&gt; console.log(value));
+// Bruce Reese
+// diam.sed@augue.org
+// Velit Pellentesque Institute</code></pre>
+
+<p>Be aware that you can only access an object's indices by its <code class="language-javascript">key</code>. If you try to access a <code class="language-javascript">key</code> that does not exist on the object, the result will be undefined.</p>
+
+<pre><code class="language-javascript">employeeValues.forEach((value) =&gt; console.log(employee[value]));
+// undefined
+// undefined
+// undefined</code></pre>
+
+<h5 id="the-entries-method" style="text-align: center;">The entries method</h5>
+
+<p>The <code class="language-javascript">entries()</code> method has the same syntax as the other two methods but works in a different way. It returns the key-value pair of each pair in an array. Let's see how this works in the code:</p>
+
+<pre><code class="language-javascript">const employeeEntries = Object.entries(employee);
+
+console.log(employeeEntries);
+/* 
+[
+  [ 'name', 'Bruce Reese' ],
+  [ 'email', 'diam.sed@augue.org' ],
+  [ 'company', 'Velit Pellentesque Institute' ]
+]
+*/</code></pre>
+
+<p>You can see that the <code class="language-javascript">employeeEntries</code> variable is an array with 3 other arrays inside it. Each array is a <code class="language-javascript">key-value</code> pair of the object. You can access each one by the index.</p>
+
+<pre><code class="language-javascript">console.log(employeeEntries[0]); // [ 'name', 'Bruce Reese' ]
+console.log(employeeEntries[1]); // [ 'email', 'diam.sed@augue.org' ]</code></pre>
+
+<p>Now you can use the <code class="language-javascript">forEach()</code> method to access each of them. Each parameter will be an array, so you can retrieve the key and the value by index. Remember that the keys will always be in the first position of the array.</p>
+
+<pre><code class="language-javascript">employeeEntries.forEach((entries) =&gt; {
+  const key = entries[0];
+  const value = entries[1];
+
+  console.log(`Key: ${key}, Value: ${value}`);
+});
+
+// Key: name, Value: Bruce Reese
+// Key: email, Value: diam.sed@augue.org
+// Key: company, Value: Velit Pellentesque Institute</code></pre>
+
+<h5 id="conclusion" style="text-align: center;">Conclusion</h5>
+
+<p>in this topic you've learned how to use the <code class="language-javascript">keys()</code>, <code class="language-javascript">values()</code> and <code class="language-javascript">entries()</code> methods. These methods are essential when we want to work with the keys and values of objects. Now let's put all this into practice with some exercises.</p>

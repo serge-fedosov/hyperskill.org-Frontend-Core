@@ -1,0 +1,18 @@
+type: choice
+is_multiple_choice: true
+options:
+- text: reduceRight() - reduces the array from left to right
+- text: reduce() - reduces the array from left to right
+- text: reduce() - reduces the array from right to left
+- text: reduceRight() - reduces the array from right to left
+files:
+- name: main.js
+  visible: true
+  text: |+
+    // You can experiment here, it won’t be checked
+
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/16632#comment
+status: Solved
+record: -1
+local_check: false

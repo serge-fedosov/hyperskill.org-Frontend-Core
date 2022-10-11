@@ -1,0 +1,21 @@
+type: choice
+is_multiple_choice: true
+options:
+- text: const DonQuixote = Book("DonQuixote", "Miguel de Cervantes");
+- text: const AnnaKarenina = new Book("Anna Karenina", "Leo Tolstoy");
+- text: const JaneEyre = Book("JaneEyre", "Charlotte Bront");
+- text: const MrsDalloway = new Book("Mrs. Dalloway", "Virginia Woolf");
+- text: const InvisibleMan = new Book("InvisibleMan", "Ralph Ellison");
+- text: const TheGreatGatsby = Book("TheGreatGatsby", "F. Scott Fitzgerald")
+files:
+- name: main.js
+  visible: true
+  text: |+
+    // You can experiment here, it won’t be checked
+
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/9975#comment
+status: Solved
+record: -1
+custom_name: Let's read some books!
+local_check: false

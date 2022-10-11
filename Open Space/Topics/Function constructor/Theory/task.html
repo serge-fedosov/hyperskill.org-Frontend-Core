@@ -1,0 +1,96 @@
+<h2>Function constructor</h2>
+<p>You already know how to create an object. Let's imagine a situation where you need to generate a hundred similar objects. Of course, it would be really challenging to do this manually. In this topic, we will learn how to automate this tedious process.</p>
+
+<h5 id="function-constructor">Function constructor</h5>
+
+<p>Let's say that you own a huge auto park and buy several new cars every month. Today you have decided to buy a Mercedes and an Audi:</p>
+
+<pre><code class="language-javascript">const car1000 = {
+  brand: "Mercedes",
+  year: 2020
+};
+
+const car1001 = {
+  brand: "Audi",
+  year: 2019
+};</code></pre>
+
+<p>In this example, we created two automobile objects with two properties, but in real life, vehicles have dozens of technical characteristics. Following the previous logic, we must enter each property manually, which doesn't sound terrible for two cars, but what if you need to add a hundred cars with real data?</p>
+
+<p>When manipulating similar objects, it is easier to use the <strong>function constructor</strong>. Let's find out how it works.</p>
+
+<pre><code class="language-javascript">function Car(brand, year) {
+  this.brand = brand;
+  this.year = year;
+}
+
+const car1000 = new Car("Mercedes", 2020);
+const car1001 = new Car("Audi", 2019);</code></pre>
+
+<p>We have defined the <code class="language-javascript">Car</code> function and used it to create two car objects using the keyword <code class="language-javascript">new</code>. In this case, the <code class="language-javascript">Car</code> function is called the <strong>function constructor</strong>. It looks like a regular function but it is used to create similar objects.</p>
+
+<h5 id="function-constructor-features">Function constructor features</h5>
+
+<p>In the example above, we created <code class="language-javascript">car1000</code> and <code class="language-javascript">car1001</code> objects, both of which are instances of <code class="language-javascript">Car</code> objects. The result of invoking <code class="language-javascript">new Car ("Mercedes", 2020)</code> is as follows:</p>
+
+<pre><code class="language-javascript">{
+  brand: "Mercedes",
+  year: 2020
+}</code></pre>
+
+<p>This way, we don't have to define an object every time we add a new car. Instead, we call the car constructor function with specific parameters.</p>
+
+<p>The constructor functions have some unique features.</p>
+
+<ol>
+	<li>
+	<p>We spelled the constructor function with a capital letter (<code class="language-javascript">Car</code>). While this is not a rule, it is a naming convention between developers. Please use this recommendation: it allows us to find the function constructor faster.</p>
+	</li>
+	<li>
+	<p>It is essential to call the function constructor with the keyword <code class="language-javascript">new</code>. </p>
+	</li>
+	<li>
+	<p>Inside the constructor function, <code class="language-javascript">this</code> does not have a value. After a new object has been created, the value of <code class="language-javascript">this</code> becomes the new object.</p>
+	</li>
+	<li>
+	<p>Constructors always return a new object without using the <code class="language-javascript">return</code> keyword inside them. By default, they return <code class="language-javascript">this</code>. You can easily change this logic and use <code class="language-javascript">return</code> whenever you want.</p>
+	</li>
+</ol>
+
+<pre><code class="language-javascript">function Car(brand, year) {
+  this.brand = brand;
+  this.year = year;
+  return year;
+}
+
+const myCar = new Car("BMW", 2001);
+
+console.log(myCar); // Car { brand: 'BMW', year: 2001 }</code></pre>
+
+<p>As a result, we will see <code class="language-javascript">Car { brand: 'BMW', year: 2001 }</code>.</p>
+
+<h5 id="methods-in-constructor">Methods in constructor</h5>
+
+<p>You can create methods as well as properties inside regular objects. The same is true for constructor functions.</p>
+
+<pre><code class="language-javascript">function Car(model, speed) {
+  this.model = model;
+  this.speed = speed;
+
+  this.getSpeed = function() {
+    console.log("The speed of " + this.model + " is: " + this.speed + " km per hour");
+  };
+}</code></pre>
+
+<p>As you can see, we used <code class="language-javascript">this</code> to refer to an object in its method.</p>
+
+<p>Then we can call <code class="language-javascript">getSpeed</code> method:</p>
+
+<pre><code class="language-javascript">const carKIA = new Car("KIA Stinger", 209);
+carKIA.getSpeed();</code></pre>
+
+<p>The console displays "The speed of KIA Stinger is 209 km per hour".</p>
+
+<h5 id="conclusion">Conclusion</h5>
+
+<p>Constructors are a common way to create similar objects. They are regular functions, but based on the Convention, we should name them with a capital letter. To create a new object, we need to call the constructor function with the keyword <code class="language-javascript">new</code> and the parameters for the object. You can also manipulate object variables inside the function constructor method.</p>

@@ -1,0 +1,14 @@
+type: code
+files:
+- name: main.js
+  visible: true
+  text: |-
+    let txt = "I slit the sheet, the sheet I slit, and on the slitted sheet I sit";
+    let searchStr = "sheet";
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/18302#comment
+status: Solved
+feedback:
+  message: <html>Correct solution</html>
+  time: Mon, 10 Oct 2022 18:55:16 UTC
+record: -1

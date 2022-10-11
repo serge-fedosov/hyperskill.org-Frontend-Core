@@ -1,0 +1,14 @@
+<h2>Undefined</h2>
+<html><body><p>Suppose we have this array:</p>
+<pre><code class="language-javascript">const arr = [1, , , 4];</code></pre>
+<p>In which case will we see undefined values in the console?</p>
+<p><strong>A)</strong></p>
+<pre><code class="language-javascript">for (let i = 0; i &lt; arr.length; i++) {
+  console.log(arr[i]);
+}</code></pre>
+<p><strong>B)</strong></p>
+<pre><code class="language-javascript">for (let i in arr) {
+  console.log(arr[i]);
+}</code></pre>
+<p><strong>C)</strong></p>
+<pre><code class="language-javascript">arr.forEach((i) =&gt; console.log(i));</code></pre></body></html>

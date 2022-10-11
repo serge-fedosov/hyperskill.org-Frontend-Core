@@ -1,0 +1,80 @@
+<h2>"then", "catch" and "finally" methods</h2>
+<html><body><p>Previously, we have learned the basics of promises; now, it's time to interact with them. In this topic, we will consider three promise methods that programmers use to work with a settled promise: <code class="language-javascript">.then</code>, <code class="language-javascript">.catch</code>, and <code class="language-javascript">.finally</code>.</p>
+<h5 id="then">.then</h5>
+<p><code class="language-javascript">.then</code> method is used to handle positive or negative promise results.</p>
+<p>Let's look at an example: say, we're working on a program that helps busy students keep track of their exams dates. We create a promise to let the user know if they missed their exam based on the current date. If the event did not take place yet, we resolve the <em>"</em><code class="language-javascript">You should prepare for the exam</code><em>"</em> value; otherwise, we reject with the error text <em>"</em><code class="language-javascript">Oops! You have missed your exam!</code><em>"</em>. </p>
+<pre><code class="language-javascript">const examDate = new Date(2020, 7, 5);
+const promise = new Promise(function(resolve, reject) {
+  const currentDate = new Date();
+  if (currentDate &lt; examDate) {
+    resolve("You should prepare for the exam");
+  } else {
+    reject("Oops! You have missed your exam!");
+  }
+});</code></pre>
+<p>Now, let's make the output show the response message via console in case of success, or an alert in case of failure. To do that, we use <code class="language-javascript">.then</code> function with two parameters: a function to handle a positive result, and another to handle an exception. If the promise was resolved, we call the <code class="language-javascript">successStatus</code> function with the promised result and display the response in the console. Otherwise, we execute the <code class="language-javascript">failStatus</code> function with the promise outcome and print the error message in an alert.</p>
+<pre><code class="language-javascript">promise.then(
+  function successStatus(response) {
+    console.log(response);
+    return response;
+    },
+  function failStatus(error) {
+    console.log(error);
+    return error;
+  }
+);</code></pre>
+<p>So, <code class="language-javascript">.then</code> method is used to work the promised result and launch certain actions based on it. Both arguments of .<code class="language-javascript">then</code> are optional. </p>
+<h5 id="catch">.catch</h5>
+<p>Let's say we need to handle only errors. In this case, you can use either <code class="language-javascript">.then</code> without the first argument <code class="language-javascript">.then(null, function failStatus(error) { ... })</code>, or <code class="language-javascript">.catch</code>:</p>
+<pre><code class="language-javascript">promise.catch(function failStatus(error) {
+  console.log(error);
+  return error;
+});</code></pre>
+<p>In the <code class="language-javascript">.catch</code> method, we told the program what we want to do in case of failure. In our situation, we show an alert with an error message.</p>
+<p>It is possible to use <code class="language-javascript">.then</code> and <code class="language-javascript">.catch</code> together for the same promise:</p>
+<pre><code class="language-javascript">promise
+  .then(function successStatus(response) {
+    console.log(response);
+    return response;
+  })
+  .catch(function failStatus(error) {
+    console.log(error);
+    return error;
+  })</code></pre>
+<h5 id="finally">.finally</h5>
+<p>The method <code class="language-javascript">.finally</code> is used when we want to invoke a function after the promise was settled, regardless of the promise state. Let’s look at the syntax:</p>
+<pre><code class="language-javascript">promise
+  .then(function successStatus(response) {
+        console.log(response);
+        return response;
+  })
+  .catch(function failStatus(error) {
+    console.log(error);
+    return error;
+  })
+ .finally(function stopLoader() {    
+    console.log("The loader has stopped");
+  });</code></pre>
+<p>The text <em>"</em><code class="language-javascript">The loader has stopped</code><em>"</em> will be shown after the promise has been settled. The user will see it no matter if the promise was resolved or rejected. It's useful when you have some required actions that don't depend on the result of the promise, for instance, for stopping loaders or showing the default greeting text.</p>
+<h5 id="promise-chaining">Promise chaining</h5>
+<p>Suppose you have some scripts depending on other scripts, and you need to load them sequentially. For example, first you have to load the user's role. Second, you should load the user info, and third, a personal banner according to their preferences. In such cases, <strong>promise chaining</strong> is a great feature that allows to call the request only after the previous has been resolved:</p>
+<pre><code class="language-javascript">loadData("https://mywebsite.com/loadRoles")
+  .then(function() {
+    return loadData("https://mywebsite.com/loadUserInfo");
+  })
+  .then(function(user) {
+    return loadData(`https://mywebsite.com/loadBanner_${user.id}`);
+  })
+  .catch(function(error) {
+    console.log("Oops! An error occured!")
+  });</code></pre>
+<p>The <code class="language-javascript">.catch</code> method will be executed for errors in any step.</p>
+<p></p><div class="alert alert-primary"> Keep it in mind that to make the code asynchronous, you should return the promise at each step. </div><p></p>
+<h5 id="conclusion">Conclusion</h5>
+<p>We have covered three methods that help us work with the promise results. Let's recap:</p>
+<ul>
+<li><code class="language-javascript">.then</code> is used to take some actions depending on the output;</li>
+<li><code class="language-javascript">.catch</code> is used for handling errors;</li>
+<li><code class="language-javascript">.finally</code> is used to launch a function as soon as the promise was settled, ignoring the promise state.</li>
+</ul>
+<p>All of them are useful in real programming tasks. Speaking of real tasks: shall we?</p></body></html>

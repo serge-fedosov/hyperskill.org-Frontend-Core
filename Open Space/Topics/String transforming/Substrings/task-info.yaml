@@ -1,0 +1,16 @@
+type: code
+files:
+- name: main.js
+  visible: true
+  text: |-
+    function greeting(line) {
+        //write your code here
+        return ("My name is " + name + " and I'm a " + job + ".");
+    }
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/17783#comment
+status: Solved
+feedback:
+  message: <html>Correct solution</html>
+  time: Mon, 10 Oct 2022 19:13:42 UTC
+record: -1

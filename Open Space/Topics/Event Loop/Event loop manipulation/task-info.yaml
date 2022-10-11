@@ -1,0 +1,21 @@
+type: choice
+is_multiple_choice: false
+options:
+- text: Using setTimeout() to manipulate with macrotasks or promises and queueMicrotask()
+    to manipulate with microtasks
+- text: We can&#x27;t
+- text: Using setTimeout() to delay the whole script execution giving the engine some
+    time to handle something else
+- text: Dividing a huge macrotask into several smaller tasks using queueMacrotask
+- text: Dividing one microtask into several microtasks
+files:
+- name: main.js
+  visible: true
+  text: |+
+    // You can experiment here, it won’t be checked
+
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/12463#comment
+status: Solved
+record: -1
+local_check: false

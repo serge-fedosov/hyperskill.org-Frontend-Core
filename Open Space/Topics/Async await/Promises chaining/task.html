@@ -1,0 +1,20 @@
+<h2>Promises chaining</h2>
+<html><body><p>In the code below, we have a simple example of Promise chaining.</p>
+<pre><code class="language-javascript">function animalSpecie(animal) {
+  return new Promise((resolve, reject) =&gt; {
+    if (animal === 'Bird') {
+      resolve(animal);
+    } else {
+      reject(animal);
+    }
+  });
+}</code></pre>
+<pre><code class="language-javascript">animalSpecie('Bird')
+  .then((result) =&gt; console.log(`The animal is a ${result}.`))
+  .then(() =&gt; console.log('This animal can fly.'))
+  .then(() =&gt; console.log('This animal has feathers.'))
+  .catch((result) =&gt; {
+    console.log(`The animal is a ${result}.`);
+    console.log("This animal can't fly.");
+});</code></pre>
+<p>Select below all valid options we could do to make our code simpler and easier to read.</p></body></html>

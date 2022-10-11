@@ -1,0 +1,24 @@
+type: code
+files:
+- name: main.js
+  visible: true
+  text: |-
+    async function findUserById(id) {
+      return new Promise((resolve, reject) => {
+        if (users[id]) {
+          setTimeout(() => resolve(users[id]), 1000);
+        }
+          setTimeout(() => reject('No user with this id'), 1000);
+      });
+    }
+
+    function handleResult(number) {
+      const resultOfThePromise = findUserById(number);
+    }
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/10854#comment
+status: Solved
+feedback:
+  message: <html>Correct solution</html>
+  time: Mon, 10 Oct 2022 18:12:55 UTC
+record: -1

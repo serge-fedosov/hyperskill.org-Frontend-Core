@@ -1,0 +1,19 @@
+type: code
+files:
+- name: main.js
+  visible: true
+  text: "function passingExam (myPoints) {\n\treturn new Promise(function() {\n  \
+    \  // write your function here\n  });\n}"
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/9988#comment
+status: Solved
+feedback:
+  message: |-
+    <html>[+] Test #1. OK
+    [+] Test #2. OK
+    [+] Test #3. OK
+    [+] Test #4. OK
+
+    4 of 4 test(s) passed.</html>
+  time: Mon, 10 Oct 2022 14:13:51 UTC
+record: -1

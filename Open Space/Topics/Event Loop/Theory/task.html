@@ -1,0 +1,79 @@
+<h2>Event Loop</h2>
+<html><body><p>Execution flow in a browser is based on the <strong>event loop.</strong> The event loop is basically a queue with all the tasks the browser has to perform, from connected script execution to the mouse movement. There are two different types of queues, and tasks are distributed among them. Understanding the basics of this mechanism is useful for code optimization and sometimes for the whole app architecture. So let's take a closer look at it in this topic.</p>
+<h5 id="event-loop">Event loop</h5>
+<p>The idea of an event loop is really simple: there is a never-ending loop that makes the JavaScript engine wait for tasks, handle them, and keep waiting for the new ones. Basically, it just does nothing until there is a need to handle the script or process an event.</p>
+<p>Here are some examples of said tasks:</p>
+<ul>
+<li>Loading the script with <code class="language-javascript">&lt;script src="..."&gt;</code>, the task is to run it.</li>
+<li>Moving the mouse and therefore causing  <code class="language-javascript">mousemove</code> event and executing its handlers is also a task.</li>
+<li>When the timer set by <code class="language-javascript">setTimeout(func, ...)</code> is over, executing <code class="language-javascript">func()</code> becomes a task.</li>
+</ul>
+<p>So, for now, the algorithm is the following:</p>
+<ol>
+<li>When there are tasks, complete them.</li>
+<li>Stop until there are new tasks, then move to the first step.</li>
+</ol>
+<h5 id="macrotasks">Macrotasks</h5>
+<p>So, the engine waits for a new task, completes it, and waits for another one. But what if a new task arrives while the engine is still busy handling the previous one? In this case, this new task will get in line and wait till the engine is free. For example, when the engine is busy executing a script, the user is very likely to move the mouse or the <code class="language-javascript">setTimeout</code> timer may expire. Such tasks are called <strong>macrotasks</strong>, and they form a <strong>macrotask queue</strong><strong>:</strong></p>
+<p><img alt="" height="559" src="https://ucarecdn.com/48d0b1eb-2d11-4d39-b54e-017b5bb5c054/" width="700"/></p>
+<p>Tasks are processed according to the FIFO rule (First In First Out). This means that after executing the script, the browser will move on to the next task, then to the mousemove event, then it will deal with setTimeout handlers, and so on.</p>
+<h5 id="microtasks">Microtasks</h5>
+<p>Aside from macrotasks that we've just talked about, there are <strong>microtasks</strong>. Microtasks come only from the script itself and usually are created by <strong>promises</strong>. This means that before moving to the next macrotask, the engine handles all the microtasks from the <strong>microtasks queue</strong> and renders all the changes. It seems logical right until you look at a real-life example:</p>
+<pre><code class="language-javascript">setTimeout(() =&gt; alert("timeout"));
+
+Promise.resolve()
+  .then(() =&gt; alert("promise"));
+
+alert("code");</code></pre>
+<p>After execution you will first see the "code" alert, then the promise is going to be handled, and only then goes the "timeout" alert. It starts to look weird, right?</p>
+<p>Before we explain this phenomenon, we have to introduce another term, <strong>synchronous call. </strong>This is how you call a code which is executed without being classified as a macrotask or a microtask and being put into the queue. In our case the last block of code is a synchronous call, so it's executed right away. The first block of code is a macrotask that is going to be handled only after the script and all its microtasks have been handled. The second code block, by the way, is a promise block, which is usually considered as a microtask.</p>
+<p>And of course, it's possible to create a microtask manually. The <code class="language-javascript">queueMicrotask(func)</code> function puts func() function into the queue.</p>
+<p>Also, there is a special tool which is used to manually put function <code class="language-javascript">func</code> into microtasks queue.</p>
+<p></p><div class="alert alert-primary">After the engine is done with the macrotask, it handles all the microtasks that derive from it, and only then moves to another macrotask from the queue.</div><p></p>
+<p>The following picture will bring more clarity:</p>
+<p><img alt="" height="559" src="https://ucarecdn.com/1f74daf9-9167-4180-af15-072aaaef93c0/" width="700"/></p>
+<p>So, there are a couple of things stemming from what we've just learned:</p>
+<ol>
+<li>Page rendering never happens when the engine is busy, no matter how long the current task will take. That is exactly why heavy scripts are usually connected at the bottom of the page, after &lt;/body&gt; closing tag.</li>
+<li>If the engine is working for too long on a single task, the browser suggests to "kill" the process. This can happen if the script hides an infinite loop or when it has a lot of complex calculations.</li>
+</ol>
+<h5 id="dividing-the-task">Dividing the task</h5>
+<p>An event loop is really useful if you have a huge script that is 100% correct and has no mistakes but is just a heavy one. While the engine is busy highlighting the text or translating the page (very resource- and time-consuming procedures), it can't handle anything connected with DOM, such as button clicks or rendering. The browser might even freeze, which is kind of a bummer. </p>
+<p>You can avoid that by dividing the task into several smaller tasks. Planning <code class="language-javascript">setTimeout(func)</code> every now and then to complete the task step by step will give the engine enough space to complete other tasks between those steps. Here's the code which increases the value of <strong>i</strong> variable with each iteration until it's 1e6:</p>
+<pre><code class="language-javascript">let i = 0;
+
+function count() {
+  for (let j = 0; j &lt; 1e6; j++) {
+    i++;
+  }
+  alert("Done!");
+}
+
+count();</code></pre>
+<p>While the engine is busy handling this task, it can't focus on anything else. However, if we use nested <code class="language-javascript">setTimeout</code> after every 1e3 iterations, the engine will be able to handle other tasks from the queue between those iterations:</p>
+<pre><code class="language-javascript">let i = 1;
+
+function count() {
+  while (i % 1e3 != 0){
+    i++;
+  }
+
+  if (i &lt; 1e6) {
+    setTimeout(count);
+  } else {
+    alert("Done");
+  }
+}
+
+count();</code></pre>
+<p>Here, instead of handling the whole script at once and getting a message from the browser that the script is taking too long to finish, we've manipulated the event loop and made it possible for the engine to handle other tasks.</p>
+<p>Now the algorithm mentioned at the beginning of this topic becomes a bit more complex:</p>
+<ol>
+<li>Handle the oldest task from the macrotask queue.</li>
+<li>Complete all the microtasks starting with the oldest one in the queue.</li>
+<li>If there are changes on the page — render them.</li>
+<li>Stop until there's a new macrotask.</li>
+<li>Go to step 1.</li>
+</ol>
+<h5 id="summary">Summary</h5>
+<p>So, we've learned that the event loop prevents the JavaScript engine from overloading and users from getting frustrated by scheduling the task processing. There are macrotasks, which are scripts, setTimeouts, etc., and microtasks, which usually appear from promises. Manipulating with the event loop is useful when it comes to huge scripts and performance. You can do this manually by using <code class="language-javascript">setTimeout(func)</code> to create a new macrotask or <code class="language-javascript">queueMicrotask(func)</code> to create a microtask. Remember, that the UI events are not handled between microtasks, but one after another. Now, let's get to tasks!</p></body></html>

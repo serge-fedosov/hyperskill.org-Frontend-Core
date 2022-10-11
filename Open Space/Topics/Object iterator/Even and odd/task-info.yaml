@@ -1,0 +1,15 @@
+type: code
+files:
+- name: main.js
+  visible: true
+  text: |-
+    function sumTheArrays(naturalNumbers) {
+      return ...;
+    }
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/16905#comment
+status: Solved
+feedback:
+  message: <html>Correct solution</html>
+  time: Tue, 11 Oct 2022 08:02:40 UTC
+record: -1

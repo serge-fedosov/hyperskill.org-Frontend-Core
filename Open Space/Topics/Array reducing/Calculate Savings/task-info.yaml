@@ -1,0 +1,13 @@
+type: code
+files:
+- name: main.js
+  visible: true
+  text: "const salary = 25000;\n\nfunction getSalary(expenses) {\n    let remainingSalary\
+    \ = ...   \n}"
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/16633#comment
+status: Solved
+feedback:
+  message: <html>Correct solution</html>
+  time: Tue, 11 Oct 2022 14:24:06 UTC
+record: -1

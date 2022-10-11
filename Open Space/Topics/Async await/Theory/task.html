@@ -1,0 +1,102 @@
+<h2>Async/await</h2>
+<html><body><p>In the previous topics, we've learned how to create a <em>Promise</em> and how to use the methods <code class="language-javascript">.then</code>, <code class="language-javascript">.catch</code>, and <code class="language-javascript">.finally</code> to handle Promise results. In this topic, we will learn a simpler way to work with Promise with a more legible code.</p>
+<p>The keywords "async/await" allow us to create asynchronous functions that will always return a <em>Promise</em>, without having to explicitly create a <em>new Promise</em> and ending up with <em>Promises chaining</em>.</p>
+<h5 id="async">Async</h5>
+<p>Let's start with the <code class="language-javascript">async</code> keyword.</p>
+<p>We use it before a function declaration, like this: <code class="language-javascript">async function</code>. This way we define that our function will be an asynchronous function.</p>
+<p>Let's observe a simple example:</p>
+<pre><code class="language-javascript">async function foo() {
+  return 'bar';
+}
+
+console.log(foo()); // Promise { 'bar' }</code></pre>
+<p>As you can see, it is unnecessary to explicitly return a <em>Promis</em>e because the return of an async function will always be a <em>Promise</em>.</p>
+<p>To get a better understanding of how this works let's create two functions:</p>
+<ul>
+<li>searchEngine(engine): This function will receive one <em>argument </em>and will return a <em>Promise</em> if the parameter is equal to <code class="language-javascript">"Google"</code>. For now, the function will return only a resolved Promise.</li>
+<li>handlePromiseResult(): This function will save the result of the<code class="language-javascript">searchEngine()</code> function to the <code class="language-javascript">resultOfThePromise</code> constant.</li>
+</ul>
+<p>The result will be the following:</p>
+<pre><code class="language-javascript">async function searchEngine(engine) {
+  if (engine === 'Google') {
+    return Promise.resolve('You can start googling!');
+  }
+}</code></pre>
+<pre><code class="language-javascript">function handlePromiseResult() {
+  const resultOfThePromise = searchEngine('Google');
+
+  resultOfThePromise
+    .then(response =&gt; console.log(response)); // You can start googling!
+}
+
+handlePromiseResult();</code></pre>
+<p>The <code class="language-javascript">searchEngine()</code> function returned a Promise as expected, otherwise we wouldn't be able to use the <code class="language-javascript">.then()</code> method. Then we stored the result in the constant <code class="language-javascript">resultOfThePromise</code> and used the <code class="language-javascript">.then()</code> method and displayed the response in the console.</p>
+<h5 id="await">Await</h5>
+<p>You can see the principal advantage of using <code class="language-javascript">async</code> function when you combine it with <code class="language-javascript">await</code>.</p>
+<p>Instead of using <code class="language-javascript">promise.then()</code> we can use this syntax to handle Promise result. We use the keyword <code class="language-javascript">await</code> always within an asynchronous function and place it before the return of an asynchronous function, which is easier.</p>
+<pre><code class="language-javascript">async function handlePromiseResult() {
+  const resultOfThePromise = await searchEngine('Google'); // Wait until the promise resolves.
+}</code></pre>
+<p>Continuing with our <code class="language-javascript">searchEngine()</code> function what will happen if our Promise takes some time to fulfill and return the result? We will change the <code class="language-javascript">searchEngine()</code> function to return a Promise after 2 seconds.</p>
+<pre><code class="language-javascript">async function searchEngine(engine) {
+  return new Promise((resolve, reject) =&gt; {
+    if (engine === 'Google') {
+      setTimeout(() =&gt; resolve('You can start googling!'), 2000);
+    }
+  });
+}</code></pre>
+<p>Now we need to make the function <code class="language-javascript">handlePromiseResult()</code> wait for our Promise to be fulfilled.<br/>
+That's how it should be done:</p>
+<pre><code class="language-javascript">async function handlePromiseResult() {
+  const resultOfThePromise = await searchEngine('Google'); // Wait until the promise resolves.
+
+  console.log(resultOfThePromise); // You can start googling!
+}
+
+handlePromiseResult();</code></pre>
+<p>When we call the function <code class="language-javascript">searchEngine('Google')</code>, <code class="language-javascript">await</code> suspends the execution of the function and waits until the Promise is fulfilled. When the Promise is fulfilled, the await resumes the function, stores the result in the constant <code class="language-javascript">resultOfThePromise</code> and then displays the result in the console.</p>
+<p></p><div class="alert alert-warning">If we use <code class="language-javascript">await</code> outside of an asynchronous function, we will receive a<strong> SyntaxError</strong></div><p></p>
+<pre><code class="language-javascript">function handlePromiseResult() {
+  const resultOfThePromise = await searchEngine('Google');
+  
+  console.log(resultOfThePromise); // SyntaxError: await is only valid in async function
+}
+
+handlePromiseResult();
+</code></pre>
+<p>Our <code class="language-javascript">handlePromiseResult()</code> function returned an error: <strong>SyntaxError: await is only valid in async function.</strong><br/>
+It happened because <code class="language-javascript">await</code> can't be used in non-async function.</p>
+<h5 id="exception-handling">Exception Handling</h5>
+<p>Our <code class="language-javascript">searchEngine()</code> function is still incomplete. We should improve it so that the Promise will be rejected if the parameter is different from <code class="language-javascript">"Google"</code>.</p>
+<pre><code class="language-javascript">async function searchEngine(engine) {
+  return new Promise((resolve, reject) =&gt; {
+    if (engine === 'Google') {
+      setTimeout(() =&gt; resolve('You can start googling!'), 2000);
+    } else {
+      reject('Sorry! Only Google is allowed.');
+    }
+  });
+}</code></pre>
+<p>When the Promise is fulfilled, <code class="language-javascript">await</code> returns the expected result, but if it's rejected, it throws an error. We can catch the error using <code class="language-javascript">try..catch</code> statements.</p>
+<p>Now if we call our <code class="language-javascript">handlePromiseResult()</code> function, we will get the <code class="language-javascript">Unhandled promise rejection</code>error . That's because we need to handle <em>reject</em> case. However, rather than implementing <code class="language-javascript">.catch()</code> method we will implement the <code class="language-javascript">try..catch</code> statements.</p>
+<pre><code class="language-javascript">async function handlePromiseResult() {
+  try {
+    const resultOfThePromise = await searchEngine('Bing');
+    console.log(resultOfThePromise);
+  } catch(err) {
+    console.log(err); // Sorry! Only Google is allowed.
+  }  
+}
+
+handlePromiseResult();</code></pre>
+<p> Here you can see that instead of using the <code class="language-javascript">.then()</code> and <code class="language-javascript">.catch()</code> methods, we used the <code class="language-javascript">try..catch</code> keywords. Here's how they work:</p>
+<ul>
+<li>First everything between <code class="language-javascript">try</code> and <code class="language-javascript">catch</code> will be executed.</li>
+<li>In case the Promise is resolved, the <code class="language-javascript">try</code> block is executed and finished successfully.</li>
+<li>In case the Promise is rejected, <code class="language-javascript">catch</code> captures the error and the block is executed.</li>
+</ul>
+<h5 id="conclusion">Conclusion</h5>
+<p>We've learned two keywords to work with Promises: <code class="language-javascript">async</code> and <code class="language-javascript">await</code>.</p>
+<p>The <code class="language-javascript">async</code> keyword has two main applications. It makes a function always return a Promise and allows us to use <code class="language-javascript">await</code> to pause a function and resume it when the Promise is fulfilled.</p>
+<p>The <code class="language-javascript">await</code> keyword makes a function wait until a Promise is fulfilled. Like the ordinary <code class="language-javascript">.then()</code> method, <code class="language-javascript">await</code> makes the function wait for the Promise to be fulfilled. It always has to be used within an asynchronous function.</p>
+<p>We've also come across the<code class="language-javascript">try..catch</code> statements to handle rejections and errors. Now let's get down to the code challenges!</p></body></html>

@@ -1,0 +1,19 @@
+type: choice
+is_multiple_choice: false
+options:
+- text: <code>SyntaxError</code>
+- text: <code>[ 'Kate Ferguson', 'Frederick Dixon', 'Victor Johnston' ]</code>
+- text: <code>TypeError</code>
+- text: <code>undefined</code>
+files:
+- name: main.js
+  visible: true
+  text: |+
+    // You can experiment here, it won’t be checked
+
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/16901#comment
+status: Solved
+record: -1
+custom_name: Is this correct?
+local_check: false

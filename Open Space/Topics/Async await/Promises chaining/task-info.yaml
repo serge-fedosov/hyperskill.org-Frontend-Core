@@ -1,0 +1,19 @@
+type: choice
+is_multiple_choice: true
+options:
+- text: Delete the entire code.
+- text: Use await to handle the Promise result and store it in a variable.
+- text: Use try..catch statements to handle errors.
+- text: Replace all .then() methods with await.
+- text: Use async to make an asynchronous function and call our function within it.
+files:
+- name: main.js
+  visible: true
+  text: |+
+    // You can experiment here, it won’t be checked
+
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/10855#comment
+status: Solved
+record: -1
+local_check: false

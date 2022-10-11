@@ -1,0 +1,49 @@
+<h2>Introduction to Promises</h2>
+<html><body><p>Imagine your friend promised to hire you as a frontend developer if her company opens a Junior position, and you started learning all JS topics. You will spend the next two months memorizing frontend features, waiting to get your friend's response. If the result is positive, you will make a big party to celebrate your first real programmer job; otherwise, you will continue studying JS. In this case, <strong>"promise</strong>" means that you have only an agreement for now, and your friend will contact you later when there is an actual result.</p>
+<p>The same concept exists in programming: a function is waiting for a result, and when it gets a response it performs some action. Its behavior depends on whether the outcome is positive or negative. Let's take a closer look at how it works and consider specific examples.</p>
+<h5 id="promise-syntax">Promise syntax</h5>
+<p>Take a look at the general schema of the Promise syntax:</p>
+<pre><code class="language-javascript">let promise = new Promise(function(resolve, reject) {
+ // code to be executed
+});</code></pre>
+<p>Inside a new Promise, there is a function called <strong>executor</strong> that immediately launches the created promise. You don't know the result right  away: the code only shows that you will get a value later. The most significant benefit of promises is that the program continues running while the promised value is being calculated. As soon as the executed function has finished, you will see the result.</p>
+<p>For example, as a user, you can see the whole website without a loaded avatar, so you can interact with the site instead of staring at a blank page for 30 seconds while the browser is loading the personal image. Once the avatar has been loaded, you will see it where it's supposed to be.</p>
+<p>There are two arguments inside the executor: <code class="language-javascript">resolve</code> and <code class="language-javascript">reject</code>. These pre-defined functions are called depending on whether the promise was fulfilled successfully or unsuccessfully:</p>
+<ul>
+<li>
+<p><code class="language-javascript">resolve(value)</code> in case of success with the result <code class="language-javascript">value</code>;</p>
+</li>
+<li>
+<p><code class="language-javascript">reject(error)</code> in case of failure with the error object as <code class="language-javascript">error</code>.</p>
+</li>
+</ul>
+<p></p><div class="alert alert-primary"> Remember that the executor calls either the resolve or reject function: it cannot invoke both of them. </div><p></p>
+<h5 id="examples">Examples</h5>
+<p>Let's go back to your hypothetical programming job. Here is a respective promise with data:</p>
+<pre><code class="language-javascript">const myFriendHasApprovedMyPosition = true;
+
+let promise = new Promise(function(resolve, reject) {
+  if (myFriendHasApprovedMyPosition){
+    resolve("Hooray! Now I'm a true programmer!");
+  } else {
+    reject(new Error("Whoops! Have to study more =("));
+ }
+});</code></pre>
+<p>In this case, we created a promise depending on the <code class="language-javascript">myFriendHasApprovedMyPosition</code> constant. If the value is true, we call the resolve function with <code class="language-javascript">"Hooray! Now I'm a true programmer!"</code>; if the value is false, we use the reject function with the Error object with <code class="language-javascript">"Whoops! Have to study more =("</code>. As you can see, the value is true, so the resolve function is executed.</p>
+<p>In the example, we used the resolve function immediately because the value was known. In reality, programmers mostly use promises in cases when executing a function takes some time. Let’s take a look at an example with <code class="language-javascript">setTimeout</code>:</p>
+<pre><code class="language-javascript">let promise = new Promise(function(resolve, reject) {
+  setTimeout(() =&gt; resolve("I have completed"), 5000);
+});</code></pre>
+<p>Now, in this situation, the browser has launched the promise function immediately, but the resolve function will be called only in 5 seconds. This is particularly helpful when we need to load data from a remote source.</p>
+<h5 id="promise-states">Promise states</h5>
+<p>A promise is an <strong>object</strong> that has a <strong>state</strong> property. At any time, Promise can be in one of these states:</p>
+<ul>
+<li><strong>pending</strong>: the initial state when a promise has launched but hasn't settled;</li>
+<li><strong>fulfilled</strong>: the promise has completed successfully, the resolve function is called;</li>
+<li><strong>rejected</strong>: the promise has failed, the reject function is called.</li>
+</ul>
+<p>To understand the process, take a look at the diagram:</p>
+<p style="text-align: center;"><img alt="" height="225" src="https://ucarecdn.com/4a5d09fb-e269-4480-828c-c2ae3fc81e0f/" width="500"/></p>
+<p>As you can see, at first the promise has the <em>"pending"</em> state. In case of success, the executor calls resolve(value) and changes the promise state to <em>"fulfilled"</em>. If the promise has failed, it calls reject(error), which sets the promise state to <em>"rejected"</em>. The promised state can be changed only once. </p>
+<h5 id="conclusion">Conclusion</h5>
+<p>Promises are a convenient feature that allows executing a function that takes some time to finish without pausing other processes. Promises let you start the function immediately but set a result only after the process is completed. It's especially useful in case of loading large data when you want to show the loader to a user while the response is pending. In this topic, we have covered the main idea of promises, and later you will learn how to use the result of promises in your code.</p></body></html>

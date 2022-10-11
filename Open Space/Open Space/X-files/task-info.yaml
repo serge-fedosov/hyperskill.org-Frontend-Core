@@ -345,7 +345,7 @@ files:
 - name: src/main.js
   visible: true
   learner_created: true
-feedback_link: https://hyperskill.org/projects/143/stages/774/implement#comment
+feedback_link: https://hyperskill.org/learn/step/11736#comment
 status: Solved
 feedback:
   message: Congratulations!

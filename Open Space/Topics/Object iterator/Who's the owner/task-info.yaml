@@ -1,0 +1,16 @@
+type: code
+custom_name: Who's the owner?
+files:
+- name: main.js
+  visible: true
+  text: |-
+    function switchTheValues(cats) {
+
+    }
+  learner_created: false
+feedback_link: https://hyperskill.org/learn/step/16904#comment
+status: Solved
+feedback:
+  message: <html>Correct solution</html>
+  time: Tue, 11 Oct 2022 07:59:17 UTC
+record: -1
